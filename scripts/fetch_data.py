@@ -21,7 +21,6 @@ from pathlib import Path
 import objectpath
 import pandas as pd
 import requests
-from requests.auth import HTTPBasicAuth
 
 try:
     from dotenv import load_dotenv
@@ -31,16 +30,16 @@ except ImportError:
 
 from yahoo_oauth import refresh_access_token
 
-# ── constants ──────────────────────────────────────────────────────────────
+# --- constants -----------------------------------------------------------
 STAT_LABELS = ["G", "A", "PIM", "PPP", "SOG", "FW", "HIT", "BLK", "W", "SV", "SV%", "SHO"]
 CAT_SCORES  = [100, 100, 100,   100,   100,   100,  100,   100,   100, 100, 100,   50]
 
-DOCS_DIR = Path(__file__).parent.parent / "docs"
+DOCS_DIR  = Path(__file__).parent.parent / "docs"
 DOCS_DIR.mkdir(exist_ok=True)
 DATA_FILE = DOCS_DIR / "data.json"
 
 
-# ── HTTP helper ─────────────────────────────────────────────────────────────
+# --- HTTP helper ---------------------------------------------------------
 def api_get(url, headers, retries=3):
     params = {"format": "json"}
     for attempt in range(retries):
@@ -52,34 +51,35 @@ def api_get(url, headers, retries=3):
             if attempt == retries - 1:
                 raise
             wait = 2 ** attempt
-            print(f"    (retry {attempt+1} in {wait}s — {exc})")
+            print("    (retry {} in {}s - {})".format(attempt + 1, wait, exc))
             time.sleep(wait)
 
 
-# ── Yahoo data extractors (same objectpath patterns as lambda_function.py) ──
+# --- Yahoo data extractors -----------------------------------------------
 def _tree(data):
     return objectpath.Tree(data)
 
+
 def ext_team_name(data, slot):
-    return _tree(data).execute(
-        f"$.fantasy_content.team[1].matchups['0'].matchup['0'].teams['{slot}'].team[0].name[0]"
-    )
+    path = ("$.fantasy_content.team[1].matchups['0'].matchup['0']"
+            ".teams['{}'].team[0].name[0]".format(slot))
+    return _tree(data).execute(path)
+
 
 def ext_team_stats(data, slot):
-    stats = list(map(float, _tree(data).execute(
-        f"$.fantasy_content.team[1].matchups['0'].matchup['0']"
-        f".teams['{slot}'].team[1].team_stats.stats.*.stat.value"
-    )))
-    del stats[10]   # remove SA — not a scoring category
+    path = ("$.fantasy_content.team[1].matchups['0'].matchup['0']"
+            ".teams['{}'].team[1].team_stats.stats.*.stat.value".format(slot))
+    stats = list(map(float, _tree(data).execute(path)))
+    del stats[10]   # remove SA -- not a scoring category
     return stats
+
 
 def ext_team_logo(data, slot):
     """Try objectpath first; fall back to direct dict walk."""
     try:
-        url = _tree(data).execute(
-            f"$.fantasy_content.team[1].matchups['0'].matchup['0']"
-            f".teams['{slot}'].team[0].team_logos[0].team_logo.url"
-        )
+        path = ("$.fantasy_content.team[1].matchups['0'].matchup['0']"
+                ".teams['{}'].team[0].team_logos[0].team_logo.url".format(slot))
+        url = _tree(data).execute(path)
         if url:
             return url
     except Exception:
@@ -94,71 +94,70 @@ def ext_team_logo(data, slot):
         pass
     return None
 
+
 def ext_manager(data, slot):
     try:
-        return _tree(data).execute(
-            f"$.fantasy_content.team[1].matchups['0'].matchup['0']"
-            f".teams['{slot}'].team[0].managers[0].manager.nickname"
-        )
+        path = ("$.fantasy_content.team[1].matchups['0'].matchup['0']"
+                ".teams['{}'].team[0].managers[0].manager.nickname".format(slot))
+        return _tree(data).execute(path)
     except Exception:
         return None
+
 
 def ext_current_week(data):
     return int(_tree(data).execute("$.fantasy_content.league['0'].current_week.value"))
 
-def ext_week_start(data):
-    return _tree(data).execute(
-        "$.fantasy_content.team[1].matchups['0'].matchup.week_start"
-    )
 
-
-# ── PWW scoring ─────────────────────────────────────────────────────────────
-def compute_pww(all_stats: dict) -> pd.Series:
-    """Normalised PWW scores (0–1150) across all teams for one week."""
-    df          = pd.DataFrame(all_stats, index=STAT_LABELS).T
-    score_s     = pd.Series(CAT_SCORES, index=STAT_LABELS)
-    range_vals  = (df.max() - df.min()).replace(0, 1)
+# --- PWW scoring ---------------------------------------------------------
+def compute_pww(all_stats):
+    """Normalised PWW scores (0-1150) across all teams for one week."""
+    df         = pd.DataFrame(all_stats, index=STAT_LABELS).T
+    score_s    = pd.Series(CAT_SCORES, index=STAT_LABELS)
+    range_vals = (df.max() - df.min()).replace(0, 1)
     return df.sub(df.min()).div(range_vals).dot(score_s)
 
 
-# ── category comparison ──────────────────────────────────────────────────────
+# --- category comparison -------------------------------------------------
 def compare_cats(s1, s2):
     """Returns list of '1'/'2'/'T' for each of the 12 categories."""
     result = []
     for v1, v2 in zip(s1, s2):
-        if   v1 > v2: result.append("1")
-        elif v2 > v1: result.append("2")
-        else:         result.append("T")
+        if v1 > v2:
+            result.append("1")
+        elif v2 > v1:
+            result.append("2")
+        else:
+            result.append("T")
     return result
 
 
-# ── per-week fetch ───────────────────────────────────────────────────────────
+# --- per-week fetch ------------------------------------------------------
 def fetch_week(league_key, week, current_week, total_teams, headers):
-    print(f"  Week {week:2d}:", end=" ", flush=True)
+    print("  Week {:2d}:".format(week), end=" ", flush=True)
 
-    all_stats  = {}   # team_name -> [12 floats]
-    all_logos  = {}   # team_name -> url
-    all_mgrs   = {}   # team_name -> manager nickname
-    opp_map    = {}   # team_name -> opponent_name
+    all_stats = {}   # team_name -> [12 floats]
+    all_logos = {}   # team_name -> url
+    all_mgrs  = {}   # team_name -> manager nickname
+    opp_map   = {}   # team_name -> opponent_name
 
     for i in range(1, total_teams + 1):
-        url  = (f"https://fantasysports.yahooapis.com/fantasy/v2"
-                f"/team/{league_key}.t.{i}/matchups;weeks={week}")
+        url = ("https://fantasysports.yahooapis.com/fantasy/v2"
+               "/team/{}.t.{}/matchups;weeks={}".format(league_key, i, week))
         try:
-            data    = api_get(url, headers)
-            t_name  = ext_team_name(data, "0")
-            o_name  = ext_team_name(data, "1")
-            all_stats[t_name]  = ext_team_stats(data, "0")
-            all_logos[t_name]  = ext_team_logo(data,  "0") or all_logos.get(t_name)
-            all_logos[o_name]  = ext_team_logo(data,  "1") or all_logos.get(o_name)
-            all_mgrs[t_name]   = ext_manager(data,    "0") or all_mgrs.get(t_name)
-            all_mgrs[o_name]   = ext_manager(data,    "1") or all_mgrs.get(o_name)
-            opp_map[t_name]    = o_name
+            data   = api_get(url, headers)
+            t_name = ext_team_name(data, "0")
+            o_name = ext_team_name(data, "1")
+            all_stats[t_name] = ext_team_stats(data, "0")
+            all_logos[t_name] = ext_team_logo(data, "0") or all_logos.get(t_name)
+            all_logos[o_name] = ext_team_logo(data, "1") or all_logos.get(o_name)
+            all_mgrs[t_name]  = ext_manager(data, "0") or all_mgrs.get(t_name)
+            all_mgrs[o_name]  = ext_manager(data, "1") or all_mgrs.get(o_name)
+            opp_map[t_name]   = o_name
             print(".", end="", flush=True)
         except Exception as exc:
-            print(f"[!t{i}]", end="", flush=True)
+            print("[!t{}]".format(i), end="", flush=True)
 
-    print(f" {len(all_stats)}/{total_teams} teams fetched")
+    print(" {}/{} teams fetched".format(len(all_stats), total_teams))
 
     if not all_stats:
         return None
@@ -170,7 +169,7 @@ def fetch_week(league_key, week, current_week, total_teams, headers):
     if DATA_FILE.exists():
         try:
             prev_week_key = str(week - 1)
-            existing      = json.loads(DATA_FILE.read_text())
+            existing = json.loads(DATA_FILE.read_text())
             if prev_week_key in existing.get("weeks", {}):
                 prev_pww = existing["weeks"][prev_week_key].get("pww", {})
         except Exception:
@@ -191,19 +190,17 @@ def fetch_week(league_key, week, current_week, total_teams, headers):
         })
 
     # Category leaders
-    leaders = {
-        stat: max(all_stats, key=lambda n: all_stats[n][i])
-        for i, stat in enumerate(STAT_LABELS)
-    }
+    leaders = {}
+    for idx, stat in enumerate(STAT_LABELS):
+        leaders[stat] = max(all_stats, key=lambda n: all_stats[n][idx])
 
     return {
         "is_current":  (week == current_week),
         "matchups":    matchups,
         "stats":       {n: dict(zip(STAT_LABELS, v)) for n, v in all_stats.items()},
         "pww":         {n: round(float(pww.get(n, 0)), 2) for n in all_stats},
-        "deltas":      {
-            n: round(float(pww.get(n, 0)) - prev_pww[n], 2)
-            if n in prev_pww else None
+        "deltas": {
+            n: (round(float(pww.get(n, 0)) - prev_pww[n], 2) if n in prev_pww else None)
             for n in all_stats
         },
         "leaders":     leaders,
@@ -213,7 +210,7 @@ def fetch_week(league_key, week, current_week, total_teams, headers):
     }
 
 
-# ── season standings ─────────────────────────────────────────────────────────
+# --- season standings ----------------------------------------------------
 def build_standings(weeks_data):
     """W/L/T record based on category score (>6 = win, <6 = loss, =6 = tie)."""
     records = {}
@@ -222,35 +219,36 @@ def build_standings(weeks_data):
             continue   # don't count in-progress week
         for m in week_obj.get("matchups", []):
             cats = m["cats"]
-            s1   = sum(1 for c in cats if c == "1") + 0.5 * sum(1 for c in cats if c == "T")
-            s2   = 12 - s1
+            s1 = sum(1 for c in cats if c == "1") + 0.5 * sum(1 for c in cats if c == "T")
+            s2 = 12 - s1
             for team, score in [(m["t1"], s1), (m["t2"], s2)]:
                 r = records.setdefault(team, {"W": 0, "L": 0, "T": 0})
-                if   score > 6:  r["W"] += 1
-                elif score < 6:  r["L"] += 1
-                else:            r["T"] += 1
+                if score > 6:
+                    r["W"] += 1
+                elif score < 6:
+                    r["L"] += 1
+                else:
+                    r["T"] += 1
     return records
 
 
-# ── main ─────────────────────────────────────────────────────────────────────
+# --- main ----------------------------------------------------------------
 def main():
     league_key  = os.environ["YAHOO_LEAGUE_KEY"]
-    total_teams = int(os.environ.get("TOTAL_TEAMS", 12) or 12)
-except ValueError:
-    total_teams = 12
+    total_teams = int(os.environ.get("TOTAL_TEAMS", 12))
 
-    print("PWW Hockey — Web Data Fetcher")
+    print("PWW Hockey - Web Data Fetcher")
     print("=" * 40)
 
     access_token = refresh_access_token()
-    headers      = {"Authorization": f"Bearer {access_token}"}
+    headers      = {"Authorization": "Bearer {}".format(access_token)}
 
     league_data  = api_get(
-        f"https://fantasysports.yahooapis.com/fantasy/v2/league/{league_key}/",
+        "https://fantasysports.yahooapis.com/fantasy/v2/league/{}/".format(league_key),
         headers,
     )
     current_week = ext_current_week(league_data)
-    print(f"  Current week: {current_week}")
+    print("  Current week: {}".format(current_week))
 
     # Load existing data so we can skip completed weeks already cached
     if DATA_FILE.exists():
@@ -259,16 +257,14 @@ except ValueError:
         existing = {"meta": {}, "teams": {}, "weeks": {}, "standings": {}}
 
     cached_weeks = set(existing.get("weeks", {}).keys())
-
-    weeks_data  = dict(existing.get("weeks", {}))
-    all_logos   = dict(existing.get("teams", {}))
-    all_managers= {}
+    weeks_data   = dict(existing.get("weeks", {}))
+    all_logos    = dict(existing.get("teams", {}))
 
     for week in range(1, current_week + 1):
         wk = str(week)
         # Skip fully-completed weeks that are already cached
         if week < current_week - 1 and wk in cached_weeks:
-            print(f"  Week {week:2d}: cached — skipping")
+            print("  Week {:2d}: cached -- skipping".format(week))
             continue
 
         week_data = fetch_week(league_key, week, current_week, total_teams, headers)
@@ -295,9 +291,8 @@ except ValueError:
     }
 
     DATA_FILE.write_text(json.dumps(output, indent=2))
-    print(f"\nSaved → {DATA_FILE}")
-    print(f"Weeks in data: {sorted(int(k) for k in weeks_data)}")
+    print("\nSaved -> {}".format(DATA_FILE))
+    print("Weeks in data: {}".format(sorted(int(k) for k in weeks_data)))
 
 
 main()
-

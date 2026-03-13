@@ -8,8 +8,8 @@ needs manual re-authorisation.
 Requires env vars:
   YAHOO_CLIENT_ID, YAHOO_CLIENT_SECRET, YAHOO_REFRESH_TOKEN
 Optional (for secret rotation):
-  GH_PAT           — GitHub Personal Access Token with repo scope
-  GITHUB_REPOSITORY — set automatically by GitHub Actions (owner/repo)
+  GH_PAT           -- GitHub Personal Access Token with repo scope
+  GITHUB_REPOSITORY -- set automatically by GitHub Actions (owner/repo)
 """
 
 import base64
@@ -44,42 +44,41 @@ def refresh_access_token():
     new_refresh = tokens.get("refresh_token", refresh_token)
 
     if new_refresh != refresh_token:
-        print("  Refresh token rotated — updating GitHub secret...", end=" ", flush=True)
+        print("  Refresh token rotated -- updating GitHub secret...", end=" ", flush=True)
         _update_github_secret("YAHOO_REFRESH_TOKEN", new_refresh)
         print("done")
-        # Also update env so any later calls in the same process use the new token
         os.environ["YAHOO_REFRESH_TOKEN"] = new_refresh
 
     return tokens["access_token"]
 
 
-def _update_github_secret(secret_name: str, secret_value: str):
+def _update_github_secret(secret_name, secret_value):
     """
     Encrypt and upload a new value to a GitHub Actions repository secret.
     Requires GH_PAT and GITHUB_REPOSITORY to be set in the environment.
     Silently skips if they are not set (e.g. running locally).
     """
-    pat        = os.environ.get("GH_PAT")
-    gh_repo    = os.environ.get("GITHUB_REPOSITORY")  # "owner/repo"
+    pat     = os.environ.get("GH_PAT")
+    gh_repo = os.environ.get("GITHUB_REPOSITORY")  # "owner/repo"
     if not pat or not gh_repo:
         return
 
     try:
         from nacl import encoding as nacl_enc
-        from nacl import public  as nacl_pub
+        from nacl import public as nacl_pub
     except ImportError:
-        print("(PyNaCl not installed — skipping secret rotation)")
+        print("(PyNaCl not installed -- skipping secret rotation)")
         return
 
     owner, repo = gh_repo.split("/", 1)
     headers = {
-        "Authorization": f"token {pat}",
+        "Authorization": "token {}".format(pat),
         "Accept":        "application/vnd.github.v3+json",
     }
 
     # Fetch repo public key
     pk_resp = requests.get(
-        f"https://api.github.com/repos/{owner}/{repo}/actions/secrets/public-key",
+        "https://api.github.com/repos/{}/{}/actions/secrets/public-key".format(owner, repo),
         headers=headers,
         timeout=10,
     )
@@ -87,17 +86,14 @@ def _update_github_secret(secret_name: str, secret_value: str):
     pk_data = pk_resp.json()
 
     # Encrypt with libsodium sealed box
-    public_key = nacl_pub.PublicKey(
-        pk_data["key"].encode("utf-8"),
-        nacl_enc.Base64Encoder(),
-    )
+    public_key  = nacl_pub.PublicKey(pk_data["key"].encode("utf-8"), nacl_enc.Base64Encoder())
     sealed_box  = nacl_pub.SealedBox(public_key)
     encrypted   = sealed_box.encrypt(secret_value.encode("utf-8"))
     encoded_val = base64.b64encode(encrypted).decode("utf-8")
 
     # Upload
     put_resp = requests.put(
-        f"https://api.github.com/repos/{owner}/{repo}/actions/secrets/{secret_name}",
+        "https://api.github.com/repos/{}/{}/actions/secrets/{}".format(owner, repo, secret_name),
         headers=headers,
         json={"encrypted_value": encoded_val, "key_id": pk_data["key_id"]},
         timeout=10,
