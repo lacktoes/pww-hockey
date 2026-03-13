@@ -235,7 +235,9 @@ def build_standings(weeks_data):
 # ── main ─────────────────────────────────────────────────────────────────────
 def main():
     league_key  = os.environ["YAHOO_LEAGUE_KEY"]
-    total_teams = int(os.environ.get("TOTAL_TEAMS", 12))
+    total_teams = int(os.environ.get("TOTAL_TEAMS", 12) or 12)
+except ValueError:
+    total_teams = 12
 
     print("PWW Hockey — Web Data Fetcher")
     print("=" * 40)
@@ -298,3 +300,4 @@ def main():
 
 
 main()
+
