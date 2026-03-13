@@ -1,5 +1,0 @@
-requests
-objectpath
-pandas
-python-dotenv
-PyNaCl
