@@ -75,15 +75,7 @@ def ext_team_stats(data, slot):
 
 
 def ext_team_logo(data, slot):
-    """Try objectpath first; fall back to direct dict walk."""
-    try:
-        path = ("$.fantasy_content.team[1].matchups['0'].matchup['0']"
-                ".teams['{}'].team[0].team_logos[0].team_logo.url".format(slot))
-        url = _tree(data).execute(path)
-        if url:
-            return url
-    except Exception:
-        pass
+    """Direct dict walk for logo URL -- objectpath returns generators here."""
     try:
         info = (data["fantasy_content"]["team"][1]["matchups"]["0"]
                     ["matchup"]["0"]["teams"][str(slot)]["team"][0])
@@ -99,7 +91,13 @@ def ext_manager(data, slot):
     try:
         path = ("$.fantasy_content.team[1].matchups['0'].matchup['0']"
                 ".teams['{}'].team[0].managers[0].manager.nickname".format(slot))
-        return _tree(data).execute(path)
+        result = _tree(data).execute(path)
+        # objectpath may return a generator -- extract the string value
+        if result is None:
+            return None
+        if isinstance(result, str):
+            return result
+        return next(iter(result), None)
     except Exception:
         return None
 
@@ -296,4 +294,5 @@ def main():
 
 
 main()
+
 
