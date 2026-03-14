@@ -51,25 +51,23 @@
           <div id="podium-container" class="podium"></div>
         </section>
 
-        <!-- Stacked bars + Matchups -->
-        <div class="bars-matchup-grid">
-          <section class="card">
+        <!-- Bars (left col, row 1) + Matchups (right col, spans rows 1-2) + Radar (left col, row 2) -->
+        <div class="weekly-main-grid">
+          <section class="card bars-card">
             <h2 class="section-title">PWW Score Breakdown</h2>
             <div id="bars-container"></div>
             <div id="bars-legend" class="cat-legend"></div>
           </section>
-          <section class="card">
+          <section class="card matchups-card">
             <h2 class="section-title">Matchups</h2>
             <div id="matchups-container"></div>
           </section>
+          <section class="card radar-card">
+            <h2 class="section-title">Category Spider Chart</h2>
+            <p class="section-hint">Click a team name or polygon to highlight</p>
+            <div id="radar-container"></div>
+          </section>
         </div>
-
-        <!-- Spider chart -->
-        <section class="card">
-          <h2 class="section-title">Category Spider Chart</h2>
-          <p class="section-hint">Click a team name or polygon to highlight</p>
-          <div id="radar-container"></div>
-        </section>
 
         <!-- Stats heatmap table -->
         <section class="card">
@@ -104,7 +102,9 @@
         <section class="card">
           <h2 class="section-title">League Points Relative to Average</h2>
           <p class="section-hint">Click a team logo or line to highlight</p>
-          <div id="season-lines-chart"></div>
+          <div class="lines-chart-scroll">
+            <div id="season-lines-chart"></div>
+          </div>
         </section>
 
         <section class="card">

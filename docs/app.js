@@ -490,13 +490,13 @@ function renderSeasonPage() {
   const wkRows = weeklyResults.map(({ week, first, second, third }) => `
     <tr>
       <td class="td-rank">${week}</td>
-      <td class="sn-team" style="background:${teamBg(first)}">${first || "–"}</td>
-      <td class="sn-team" style="background:${teamBg(second)}">${second || "–"}</td>
-      <td class="sn-team" style="background:${teamBg(third)}">${third || "–"}</td>
+      <td class="sn-logo-cell">${first  ? smLogoImg(first)  : "–"}</td>
+      <td class="sn-logo-cell">${second ? smLogoImg(second) : "–"}</td>
+      <td class="sn-logo-cell">${third  ? smLogoImg(third)  : "–"}</td>
     </tr>`).join("");
 
   const wkTable = `<table class="sn-table">
-    <thead><tr><th>Wk</th><th>🥇 1st</th><th>🥈 2nd</th><th>🥉 3rd</th></tr></thead>
+    <thead><tr><th>Wk</th><th>🥇</th><th>🥈</th><th>🥉</th></tr></thead>
     <tbody>${wkRows}</tbody></table>`;
 
   // Season summary
@@ -725,7 +725,7 @@ function renderLeaguePtsChart() {
   const svgH = cb + 25;
   const container = document.getElementById("season-lines-chart");
   container.innerHTML = `<svg viewBox="0 0 ${vW} ${svgH}"
-    xmlns="http://www.w3.org/2000/svg" style="width:100%">
+    xmlns="http://www.w3.org/2000/svg" style="width:100%;min-width:680px;display:block">
     <defs>${clipDefs}</defs>
     <text x="${cl + cW / 2}" y="14" text-anchor="middle" font-size="12"
       fill="rgba(255,255,255,0.45)" font-family="sans-serif">
