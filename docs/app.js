@@ -1,36 +1,56 @@
 /* app.js — PWW Hockey Dashboard */
 
-const STAT_LABELS  = ["G","A","PIM","PPP","SOG","FW","HIT","BLK","W","SV","SV%","SHO"];
-const CAT_WEIGHTS  = [100,100,100,100,100,100,100,100,100,100,100,50];
+const STAT_LABELS = ["G","A","PIM","PPP","SOG","FW","HIT","BLK","W","SV","SV%","SHO"];
+const CAT_WEIGHTS = [100,100,100,100,100,100,100,100,100,100,100,50];
 
-// One visually distinct colour per category (evenly spaced hues)
 const CAT_COLORS = {};
 STAT_LABELS.forEach((s, i) => { CAT_COLORS[s] = `hsl(${i * 30}, 70%, 55%)`; });
 
-let appData      = null;
-let selectedWeek = null;
-let availWeeks   = [];
+let appData       = null;
+let selectedWeek  = null;
+let availWeeks    = [];
+let radarSelected = new Set();
+let linesSelected = new Set();
+let activeTab     = "weekly";
 
-// ── Bootstrap ──────────────────────────────────────────────────────────────
+// ── Bootstrap ───────────────────────────────────────────────────────────────
 async function init() {
   try {
     const res = await fetch("data.json");
     if (!res.ok) throw new Error(res.statusText);
     appData    = await res.json();
     availWeeks = Object.keys(appData.weeks).map(Number).sort((a, b) => a - b);
+    initTabs();
     selectWeek(appData.meta.current_week);
   } catch (e) {
     show("error");
   }
 }
 
+// ── Tabs ────────────────────────────────────────────────────────────────────
+function initTabs() {
+  document.getElementById("tab-weekly").addEventListener("click", () => showTab("weekly"));
+  document.getElementById("tab-season").addEventListener("click", () => showTab("season"));
+}
+
+function showTab(tab) {
+  activeTab = tab;
+  document.getElementById("tab-weekly").classList.toggle("tab-active", tab === "weekly");
+  document.getElementById("tab-season").classList.toggle("tab-active", tab === "season");
+  document.getElementById("panel-weekly").hidden = (tab !== "weekly");
+  document.getElementById("panel-season").hidden = (tab !== "season");
+  document.getElementById("week-nav").hidden     = (tab !== "weekly");
+  if (tab === "season") renderSeasonPage();
+}
+
 function selectWeek(week) {
   selectedWeek = week;
+  radarSelected.clear();
   renderWeek(week);
   updateNav();
 }
 
-// ── Navigation ─────────────────────────────────────────────────────────────
+// ── Navigation ──────────────────────────────────────────────────────────────
 function updateNav() {
   const idx     = availWeeks.indexOf(selectedWeek);
   const prevBtn = document.getElementById("prev-btn");
@@ -42,37 +62,37 @@ function updateNav() {
 }
 
 document.addEventListener("keydown", e => {
+  if (activeTab !== "weekly") return;
   const idx = availWeeks.indexOf(selectedWeek);
-  if (e.key === "ArrowLeft"  && idx > 0)                   selectWeek(availWeeks[idx - 1]);
-  if (e.key === "ArrowRight" && idx < availWeeks.length-1) selectWeek(availWeeks[idx + 1]);
+  if (e.key === "ArrowLeft"  && idx > 0)                    selectWeek(availWeeks[idx - 1]);
+  if (e.key === "ArrowRight" && idx < availWeeks.length - 1) selectWeek(availWeeks[idx + 1]);
 });
 
-// ── Render a week ──────────────────────────────────────────────────────────
+// ── Render a week ───────────────────────────────────────────────────────────
 function renderWeek(week) {
   const wk = appData.weeks[String(week)];
 
-  document.getElementById("week-label").textContent = "Week " + week;
-  document.getElementById("live-badge").hidden      = !wk.is_current;
-  document.getElementById("last-updated").textContent =
+  document.getElementById("week-label").textContent    = "Week " + week;
+  document.getElementById("live-badge").hidden         = !wk.is_current;
+  document.getElementById("last-updated").textContent  =
     "Updated " + fmtDate(appData.meta.last_updated);
 
-  // Compute per-category normalised scores (needed for bars + table)
   const catContribs = computeCatContribs(wk);
 
-  document.getElementById("podium-container").innerHTML    = renderPodium(wk);
+  document.getElementById("podium-container").innerHTML   = renderPodium(wk);
   renderStackedBars(wk, catContribs);
-  document.getElementById("stats-table").innerHTML         = renderStatsTable(wk, catContribs);
-  document.getElementById("matchups-container").innerHTML  = renderMatchups(wk);
-  document.getElementById("leaders-container").innerHTML   = renderLeaders(wk);
+  document.getElementById("matchups-container").innerHTML = renderMatchups(wk);
+  document.getElementById("stats-table").innerHTML        = renderStatsTable(wk, week);
+  document.getElementById("leaders-container").innerHTML  = renderLeaders(wk);
+  renderRadarChart(wk);
 
   show("content");
 }
 
-// ── Per-category normalised score breakdown ────────────────────────────────
+// ── Per-category normalised score breakdown ─────────────────────────────────
 function computeCatContribs(wk) {
   const teams  = Object.keys(wk.stats || {});
   const result = {};
-
   STAT_LABELS.forEach((stat, i) => {
     const vals  = teams.map(t => Number(wk.stats[t][stat]) || 0);
     const min   = Math.min(...vals);
@@ -86,24 +106,71 @@ function computeCatContribs(wk) {
   return result;
 }
 
-// ── 1. Podium ───────────────────────────────────────────────────────────────
+// ── Standings helpers ───────────────────────────────────────────────────────
+// Yahoo scores points per CATEGORY: win=2, tie=1, loss=0 (24 pts/matchup, avg 12/team/week)
+function computeStandingsThrough(upToWeek) {
+  const records = {};
+  for (const wk of availWeeks) {
+    if (wk > upToWeek) break;
+    const weekObj = appData.weeks[String(wk)];
+    if (!weekObj || weekObj.is_current) continue;
+    for (const m of weekObj.matchups || []) {
+      for (const [team, side] of [[m.t1, "1"], [m.t2, "2"]]) {
+        if (!records[team]) records[team] = { W: 0, L: 0, T: 0, pts: 0 };
+        for (const cat of m.cats) {
+          if      (cat === side) { records[team].W++; records[team].pts += 2; }
+          else if (cat === "T")  { records[team].T++; records[team].pts += 1; }
+          else                   { records[team].L++; }
+        }
+      }
+    }
+  }
+  return records;
+}
+
+function rankTeams(records) {
+  const teams = Object.keys(records);
+  teams.sort((a, b) => {
+    const ra = records[a], rb = records[b];
+    if (rb.pts !== ra.pts) return rb.pts - ra.pts;
+    return rb.W - ra.W;
+  });
+  const rank = {};
+  teams.forEach((t, i) => { rank[t] = i + 1; });
+  return rank;
+}
+
+function getWeekMovement(week, isLive) {
+  if (isLive) return {};
+  const recCurr  = computeStandingsThrough(week);
+  const recPrev  = computeStandingsThrough(week - 1);
+  const rankCurr = rankTeams(recCurr);
+  const rankPrev = rankTeams(recPrev);
+  const movement = {};
+  for (const team of Object.keys(rankCurr)) {
+    const prev = rankPrev[team];
+    movement[team] = prev !== undefined ? prev - rankCurr[team] : 0;
+  }
+  return movement;
+}
+
+// ── 1. Podium ────────────────────────────────────────────────────────────────
 function renderPodium(wk) {
   const board = wk.leaderboard || [];
   if (board.length < 3) return "<p style='color:var(--text-2);text-align:center'>Not enough data</p>";
 
-  const medals    = ["🥇", "🥈", "🥉"];
-  const posClass  = ["first", "second", "third"];
-  const blockCls  = ["first", "second", "third"];
-  // Display order: 2nd (left), 1st (centre), 3rd (right)
-  const order     = [1, 0, 2];
+  const medals   = ["🥇","🥈","🥉"];
+  const posClass = ["first","second","third"];
+  const order    = [1, 0, 2];
 
   return order.map(rank => {
     const name   = board[rank];
     const score  = (wk.pww[name] || 0).toFixed(1);
     const record = appData.standings?.[name];
-    const rec    = record ? record.W + "W - " + record.L + "L" + (record.T ? " - " + record.T + "T" : "") : "";
-    const pos    = posClass[rank];
-    const bk     = blockCls[rank];
+    const rec    = record
+      ? record.W + "W – " + record.L + "L" + (record.T ? " – " + record.T + "T" : "")
+      : "";
+    const pos = posClass[rank];
 
     return `
     <div class="podium-slot podium-${pos}">
@@ -114,12 +181,12 @@ function renderPodium(wk) {
         <div class="podium-score">${score}</div>
         ${rec ? `<div class="podium-record">${rec}</div>` : ""}
       </div>
-      <div class="podium-block podium-block-${bk}">${rank + 1}</div>
+      <div class="podium-block podium-block-${pos}">${rank + 1}</div>
     </div>`;
   }).join("");
 }
 
-// ── 2. Stacked bar chart ────────────────────────────────────────────────────
+// ── 2. Stacked bar chart ─────────────────────────────────────────────────────
 function renderStackedBars(wk, catContribs) {
   const board    = wk.leaderboard || [];
   const maxScore = wk.pww[board[0]] || 1;
@@ -127,8 +194,7 @@ function renderStackedBars(wk, catContribs) {
   const barsHtml = board.map(name => {
     const total  = wk.pww[name] || 0;
     const widPct = (total / maxScore * 100).toFixed(1);
-
-    const segs = STAT_LABELS.map(stat => {
+    const segs   = STAT_LABELS.map(stat => {
       const contrib = catContribs[name]?.[stat] || 0;
       const pct     = total > 0 ? (contrib / total * 100).toFixed(2) : 0;
       return `<div class="bar-seg" style="width:${pct}%;background:${CAT_COLORS[stat]}"
@@ -158,15 +224,27 @@ function renderStackedBars(wk, catContribs) {
   document.getElementById("bars-legend").innerHTML    = legendHtml;
 }
 
-// ── 3. Stats heatmap table ──────────────────────────────────────────────────
-function renderStatsTable(wk) {
-  const board = wk.leaderboard || [];
+// ── 3. Stats heatmap table — sorted by league standings ──────────────────────
+function renderStatsTable(wk, week) {
+  const isLive      = wk.is_current;
+  const standingsWk = isLive ? Math.max(...availWeeks.filter(w => w < week)) : week;
+  const records     = computeStandingsThrough(standingsWk);
+  const movement    = getWeekMovement(week, isLive);
+  const allTeams    = Object.keys(wk.stats || {});
 
-  // Compute min/max per column for heatmap colouring
+  const ranked = [...allTeams].sort((a, b) => {
+    const ra = records[a], rb = records[b];
+    if (!ra && !rb) return 0;
+    if (!ra) return 1;
+    if (!rb) return -1;
+    if (rb.pts !== ra.pts) return rb.pts - ra.pts;
+    return rb.W - ra.W;
+  });
+
   const colRange = {};
   STAT_LABELS.forEach(stat => {
-    const vals       = board.map(t => Number(wk.stats[t]?.[stat]) || 0);
-    colRange[stat]   = { min: Math.min(...vals), max: Math.max(...vals) };
+    const vals     = ranked.map(t => Number(wk.stats[t]?.[stat]) || 0);
+    colRange[stat] = { min: Math.min(...vals), max: Math.max(...vals) };
   });
 
   const header = `<thead><tr>
@@ -176,15 +254,19 @@ function renderStatsTable(wk) {
     ${STAT_LABELS.map(s => `<th>${s}</th>`).join("")}
   </tr></thead>`;
 
-  const rows = board.map((name, i) => {
+  const rows = ranked.map((name, i) => {
     const pww   = (wk.pww[name] || 0).toFixed(1);
+    const delta = movement[name];
+    let mvBadge = "";
+    if (delta > 0)      mvBadge = `<span class="mv-up">▲${delta}</span>`;
+    else if (delta < 0) mvBadge = `<span class="mv-dn">▼${Math.abs(delta)}</span>`;
+
     const cells = STAT_LABELS.map(stat => {
-      const raw  = wk.stats[name]?.[stat];
-      const num  = Number(raw) || 0;
+      const raw          = wk.stats[name]?.[stat];
+      const num          = Number(raw) || 0;
       const { min, max } = colRange[stat];
-      const t    = (num - min) / (max - min || 1);
-      // HSL: 0=red, 60=yellow, 120=green — dark enough for white text
-      const bg   = `hsl(${(t * 120).toFixed(0)}, 65%, 28%)`;
+      const t            = (num - min) / (max - min || 1);
+      const bg           = `hsl(${(t * 120).toFixed(0)}, 65%, 28%)`;
       return `<td style="background:${bg}">${fmtStat(stat, raw)}</td>`;
     }).join("");
 
@@ -194,6 +276,7 @@ function renderStatsTable(wk) {
         <div class="td-team-inner">
           ${smLogoImg(name)}
           <span title="${name}">${name}</span>
+          ${mvBadge}
         </div>
       </td>
       <td class="td-pww">${pww}</td>
@@ -204,13 +287,22 @@ function renderStatsTable(wk) {
   return header + `<tbody>${rows}</tbody>`;
 }
 
-// ── 4. Matchups ─────────────────────────────────────────────────────────────
+// ── 4. Matchups — head-to-head category score ────────────────────────────────
 function renderMatchups(wk) {
   return wk.matchups.map(m => {
-    const t1     = m.t1, t2 = m.t2;
-    const pww1   = wk.pww[t1] ?? 0, pww2 = wk.pww[t2] ?? 0;
-    const win1   = pww1 >= pww2,    win2 = pww2 > pww1;
+    const t1 = m.t1, t2 = m.t2;
     const stats1 = wk.stats[t1] ?? {}, stats2 = wk.stats[t2] ?? {};
+
+    const t1w  = m.cats.filter(c => c === "1").length;
+    const t2w  = m.cats.filter(c => c === "2").length;
+    const ties = m.cats.filter(c => c === "T").length;
+    const s1   = t1w + 0.5 * ties;
+    const win1 = s1 > 6;
+    const win2 = s1 < 6;
+
+    const scoreLabel = ties > 0
+      ? `${t1w}–${t2w} <span class="matchup-ties">(${ties}T)</span>`
+      : `${t1w}–${t2w}`;
 
     const pills = m.cats.map((c, i) => {
       const label = STAT_LABELS[i];
@@ -226,14 +318,14 @@ function renderMatchups(wk) {
           ${logoImg(t1, "team-logo", 42)}
           <div class="team-info">
             <div class="team-name" title="${t1}">${t1}</div>
-            <div class="team-pww">${pww1.toFixed(1)}</div>
+            <div class="team-cat-score">${t1w}</div>
           </div>
         </div>
-        <div class="matchup-vs">PWW</div>
+        <div class="matchup-vs">${scoreLabel}</div>
         <div class="team-side team-side--right ${win2 ? "winning" : ""}">
           <div class="team-info">
             <div class="team-name" title="${t2}">${t2}</div>
-            <div class="team-pww">${pww2.toFixed(1)}</div>
+            <div class="team-cat-score">${t2w}</div>
           </div>
           ${logoImg(t2, "team-logo", 42)}
         </div>
@@ -243,7 +335,7 @@ function renderMatchups(wk) {
   }).join("");
 }
 
-// ── 5. Category leaders ─────────────────────────────────────────────────────
+// ── 5. Category leaders ──────────────────────────────────────────────────────
 function renderLeaders(wk) {
   return STAT_LABELS.map(stat => {
     const leader = wk.leaders?.[stat];
@@ -259,7 +351,405 @@ function renderLeaders(wk) {
   }).join("");
 }
 
-// ── Logo helpers ────────────────────────────────────────────────────────────
+// ── 6. Radar / Spider chart ──────────────────────────────────────────────────
+function renderRadarChart(wk) {
+  const teams = Object.keys(wk.stats || {});
+  if (!teams.length) return;
+
+  const norm = {};
+  teams.forEach(t => { norm[t] = {}; });
+  STAT_LABELS.forEach(stat => {
+    const vals = teams.map(t => Number(wk.stats[t][stat]) || 0);
+    const min  = Math.min(...vals);
+    const rng  = (Math.max(...vals) - min) || 1;
+    teams.forEach(t => { norm[t][stat] = (Number(wk.stats[t][stat]) - min) / rng; });
+  });
+
+  const cx = 210, cy = 215, R = 165;
+  const N   = STAT_LABELS.length;
+  const ang = i => (2 * Math.PI * i / N) - Math.PI / 2;
+  const pt  = (i, v) => [cx + v * R * Math.cos(ang(i)), cy + v * R * Math.sin(ang(i))];
+
+  const gridRings = [0.25, 0.5, 0.75, 1.0].map(v => {
+    const pts = STAT_LABELS.map((_, i) => pt(i, v).join(",")).join(" ");
+    return `<polygon points="${pts}" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>`;
+  }).join("");
+
+  const axes = STAT_LABELS.map((s, i) => {
+    const [x, y]   = pt(i, 1);
+    const [lx, ly] = pt(i, 1.2);
+    const cos       = Math.cos(ang(i));
+    const anchor    = cos > 0.1 ? "start" : cos < -0.1 ? "end" : "middle";
+    return `<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}"
+              stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+            <text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${anchor}"
+              dominant-baseline="central" font-size="11" fill="rgba(255,255,255,0.55)"
+              font-family="sans-serif">${s}</text>`;
+  }).join("");
+
+  const someSelected = radarSelected.size > 0;
+  const sortedTeams  = [...teams].sort();
+
+  const polygons = sortedTeams.map(name => {
+    const hue        = teamHue(name);
+    const isSelected = radarSelected.has(name);
+    const strokeOp   = !someSelected ? 0.65 : isSelected ? 1.0 : 0.1;
+    const fillOp     = isSelected ? 0.18 : 0;
+    const strokeW    = !someSelected ? 1.5 : isSelected ? 2.5 : 1;
+
+    const pts = STAT_LABELS.map((s, i) => {
+      const v = norm[name][s] * 0.92 + 0.04;
+      return pt(i, v).map(n => n.toFixed(1)).join(",");
+    }).join(" ");
+
+    return `<polygon class="radar-poly" data-team="${name}" points="${pts}"
+      fill="hsla(${hue},70%,60%,${fillOp})"
+      stroke="hsl(${hue},70%,60%)"
+      stroke-width="${strokeW}"
+      stroke-opacity="${strokeOp}"
+      style="cursor:pointer;transition:stroke-opacity 0.2s"/>`;
+  }).join("");
+
+  const legend = sortedTeams.map((name, i) => {
+    const hue    = teamHue(name);
+    const active = !someSelected || radarSelected.has(name);
+    const ly     = 28 + i * 27;
+    return `<g class="radar-legend-item" data-team="${name}" style="cursor:pointer">
+      <rect x="430" y="${ly}" width="13" height="13" rx="2"
+        fill="hsl(${hue},70%,60%)" opacity="${active ? 1 : 0.25}"/>
+      <text x="450" y="${ly + 6}" dominant-baseline="central" font-size="12"
+        fill="${active ? "#e6edf3" : "#484f58"}"
+        font-family="sans-serif">${shortName(name)}</text>
+    </g>`;
+  }).join("");
+
+  const svgH      = Math.max(440, 28 + sortedTeams.length * 27 + 20);
+  const container = document.getElementById("radar-container");
+  container.innerHTML = `<svg viewBox="0 0 680 ${svgH}"
+    xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:${svgH}px">
+    ${gridRings}${axes}${polygons}${legend}
+  </svg>`;
+
+  container.querySelectorAll(".radar-poly, .radar-legend-item").forEach(el => {
+    el.addEventListener("click", () => {
+      const name = el.dataset.team;
+      if (radarSelected.has(name)) radarSelected.delete(name);
+      else radarSelected.add(name);
+      renderRadarChart(wk);
+    });
+  });
+}
+
+function teamHue(name) {
+  let h = 0;
+  for (const c of name) h = ((h * 31) + c.charCodeAt(0)) | 0;
+  return Math.abs(h) % 360;
+}
+
+// ── Season page ──────────────────────────────────────────────────────────────
+function renderSeasonPage() {
+  const completedWeeks = availWeeks.filter(w => !appData.weeks[String(w)].is_current);
+  const teamNames      = Object.keys(appData.teams);
+
+  const ss = {};
+  teamNames.forEach(name => {
+    ss[name] = { first: 0, second: 0, third: 0, totalPww: 0, scores: [],
+                 statTotals: {}, statCounts: {} };
+    STAT_LABELS.forEach(s => { ss[name].statTotals[s] = 0; ss[name].statCounts[s] = 0; });
+  });
+
+  const weeklyResults = completedWeeks.map(w => {
+    const wk    = appData.weeks[String(w)];
+    const board = wk.leaderboard || [];
+    const [first, second, third] = board;
+    if (first  && ss[first])  ss[first].first++;
+    if (second && ss[second]) ss[second].second++;
+    if (third  && ss[third])  ss[third].third++;
+
+    for (const [name, pww] of Object.entries(wk.pww || {})) {
+      if (!ss[name]) continue;
+      ss[name].totalPww += pww;
+      ss[name].scores.push({ week: w, score: pww });
+      STAT_LABELS.forEach(s => {
+        const v = wk.stats?.[name]?.[s];
+        if (v !== undefined) { ss[name].statTotals[s] += Number(v); ss[name].statCounts[s]++; }
+      });
+    }
+    return { week: w, first, second, third };
+  });
+
+  const sorted = teamNames
+    .filter(n => ss[n].scores.length > 0)
+    .sort((a, b) => {
+      if (ss[b].first  !== ss[a].first)  return ss[b].first  - ss[a].first;
+      if (ss[b].second !== ss[a].second) return ss[b].second - ss[a].second;
+      return ss[b].totalPww - ss[a].totalPww;
+    });
+
+  // Weekly results
+  const wkRows = weeklyResults.map(({ week, first, second, third }) => `
+    <tr>
+      <td class="td-rank">${week}</td>
+      <td class="sn-team" style="background:${teamBg(first)}">${first || "–"}</td>
+      <td class="sn-team" style="background:${teamBg(second)}">${second || "–"}</td>
+      <td class="sn-team" style="background:${teamBg(third)}">${third || "–"}</td>
+    </tr>`).join("");
+
+  const wkTable = `<table class="sn-table">
+    <thead><tr><th>Wk</th><th>🥇 1st</th><th>🥈 2nd</th><th>🥉 3rd</th></tr></thead>
+    <tbody>${wkRows}</tbody></table>`;
+
+  // Season summary
+  const sumRows = sorted.map(name => {
+    const t = ss[name];
+    const n = t.scores.length;
+    if (!n) return "";
+    const best  = t.scores.reduce((a, b) => b.score > a.score ? b : a);
+    const worst = t.scores.reduce((a, b) => b.score < a.score ? b : a);
+    return `<tr>
+      <td class="td-team"><div class="td-team-inner">${smLogoImg(name)}<span title="${name}">${name}</span></div></td>
+      <td class="sn-medal sn-gold">${t.first}</td>
+      <td class="sn-medal sn-silver">${t.second}</td>
+      <td class="sn-medal sn-bronze">${t.third}</td>
+      <td class="td-pww">${fmtNum(t.totalPww)}</td>
+      <td class="td-rank">Wk ${best.week}</td>
+      <td class="sn-best">${fmtNum(best.score)}</td>
+      <td class="td-rank">Wk ${worst.week}</td>
+      <td class="sn-worst">${fmtNum(worst.score)}</td>
+      <td>${fmtNum(t.totalPww / n)}</td>
+    </tr>`;
+  }).join("");
+
+  const sumTable = `<table class="stats-table">
+    <thead><tr>
+      <th class="th-team">Team</th>
+      <th title="1st place finishes">1st</th>
+      <th title="2nd place finishes">2nd</th>
+      <th title="3rd place finishes">3rd</th>
+      <th>Total Pts</th>
+      <th>Best Wk</th><th>Best Score</th>
+      <th>Worst Wk</th><th>Worst Score</th>
+      <th>Avg Score</th>
+    </tr></thead>
+    <tbody>${sumRows}</tbody></table>`;
+
+  // Cumulative stats
+  const colRange = {};
+  STAT_LABELS.forEach(stat => {
+    const vals     = sorted.map(n => ss[n].statCounts[stat] > 0 ? ss[n].statTotals[stat] / ss[n].statCounts[stat] : 0);
+    colRange[stat] = { min: Math.min(...vals), max: Math.max(...vals) };
+  });
+
+  const csRows = sorted.map(name => {
+    const cells = STAT_LABELS.map(stat => {
+      const avg          = ss[name].statCounts[stat] > 0 ? ss[name].statTotals[stat] / ss[name].statCounts[stat] : 0;
+      const { min, max } = colRange[stat];
+      const t            = (avg - min) / (max - min || 1);
+      const bg           = `hsl(${(t * 120).toFixed(0)}, 65%, 28%)`;
+      return `<td style="background:${bg}">${fmtStat(stat, avg)}</td>`;
+    }).join("");
+    return `<tr>
+      <td class="td-team"><div class="td-team-inner">${smLogoImg(name)}<span title="${name}">${name}</span></div></td>
+      ${cells}
+    </tr>`;
+  }).join("");
+
+  const csTable = `<table class="stats-table">
+    <thead><tr>
+      <th class="th-team">Team</th>
+      ${STAT_LABELS.map(s => `<th>${s}</th>`).join("")}
+    </tr></thead>
+    <tbody>${csRows}</tbody></table>`;
+
+  document.getElementById("season-weekly-results").innerHTML   = wkTable;
+  document.getElementById("season-summary").innerHTML          = `<div class="table-wrap">${sumTable}</div>`;
+  document.getElementById("season-cumulative-stats").innerHTML = `<div class="table-wrap">${csTable}</div>`;
+
+  renderLeaguePtsChart();
+}
+
+function teamBg(name) {
+  if (!name) return "transparent";
+  return `hsl(${teamHue(name)}, 30%, 20%)`;
+}
+
+// ── League points relative to average chart ──────────────────────────────────
+function computeLeaguePtsData() {
+  // Category-level points: win=2, tie=1, loss=0. Average = 12 pts/team/week.
+  const cumulative = {};
+  const data       = {};
+  let completedCount = 0;
+
+  for (const wk of availWeeks) {
+    const weekObj = appData.weeks[String(wk)];
+    if (!weekObj || weekObj.is_current) continue;
+    completedCount++;
+
+    for (const m of weekObj.matchups || []) {
+      for (const [team, side] of [[m.t1, "1"], [m.t2, "2"]]) {
+        if (!cumulative[team]) { cumulative[team] = 0; data[team] = [{ week: 0, relPts: 0 }]; }
+        for (const cat of m.cats) {
+          if      (cat === side) cumulative[team] += 2;
+          else if (cat === "T")  cumulative[team] += 1;
+        }
+      }
+    }
+
+    const avg = completedCount * 12;
+    for (const team of Object.keys(cumulative)) {
+      data[team].push({ week: wk, relPts: cumulative[team] - avg });
+    }
+  }
+  return data;
+}
+
+function spreadLabels(items, minGap, yMin, yMax) {
+  if (!items.length) return [];
+  const arr = items.map(it => ({ ...it })).sort((a, b) => a.y - b.y);
+  // Push down from top
+  for (let i = 1; i < arr.length; i++) {
+    if (arr[i].y < arr[i - 1].y + minGap) arr[i].y = arr[i - 1].y + minGap;
+  }
+  // If bottom overflows, push everything up
+  if (arr[arr.length - 1].y > yMax) {
+    arr[arr.length - 1].y = yMax;
+    for (let i = arr.length - 2; i >= 0; i--) {
+      if (arr[i].y > arr[i + 1].y - minGap) arr[i].y = arr[i + 1].y - minGap;
+    }
+  }
+  return arr;
+}
+
+function renderLeaguePtsChart() {
+  const data  = computeLeaguePtsData();
+  const teams = Object.keys(data);
+  if (!teams.length) return;
+
+  // Y range
+  let minY = 0, maxY = 0;
+  for (const pts of Object.values(data))
+    for (const p of pts) { minY = Math.min(minY, p.relPts); maxY = Math.max(maxY, p.relPts); }
+  minY = Math.floor((minY - 5) / 10) * 10;
+  maxY = Math.ceil( (maxY + 5) / 10) * 10;
+
+  const maxWeek = Math.max(...teams.flatMap(t => data[t].map(p => p.week)));
+
+  // Layout
+  const vW = 1060;
+  const cl = 48, cr = 800, ct = 28, cb = 430;
+  const cW = cr - cl, cH = cb - ct;
+
+  const xS = w  => cl + (w  / maxWeek) * cW;
+  const yS = r  => cb - ((r - minY) / (maxY - minY)) * cH;
+
+  // Grid + y-axis labels
+  let grid = "";
+  for (let y = minY; y <= maxY; y += 10) {
+    const yp = yS(y).toFixed(1);
+    const isZero = y === 0;
+    grid += `<line x1="${cl}" y1="${yp}" x2="${cr}" y2="${yp}"
+      stroke="${isZero ? "rgba(255,255,255,0.3)" : "rgba(255,255,255,0.06)"}"
+      stroke-width="${isZero ? 1.5 : 1}"/>
+    <text x="${cl - 5}" y="${yp}" text-anchor="end" dominant-baseline="central"
+      font-size="10" fill="rgba(255,255,255,0.4)" font-family="sans-serif">${y}</text>`;
+  }
+
+  // X-axis labels
+  let xLabels = "";
+  for (let w = 1; w <= maxWeek; w++) {
+    xLabels += `<text x="${xS(w).toFixed(1)}" y="${cb + 14}" text-anchor="middle"
+      font-size="10" fill="rgba(255,255,255,0.4)" font-family="sans-serif">${w}</text>`;
+  }
+
+  const someSelected = linesSelected.size > 0;
+  const sortedTeams  = [...teams].sort((a, b) => {
+    const aLast = data[a][data[a].length - 1].relPts;
+    const bLast = data[b][data[b].length - 1].relPts;
+    return bLast - aLast;
+  });
+
+  // Lines
+  const lines = sortedTeams.map(name => {
+    const hue        = teamHue(name);
+    const isSelected = linesSelected.has(name);
+    const opacity    = !someSelected ? 0.7 : isSelected ? 1.0 : 0.07;
+    const strokeW    = !someSelected ? 1.8 : isSelected ? 3 : 1;
+    const pathD      = data[name].map((p, i) =>
+      `${i === 0 ? "M" : "L"}${xS(p.week).toFixed(1)},${yS(p.relPts).toFixed(1)}`
+    ).join(" ");
+    return `<path class="league-line" data-team="${name}" d="${pathD}"
+      fill="none" stroke="hsl(${hue},70%,60%)"
+      stroke-width="${strokeW}" stroke-opacity="${opacity}"
+      stroke-linejoin="round" stroke-linecap="round"
+      style="cursor:pointer;transition:stroke-opacity 0.2s"/>`;
+  }).join("");
+
+  // Right-side labels with logos, spread to avoid overlap
+  const clipDefs = sortedTeams.map(name => {
+    const id = "cp-" + name.replace(/\W/g, "_");
+    return `<clipPath id="${id}"><circle cx="11" cy="11" r="10"/></clipPath>`;
+  }).join("");
+
+  const desiredLabels = sortedTeams.map(name => {
+    const last = data[name][data[name].length - 1];
+    return { name, y: yS(last.relPts) };
+  });
+  const placed = spreadLabels(desiredLabels, 22, ct, cb);
+
+  const rightLabelsHtml = placed.map(({ name, y }) => {
+    const hue        = teamHue(name);
+    const isSelected = linesSelected.has(name);
+    const op         = !someSelected || isSelected ? 1 : 0.2;
+    const logoUrl    = appData.teams?.[name]?.logo;
+    const id         = "cp-" + name.replace(/\W/g, "_");
+    const lastPt     = data[name][data[name].length - 1];
+    const lineEndX   = xS(lastPt.week).toFixed(1);
+    const lineEndY   = yS(lastPt.relPts).toFixed(1);
+
+    const logoElem = logoUrl
+      ? `<image href="${logoUrl}" x="${cr + 5}" y="${y - 11}" width="22" height="22" clip-path="url(#${id})"/>`
+      : `<circle cx="${cr + 16}" cy="${y}" r="10" fill="hsl(${hue},70%,60%)"/>`;
+
+    return `<g class="league-legend-item" data-team="${name}"
+        style="cursor:pointer;opacity:${op}">
+      <line x1="${lineEndX}" y1="${lineEndY}" x2="${cr + 4}" y2="${y.toFixed(1)}"
+        stroke="hsl(${hue},70%,60%)" stroke-width="0.8" stroke-opacity="0.35"
+        stroke-dasharray="3,2"/>
+      ${logoElem}
+      <text x="${cr + 30}" y="${y.toFixed(1)}" dominant-baseline="central"
+        font-size="10.5" fill="hsl(${hue},75%,72%)"
+        font-family="sans-serif" font-weight="600">${shortName(name)}</text>
+    </g>`;
+  }).join("");
+
+  const svgH = cb + 25;
+  const container = document.getElementById("season-lines-chart");
+  container.innerHTML = `<svg viewBox="0 0 ${vW} ${svgH}"
+    xmlns="http://www.w3.org/2000/svg" style="width:100%">
+    <defs>${clipDefs}</defs>
+    <text x="${cl + cW / 2}" y="14" text-anchor="middle" font-size="12"
+      fill="rgba(255,255,255,0.45)" font-family="sans-serif">
+      Cumulative League Points Relative to Par (avg = 12 pts/week)
+    </text>
+    ${grid}
+    ${xLabels}
+    <text x="${cl + cW / 2}" y="${cb + 28}" text-anchor="middle" font-size="11"
+      fill="rgba(255,255,255,0.3)" font-family="sans-serif">Week</text>
+    ${lines}
+    ${rightLabelsHtml}
+  </svg>`;
+
+  container.querySelectorAll(".league-line, .league-legend-item").forEach(el => {
+    el.addEventListener("click", () => {
+      const name = el.dataset.team;
+      if (linesSelected.has(name)) linesSelected.delete(name);
+      else linesSelected.add(name);
+      renderLeaguePtsChart();
+    });
+  });
+}
+
+// ── Logo helpers ─────────────────────────────────────────────────────────────
 function logoImg(teamName, cls, size) {
   const url = appData.teams?.[teamName]?.logo;
   if (url) {
@@ -277,11 +767,15 @@ function smLogoImg(teamName) {
   return `<div class="bar-sm-logo-ph">🏒</div>`;
 }
 
-// ── Formatting helpers ──────────────────────────────────────────────────────
+// ── Format helpers ────────────────────────────────────────────────────────────
 function fmtStat(label, val) {
   if (val === undefined || val === null) return "-";
   if (label === "SV%") return Number(val).toFixed(3).replace(/^0/, "");
   return Number.isInteger(Number(val)) ? String(Math.round(val)) : Number(val).toFixed(1);
+}
+
+function fmtNum(n) {
+  return Math.round(n).toLocaleString();
 }
 
 function shortName(name) {

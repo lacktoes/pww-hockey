@@ -14,7 +14,7 @@
         <span class="brand-icon">🏒</span>
         <span class="brand-name">PWW Hockey</span>
       </div>
-      <div class="week-nav">
+      <div class="week-nav" id="week-nav">
         <button class="nav-btn" id="prev-btn" aria-label="Previous week" disabled>&#8249;</button>
         <div class="week-display">
           <span id="week-label">Loading…</span>
@@ -23,6 +23,10 @@
         <button class="nav-btn" id="next-btn" aria-label="Next week" disabled>&#8250;</button>
       </div>
       <div class="header-meta" id="last-updated"></div>
+    </div>
+    <div class="tab-nav">
+      <button class="tab-btn tab-active" id="tab-weekly">Weekly</button>
+      <button class="tab-btn" id="tab-season">Season</button>
     </div>
   </header>
 
@@ -38,38 +42,77 @@
 
     <div id="content" hidden>
 
-      <!-- 1. Podium -->
-      <section class="card podium-card">
-        <h2 class="section-title">Top 3 This Week</h2>
-        <div id="podium-container" class="podium"></div>
-      </section>
+      <!-- ── Weekly panel ─────────────────────────────────────────────── -->
+      <div id="panel-weekly">
 
-      <!-- 2. Stacked bars + Matchups -->
-      <div class="bars-matchup-grid">
-        <section class="card">
-          <h2 class="section-title">PWW Score Breakdown</h2>
-          <div id="bars-container"></div>
-          <div id="bars-legend" class="cat-legend"></div>
+        <!-- Podium -->
+        <section class="card podium-card">
+          <h2 class="section-title">Top 3 This Week</h2>
+          <div id="podium-container" class="podium"></div>
         </section>
+
+        <!-- Stacked bars + Matchups -->
+        <div class="bars-matchup-grid">
+          <section class="card">
+            <h2 class="section-title">PWW Score Breakdown</h2>
+            <div id="bars-container"></div>
+            <div id="bars-legend" class="cat-legend"></div>
+          </section>
+          <section class="card">
+            <h2 class="section-title">Matchups</h2>
+            <div id="matchups-container"></div>
+          </section>
+        </div>
+
+        <!-- Spider chart -->
         <section class="card">
-          <h2 class="section-title">Matchups</h2>
-          <div id="matchups-container"></div>
+          <h2 class="section-title">Category Spider Chart</h2>
+          <p class="section-hint">Click a team name or polygon to highlight</p>
+          <div id="radar-container"></div>
         </section>
+
+        <!-- Stats heatmap table -->
+        <section class="card">
+          <h2 class="section-title">Team Stats</h2>
+          <div class="table-wrap">
+            <table id="stats-table" class="stats-table"></table>
+          </div>
+        </section>
+
+        <!-- Category leaders -->
+        <section class="card">
+          <h2 class="section-title">Category Leaders</h2>
+          <div id="leaders-container" class="leaders-grid"></div>
+        </section>
+
       </div>
 
-      <!-- 3. Stats heatmap table -->
-      <section class="card">
-        <h2 class="section-title">Team Stats</h2>
-        <div class="table-wrap">
-          <table id="stats-table" class="stats-table"></table>
-        </div>
-      </section>
+      <!-- ── Season panel ──────────────────────────────────────────────── -->
+      <div id="panel-season" hidden>
 
-      <!-- 4. Category leaders -->
-      <section class="card">
-        <h2 class="section-title">Category Leaders</h2>
-        <div id="leaders-container" class="leaders-grid"></div>
-      </section>
+        <div class="season-grid">
+          <section class="card">
+            <h2 class="section-title">Weekly Results</h2>
+            <div id="season-weekly-results" class="table-wrap"></div>
+          </section>
+          <section class="card">
+            <h2 class="section-title">Season Summary</h2>
+            <div id="season-summary"></div>
+          </section>
+        </div>
+
+        <section class="card">
+          <h2 class="section-title">League Points Relative to Average</h2>
+          <p class="section-hint">Click a team logo or line to highlight</p>
+          <div id="season-lines-chart"></div>
+        </section>
+
+        <section class="card">
+          <h2 class="section-title">Average Stats Per Week</h2>
+          <div id="season-cumulative-stats"></div>
+        </section>
+
+      </div>
 
     </div>
   </main>

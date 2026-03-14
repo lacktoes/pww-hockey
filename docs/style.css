@@ -256,7 +256,8 @@ main { max-width: var(--max-w); margin: 0 auto; padding: 20px; display: flex; fl
 .team-pww  { font-size: 20px; font-weight: 700; color: var(--accent); line-height: 1.2; }
 .team-side--right .team-pww { color: var(--warm); }
 .team-side.winning .team-pww { color: var(--win); }
-.matchup-vs { font-size: 11px; font-weight: 700; color: var(--text-3); letter-spacing: 0.1em; flex-shrink: 0; }
+.matchup-vs { font-size: 15px; font-weight: 800; color: var(--text-1); letter-spacing: 0.04em; flex-shrink: 0; min-width: 52px; text-align: center; }
+.matchup-ties { font-size: 10px; font-weight: 500; color: var(--text-2); }
 .cat-strip { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
 .cat-pill { font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; cursor: default; }
 .cat-1   { background: var(--accent); color: #000; }
@@ -273,3 +274,69 @@ main { max-width: var(--max-w); margin: 0 auto; padding: 20px; display: flex; fl
 .leader-logo-placeholder { width: 34px; height: 34px; border-radius: 50%; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 18px; margin: 0 auto 4px; }
 .leader-team  { font-size: 11px; font-weight: 500; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .leader-value { font-size: 16px; font-weight: 700; color: var(--warm); margin-top: 2px; }
+
+/* ── Tab navigation ─────────────────────────────────────────────────── */
+.tab-nav {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  gap: 2px;
+  border-top: 1px solid var(--border);
+}
+.tab-btn {
+  padding: 8px 22px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-2);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+.tab-btn:hover { color: var(--text-1); }
+.tab-active { color: var(--accent) !important; border-bottom-color: var(--accent) !important; }
+
+/* ── Matchup cat score ──────────────────────────────────────────────── */
+.team-cat-score { font-size: 22px; font-weight: 700; color: var(--accent); line-height: 1.2; }
+.team-side--right .team-cat-score { color: var(--warm); }
+.team-side.winning .team-cat-score { color: var(--win); }
+
+/* ── Standings movement badges ──────────────────────────────────────── */
+.mv-up { font-size: 10px; font-weight: 700; color: var(--win);  margin-left: 5px; }
+.mv-dn { font-size: 10px; font-weight: 700; color: #f85149;     margin-left: 5px; }
+
+/* ── Spider chart hint ──────────────────────────────────────────────── */
+.section-hint { font-size: 11px; color: var(--text-2); margin-top: -8px; margin-bottom: 10px; }
+
+/* ── Season page layout ─────────────────────────────────────────────── */
+.season-grid {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 700px) { .season-grid { grid-template-columns: 1fr; } }
+
+/* ── Weekly results table ───────────────────────────────────────────── */
+.sn-table { width: 100%; border-collapse: collapse; font-size: 12px; white-space: nowrap; }
+.sn-table th {
+  padding: 6px 10px; text-align: left;
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--text-2);
+  border-bottom: 2px solid var(--border); background: var(--surface);
+}
+.sn-table td { padding: 4px 8px; border-bottom: 1px solid rgba(255,255,255,0.03); }
+.sn-table tr:last-child td { border-bottom: none; }
+.sn-table tr:hover td { filter: brightness(1.2); }
+.sn-team { font-weight: 600; }
+
+/* ── Season summary table extras ────────────────────────────────────── */
+.sn-medal { text-align: center; font-size: 14px; font-weight: 800; }
+.sn-gold   { color: var(--gold);   }
+.sn-silver { color: var(--silver); }
+.sn-bronze { color: var(--bronze); }
+.sn-best   { color: var(--win);  font-weight: 700; }
+.sn-worst  { color: #f85149;     font-weight: 700; }
