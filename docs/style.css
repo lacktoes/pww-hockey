@@ -70,6 +70,10 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 /* ── Page layout ───────────────────────────────────────────────────── */
 main { max-width: var(--max-w); margin: 0 auto; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
 
+/* Panels are flex columns — gives card-to-card gaps and enables CSS ordering on mobile */
+#panel-weekly,
+#panel-season { display: flex; flex-direction: column; gap: 16px; }
+
 /* Desktop: bars top-left, radar bottom-left, matchups right spanning both rows */
 .weekly-main-grid {
   display: grid;
@@ -86,6 +90,8 @@ main { max-width: var(--max-w); margin: 0 auto; padding: 20px; display: flex; fl
   .weekly-main-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
   .bars-card, .radar-card, .matchups-card { grid-column: 1; grid-row: auto; }
 }
+/* Prevent grid children expanding past viewport due to wide table content */
+.weekly-main-grid > *, .season-grid > * { min-width: 0; }
 
 /* ── Cards ─────────────────────────────────────────────────────────── */
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
@@ -191,10 +197,11 @@ main { max-width: var(--max-w); margin: 0 auto; padding: 20px; display: flex; fl
 }
 .bar-label span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-/* Mobile: logo only in bar chart, no team name */
+/* Mobile: logo only in bar chart, no team name; reduce bar offset to match smaller label */
 @media (max-width: 600px) {
   .bar-label { width: 32px; }
   .bar-label span { display: none; }
+  .bar-track { max-width: calc(var(--bar-pct) - 80px); } /* 32px logo + 42px score + gaps */
 }
 .bar-sm-logo    { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
 .bar-sm-logo-ph { width: 22px; height: 22px; border-radius: 50%; background: var(--surface-2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
@@ -202,6 +209,7 @@ main { max-width: var(--max-w); margin: 0 auto; padding: 20px; display: flex; fl
 .bar-track {
   flex: 1;
   height: 20px;
+  max-width: calc(var(--bar-pct) - 200px); /* desktop: 150px label + score + gaps */
   background: var(--surface-2);
   border-radius: 4px;
   overflow: hidden;
@@ -335,18 +343,21 @@ main { max-width: var(--max-w); margin: 0 auto; padding: 20px; display: flex; fl
 .section-hint { font-size: 11px; color: var(--text-2); margin-top: -8px; margin-bottom: 10px; }
 
 /* ── Season page layout ─────────────────────────────────────────────── */
-/* Weekly results stays narrow (logos only); summary fills remaining space */
+/* Weekly results (logo-only) stays in a fixed column; never collapses fully */
 .season-grid {
   display: grid;
-  grid-template-columns: 148px 1fr;
+  grid-template-columns: 200px 1fr; /* desktop: wider for bigger logos */
   gap: 16px;
   align-items: start;
 }
-/* Stack only on very small screens */
-@media (max-width: 480px) { .season-grid { grid-template-columns: 1fr; } }
+@media (max-width: 700px) { .season-grid { grid-template-columns: 140px 1fr; gap: 10px; } }
+@media (max-width: 420px)  { .season-grid { grid-template-columns: 110px 1fr; gap: 8px; } }
+
+/* Lines chart: push to bottom on mobile using flex order */
+@media (max-width: 600px) { .lines-chart-section { order: 10; } }
 
 /* Lines chart: horizontal scroll on narrow screens */
-.lines-chart-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.lines-chart-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; width: 100%; }
 
 /* ── Weekly results table ───────────────────────────────────────────── */
 .sn-table { width: 100%; border-collapse: collapse; font-size: 12px; white-space: nowrap; }
@@ -360,8 +371,12 @@ main { max-width: var(--max-w); margin: 0 auto; padding: 20px; display: flex; fl
 .sn-table tr:last-child td { border-bottom: none; }
 .sn-table tr:hover td { filter: brightness(1.2); }
 .sn-team { font-weight: 600; }
-.sn-logo-cell { text-align: center; padding: 3px 4px; vertical-align: middle; }
-.sn-logo-cell img, .sn-logo-cell div { margin: 0 auto; }
+.sn-logo-cell { text-align: center; padding: 3px 6px; vertical-align: middle; }
+.sn-logo-cell img, .sn-logo-cell .bar-sm-logo-ph { margin: 0 auto; width: 28px; height: 28px; }
+@media (max-width: 700px) {
+  .sn-logo-cell { padding: 2px 4px; }
+  .sn-logo-cell img, .sn-logo-cell .bar-sm-logo-ph { width: 22px; height: 22px; }
+}
 
 /* ── Season summary table extras ────────────────────────────────────── */
 .sn-medal { text-align: center; font-size: 14px; font-weight: 800; }
@@ -370,3 +385,11 @@ main { max-width: var(--max-w); margin: 0 auto; padding: 20px; display: flex; fl
 .sn-bronze { color: var(--bronze); }
 .sn-best   { color: var(--win);  font-weight: 700; }
 .sn-worst  { color: #f85149;     font-weight: 700; }
+
+/* ── Mobile global tightening ───────────────────────────────────────── */
+@media (max-width: 600px) {
+  main  { padding: 10px; }
+  .card { padding: 12px; }
+  #panel-weekly, #panel-season { gap: 10px; }
+  .section-title { margin-bottom: 10px; }
+}

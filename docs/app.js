@@ -207,7 +207,7 @@ function renderStackedBars(wk, catContribs) {
         ${smLogoImg(name)}
         <span title="${name}">${shortName(name)}</span>
       </div>
-      <div class="bar-track" style="max-width:calc(${widPct}% - 200px)">
+      <div class="bar-track" style="--bar-pct:${widPct}%">
         ${segs}
       </div>
       <span class="bar-score">${total.toFixed(0)}</span>
@@ -725,7 +725,7 @@ function renderLeaguePtsChart() {
   const svgH = cb + 25;
   const container = document.getElementById("season-lines-chart");
   container.innerHTML = `<svg viewBox="0 0 ${vW} ${svgH}"
-    xmlns="http://www.w3.org/2000/svg" style="width:100%;min-width:680px;display:block">
+    xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
     <defs>${clipDefs}</defs>
     <text x="${cl + cW / 2}" y="14" text-anchor="middle" font-size="12"
       fill="rgba(255,255,255,0.45)" font-family="sans-serif">
