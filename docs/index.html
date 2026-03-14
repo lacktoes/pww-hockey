@@ -14,7 +14,6 @@
         <span class="brand-icon">🏒</span>
         <span class="brand-name">PWW Hockey</span>
       </div>
-
       <div class="week-nav">
         <button class="nav-btn" id="prev-btn" aria-label="Previous week" disabled>&#8249;</button>
         <div class="week-display">
@@ -23,7 +22,6 @@
         </div>
         <button class="nav-btn" id="next-btn" aria-label="Next week" disabled>&#8250;</button>
       </div>
-
       <div class="header-meta" id="last-updated"></div>
     </div>
   </header>
@@ -33,32 +31,42 @@
       <div class="spinner"></div>
       <p>Loading data…</p>
     </div>
-
     <div id="error" class="error-state" hidden>
       <p>⚠️ Could not load data.json.<br>
-        If you're opening this file directly, run a local server first:<br>
-        <code>python -m http.server 8000</code></p>
+        If opening locally, run: <code>python -m http.server 8000</code></p>
     </div>
 
     <div id="content" hidden>
 
-      <!-- Top row: matchups (left) + leaderboard (right) -->
-      <div class="top-grid">
+      <!-- 1. Podium -->
+      <section class="card podium-card">
+        <h2 class="section-title">Top 3 This Week</h2>
+        <div id="podium-container" class="podium"></div>
+      </section>
 
-        <section class="card" id="matchups-card">
+      <!-- 2. Stacked bars + Matchups -->
+      <div class="bars-matchup-grid">
+        <section class="card">
+          <h2 class="section-title">PWW Score Breakdown</h2>
+          <div id="bars-container"></div>
+          <div id="bars-legend" class="cat-legend"></div>
+        </section>
+        <section class="card">
           <h2 class="section-title">Matchups</h2>
           <div id="matchups-container"></div>
         </section>
-
-        <section class="card" id="leaderboard-card">
-          <h2 class="section-title">PWW Leaderboard</h2>
-          <div id="leaderboard-container"></div>
-        </section>
-
       </div>
 
-      <!-- Bottom: category leaders -->
-      <section class="card" id="leaders-card">
+      <!-- 3. Stats heatmap table -->
+      <section class="card">
+        <h2 class="section-title">Team Stats</h2>
+        <div class="table-wrap">
+          <table id="stats-table" class="stats-table"></table>
+        </div>
+      </section>
+
+      <!-- 4. Category leaders -->
+      <section class="card">
         <h2 class="section-title">Category Leaders</h2>
         <div id="leaders-container" class="leaders-grid"></div>
       </section>
