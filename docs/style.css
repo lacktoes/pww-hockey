@@ -70,6 +70,9 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 /* ── Page layout ───────────────────────────────────────────────────── */
 main { max-width: var(--max-w); margin: 0 auto; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
 
+/* Ensure [hidden] always wins regardless of display rules set below */
+[hidden] { display: none !important; }
+
 /* Panels are flex columns — gives card-to-card gaps and enables CSS ordering on mobile */
 #panel-weekly,
 #panel-season { display: flex; flex-direction: column; gap: 16px; }
