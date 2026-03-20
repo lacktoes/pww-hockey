@@ -106,6 +106,46 @@ def ext_current_week(data):
     return int(_tree(data).execute("$.fantasy_content.league['0'].current_week.value"))
 
 
+# --- direct /team/stats endpoint (works for bye teams) -------------------
+def ext_name_direct(data):
+    """Extract team name from /team/.../stats response."""
+    items = data["fantasy_content"]["team"][0]
+    for item in items:
+        if isinstance(item, dict) and "name" in item:
+            return item["name"]
+    return None
+
+
+def ext_stats_direct(data):
+    """Extract 12 scoring stats from /team/.../stats response."""
+    stats_list = data["fantasy_content"]["team"][1]["team_stats"]["stats"]
+    vals = [float(s["stat"]["value"]) for s in stats_list]
+    del vals[10]   # remove SA -- not a scoring category
+    return vals
+
+
+def ext_logo_direct(data):
+    items = data["fantasy_content"]["team"][0]
+    for item in items:
+        if isinstance(item, dict) and "team_logos" in item:
+            try:
+                return item["team_logos"][0]["team_logo"]["url"]
+            except Exception:
+                pass
+    return None
+
+
+def ext_manager_direct(data):
+    items = data["fantasy_content"]["team"][0]
+    for item in items:
+        if isinstance(item, dict) and "managers" in item:
+            try:
+                return item["managers"][0]["manager"]["nickname"]
+            except Exception:
+                pass
+    return None
+
+
 # --- PWW scoring ---------------------------------------------------------
 def compute_pww(all_stats):
     """Normalised PWW scores (0-1150) across all teams for one week."""
@@ -138,22 +178,46 @@ def fetch_week(league_key, week, current_week, total_teams, headers):
     all_mgrs  = {}   # team_name -> manager nickname
     opp_map   = {}   # team_name -> opponent_name
 
+    # Step 1: fetch stats for every team directly (works for bye teams too)
     for i in range(1, total_teams + 1):
-        url = ("https://fantasysports.yahooapis.com/fantasy/v2"
-               "/team/{}.t.{}/matchups;weeks={}".format(league_key, i, week))
+        stats_url = ("https://fantasysports.yahooapis.com/fantasy/v2"
+                     "/team/{}.t.{}/stats;type=week;week={}".format(league_key, i, week))
         try:
-            data   = api_get(url, headers)
-            t_name = ext_team_name(data, "0")
-            o_name = ext_team_name(data, "1")
-            all_stats[t_name] = ext_team_stats(data, "0")
-            all_logos[t_name] = ext_team_logo(data, "0") or all_logos.get(t_name)
-            all_logos[o_name] = ext_team_logo(data, "1") or all_logos.get(o_name)
-            all_mgrs[t_name]  = ext_manager(data, "0") or all_mgrs.get(t_name)
-            all_mgrs[o_name]  = ext_manager(data, "1") or all_mgrs.get(o_name)
-            opp_map[t_name]   = o_name
+            data   = api_get(stats_url, headers)
+            t_name = ext_name_direct(data)
+            if not t_name:
+                raise ValueError("no team name")
+            all_stats[t_name] = ext_stats_direct(data)
+            logo = ext_logo_direct(data)
+            mgr  = ext_manager_direct(data)
+            if logo:
+                all_logos[t_name] = logo
+            if mgr:
+                all_mgrs[t_name] = mgr
             print(".", end="", flush=True)
         except Exception as exc:
             print("[!t{}]".format(i), end="", flush=True)
+
+    # Step 2: fetch matchup pairings separately (bye teams will have no opponent)
+    for i in range(1, total_teams + 1):
+        matchup_url = ("https://fantasysports.yahooapis.com/fantasy/v2"
+                       "/team/{}.t.{}/matchups;weeks={}".format(league_key, i, week))
+        try:
+            data   = api_get(matchup_url, headers)
+            t_name = ext_team_name(data, "0")
+            o_name = ext_team_name(data, "1")
+            if t_name and o_name and t_name not in opp_map:
+                opp_map[t_name] = o_name
+            # Pick up any logo/manager data for the opponent that we may have missed
+            if o_name:
+                logo = ext_team_logo(data, "1")
+                mgr  = ext_manager(data, "1")
+                if logo:
+                    all_logos.setdefault(o_name, logo)
+                if mgr:
+                    all_mgrs.setdefault(o_name, mgr)
+        except Exception:
+            pass   # bye team -- no matchup, that's fine
 
     print(" {}/{} teams fetched".format(len(all_stats), total_teams))
 
