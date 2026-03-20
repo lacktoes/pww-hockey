@@ -166,10 +166,6 @@ function renderPodium(wk) {
   return order.map(rank => {
     const name   = board[rank];
     const score  = (wk.pww[name] || 0).toFixed(1);
-    const record = appData.standings?.[name];
-    const rec    = record
-      ? record.W + "W – " + record.L + "L" + (record.T ? " – " + record.T + "T" : "")
-      : "";
     const pos = posClass[rank];
 
     return `
@@ -179,7 +175,6 @@ function renderPodium(wk) {
         <div class="podium-medal">${medals[rank]}</div>
         <div class="podium-name" title="${name}">${name}</div>
         <div class="podium-score">${score}</div>
-        ${rec ? `<div class="podium-record">${rec}</div>` : ""}
       </div>
       <div class="podium-block podium-block-${pos}">${rank + 1}</div>
     </div>`;
@@ -300,9 +295,7 @@ function renderMatchups(wk) {
     const win1 = s1 > 6;
     const win2 = s1 < 6;
 
-    const scoreLabel = ties > 0
-      ? `${t1w}–${t2w} <span class="matchup-ties">(${ties}T)</span>`
-      : `${t1w}–${t2w}`;
+    const scoreLabel = `${t1w}–${t2w}`;
 
     const pills = m.cats.map((c, i) => {
       const label = STAT_LABELS[i];
