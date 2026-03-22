@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-03-22T04:25:45.526325+00:00",
+    "last_updated": "2026-03-22T05:56:23.479738+00:00",
     "current_week": 21
   },
   "teams": {
@@ -6859,7 +6859,7 @@
           "t1": "Ball Bag's Bandits",
           "t2": "Don Cherry Lemons",
           "cats": [
-            "1",
+            "T",
             "1",
             "1",
             "2",
@@ -6913,7 +6913,7 @@
       "stats": {
         "MacHawks": {
           "G": 17.0,
-          "A": 26.0,
+          "A": 27.0,
           "PIM": 39.0,
           "PPP": 11.0,
           "SOG": 96.0,
@@ -6954,11 +6954,11 @@
           "SHO": 0.0
         },
         "Don Cherry Lemons": {
-          "G": 17.0,
+          "G": 18.0,
           "A": 19.0,
           "PIM": 12.0,
           "PPP": 14.0,
-          "SOG": 94.0,
+          "SOG": 96.0,
           "FW": 88.0,
           "HIT": 43.0,
           "BLK": 28.0,
@@ -6969,9 +6969,9 @@
         },
         "Jts blacktastics": {
           "G": 5.0,
-          "A": 11.0,
+          "A": 10.0,
           "PIM": 13.0,
-          "PPP": 3.0,
+          "PPP": 2.0,
           "SOG": 65.0,
           "FW": 87.0,
           "HIT": 47.0,
@@ -7028,8 +7028,8 @@
           "A": 22.0,
           "PIM": 20.0,
           "PPP": 7.0,
-          "SOG": 96.0,
-          "FW": 89.0,
+          "SOG": 97.0,
+          "FW": 91.0,
           "HIT": 39.0,
           "BLK": 30.0,
           "W": 2.0,
@@ -7052,16 +7052,16 @@
           "SHO": 0.0
         },
         "The Cougars": {
-          "G": 8.0,
+          "G": 9.0,
           "A": 10.0,
           "PIM": 31.0,
           "PPP": 3.0,
-          "SOG": 70.0,
-          "FW": 159.0,
+          "SOG": 71.0,
+          "FW": 160.0,
           "HIT": 63.0,
           "BLK": 39.0,
-          "W": 5.0,
-          "SV": 135.0,
+          "W": 6.0,
+          "SV": 137.0,
           "SV%": 0.951,
           "SHO": 2.0
         },
@@ -7081,32 +7081,32 @@
         }
       },
       "pww": {
-        "MacHawks": 618.17,
-        "Adam's Assassins": 762.91,
-        "Ball Bag's Bandits": 604.54,
-        "Don Cherry Lemons": 426.22,
-        "Jts blacktastics": 353.24,
-        "Moore Misconduct": 431.01,
-        "slap and tickle": 391.32,
-        "The Beezus Christs": 391.69,
-        "The Jackson 5 Holes": 440.86,
-        "Thumpers \ud83c\udfd2": 509.91,
-        "The Cougars": 676.54,
-        "Hotdog\u2019s Hitters": 708.99
+        "MacHawks": 619.78,
+        "Adam's Assassins": 749.97,
+        "Ball Bag's Bandits": 605.49,
+        "Don Cherry Lemons": 437.65,
+        "Jts blacktastics": 343.35,
+        "Moore Misconduct": 437.1,
+        "slap and tickle": 381.11,
+        "The Beezus Christs": 394.49,
+        "The Jackson 5 Holes": 443.7,
+        "Thumpers \ud83c\udfd2": 500.04,
+        "The Cougars": 695.09,
+        "Hotdog\u2019s Hitters": 698.43
       },
       "deltas": {
-        "MacHawks": 130.25,
-        "Adam's Assassins": 251.09,
-        "Ball Bag's Bandits": 54.19,
-        "Don Cherry Lemons": -120.6,
-        "Jts blacktastics": -65.07,
-        "Moore Misconduct": -213.89,
-        "slap and tickle": -244.85,
-        "The Beezus Christs": -139.27,
-        "The Jackson 5 Holes": -304.3,
-        "Thumpers \ud83c\udfd2": 140.26,
-        "The Cougars": 19.68,
-        "Hotdog\u2019s Hitters": 230.0
+        "MacHawks": 131.86,
+        "Adam's Assassins": 238.15,
+        "Ball Bag's Bandits": 55.14,
+        "Don Cherry Lemons": -109.17,
+        "Jts blacktastics": -74.96,
+        "Moore Misconduct": -207.8,
+        "slap and tickle": -255.06,
+        "The Beezus Christs": -136.47,
+        "The Jackson 5 Holes": -301.46,
+        "Thumpers \ud83c\udfd2": 130.39,
+        "The Cougars": 38.23,
+        "Hotdog\u2019s Hitters": 219.44
       },
       "leaders": {
         "G": "Ball Bag's Bandits",
@@ -7130,8 +7130,8 @@
         "Ball Bag's Bandits",
         "Thumpers \ud83c\udfd2",
         "The Jackson 5 Holes",
-        "Moore Misconduct",
         "Don Cherry Lemons",
+        "Moore Misconduct",
         "The Beezus Christs",
         "slap and tickle",
         "Jts blacktastics"
