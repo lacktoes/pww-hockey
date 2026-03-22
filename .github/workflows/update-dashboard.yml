@@ -2,8 +2,10 @@ name: Update Dashboard Data
 
 on:
   schedule:
-    # Every Monday 05:33 UTC  =  3:33 PM AEST (Brisbane, UTC+10, no DST)
-    - cron: "33 5 * * *"
+    # Hourly 10am–3pm AEST (00:00–05:00 UTC), NHL season only (Oct–Apr)
+    - cron: "0 0,1,2,3,4,5 * 1-4,10-12 *"
+    # Daily catch-up at 06:00 UTC (4pm AEST) for any final scores
+    - cron: "0 6 * 1-4,10-12 *"
   workflow_dispatch:   # allow manual trigger from GitHub Actions tab
 
 permissions:
