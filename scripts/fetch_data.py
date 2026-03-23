@@ -150,22 +150,32 @@ def ext_manager_direct(data):
 
 
 # --- player of the week --------------------------------------------------
+def _league_content(data):
+    """Return the second element of fantasy_content.league (list or dict)."""
+    lg = data["fantasy_content"]["league"]
+    return lg[1] if isinstance(lg, list) else lg.get("1", {})
+
+
 def fetch_stat_ids(league_key, headers):
     """Return {stat_id_str: label} for our 12 scoring categories."""
     try:
         url  = ("https://fantasysports.yahooapis.com/fantasy/v2"
                 "/league/{}/settings".format(league_key))
-        data = api_get(url, headers)
-        cats = (data["fantasy_content"]["league"][1]["settings"][0]
-                ["stat_categories"]["stats"])
+        data    = api_get(url, headers)
+        content = _league_content(data)
+        settings = content.get("settings", [{}])
+        cats = (settings[0] if isinstance(settings, list) else settings
+                ).get("stat_categories", {}).get("stats", [])
         result = {}
         for item in cats:
             s  = item["stat"]
             dn = s.get("display_name", "")
             if dn in STAT_LABELS:
                 result[str(s["stat_id"])] = dn
-        print("  [players] stat ids: {}".format(result))
-        return result
+        if result:
+            print("  [players] stat ids mapped: {}".format(result))
+            return result
+        raise ValueError("no matching stat labels found in settings")
     except Exception as exc:
         print("  [players] stat_id fetch failed ({}); using defaults".format(exc))
         return {
@@ -176,51 +186,74 @@ def fetch_stat_ids(league_key, headers):
 
 
 def fetch_week_players(league_key, week, headers, stat_ids, count=20):
-    """Return top players for the week sorted by Yahoo overall rank."""
+    """Return top players for the week sorted by Yahoo fantasy points."""
+    # sort=PTS = fantasy points scored that week (most reliable weekly sort)
     url = (
         "https://fantasysports.yahooapis.com/fantasy/v2"
         "/league/{league}/players"
-        ";sort=AR;sort_type=week;sort_week={week}"
+        ";sort=PTS;sort_type=week;sort_week={week}"
         ";count={count};out=stats;stats.type=week;stats.week={week}"
     ).format(league=league_key, week=week, count=count)
 
-    data        = api_get(url, headers)
-    players_raw = data["fantasy_content"]["league"][1]["players"]
-    n           = int(players_raw.get("count", 0))
+    try:
+        data = api_get(url, headers)
+    except Exception as exc:
+        print("    [players] API error wk {}: {}".format(week, exc))
+        return []
+
+    try:
+        content     = _league_content(data)
+        players_raw = content.get("players", {})
+        n           = int(players_raw.get("count", 0))
+        print("    [players] wk {} returned {} players".format(week, n))
+    except Exception as exc:
+        print("    [players] parse error wk {}: {} | keys: {}".format(
+            week, exc, list(data.get("fantasy_content", {}).keys())))
+        return []
 
     result = []
     for i in range(n):
         entry = players_raw.get(str(i))
         if not entry:
             continue
-        p      = entry["player"]
-        info   = p[0]
-        pstats = p[1].get("player_stats", {}).get("stats", [])
+        try:
+            p    = entry["player"]
+            info = p[0] if isinstance(p, list) else p.get("0", [])
 
-        name = pos = nhl_team = ""
-        for item in info:
-            if not isinstance(item, dict):
-                continue
-            if "name" in item:
-                name = item["name"].get("full", "")
-            if "display_position" in item:
-                pos = item["display_position"]
-            if "editorial_team_abbr" in item:
-                nhl_team = item["editorial_team_abbr"]
+            # Stats may appear under player_stats or player_points
+            stats_block = {}
+            if isinstance(p, list) and len(p) > 1:
+                stats_block = p[1] if isinstance(p[1], dict) else {}
+            pstats = (stats_block.get("player_stats")
+                      or stats_block.get("player_points")
+                      or {}).get("stats", [])
 
-        stats = {}
-        for s in pstats:
-            sid   = str(s["stat"]["stat_id"])
-            val   = s["stat"].get("value")
-            label = stat_ids.get(sid)
-            if label and val not in (None, "-", ""):
-                try:
-                    stats[label] = float(val)
-                except ValueError:
-                    pass
+            name = pos = nhl_team = ""
+            for item in (info if isinstance(info, list) else []):
+                if not isinstance(item, dict):
+                    continue
+                if "name" in item:
+                    name = item["name"].get("full", "")
+                if "display_position" in item:
+                    pos = item["display_position"]
+                if "editorial_team_abbr" in item:
+                    nhl_team = item["editorial_team_abbr"]
 
-        if name:
-            result.append({"name": name, "pos": pos, "nhl_team": nhl_team, "stats": stats})
+            stats = {}
+            for s in pstats:
+                sid   = str(s["stat"]["stat_id"])
+                val   = s["stat"].get("value")
+                label = stat_ids.get(sid)
+                if label and val not in (None, "-", ""):
+                    try:
+                        stats[label] = float(val)
+                    except ValueError:
+                        pass
+
+            if name:
+                result.append({"name": name, "pos": pos, "nhl_team": nhl_team, "stats": stats})
+        except Exception as exc:
+            print("    [players] player {} parse error wk {}: {}".format(i, week, exc))
 
     return result
 
