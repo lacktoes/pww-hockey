@@ -1,7 +1,7 @@
 {
   "meta": {
-    "last_updated": "2026-03-23T05:06:24.216362+00:00",
-    "current_week": 21
+    "last_updated": "2026-03-23T07:18:16.912024+00:00",
+    "current_week": 22
   },
   "teams": {
     "MacHawks": {
@@ -6835,7 +6835,7 @@
       ]
     },
     "21": {
-      "is_current": true,
+      "is_current": false,
       "matchups": [
         {
           "t1": "Adam's Assassins",
@@ -7146,11 +7146,11 @@
     },
     "Thumpers \ud83c\udfd2": {
       "W": 5,
-      "L": 13,
+      "L": 14,
       "T": 2
     },
     "Adam's Assassins": {
-      "W": 11,
+      "W": 12,
       "L": 8,
       "T": 1
     },
@@ -7161,16 +7161,16 @@
     },
     "Ball Bag's Bandits": {
       "W": 6,
-      "L": 11,
+      "L": 12,
       "T": 3
     },
     "slap and tickle": {
       "W": 10,
-      "L": 7,
+      "L": 8,
       "T": 3
     },
     "Don Cherry Lemons": {
-      "W": 8,
+      "W": 9,
       "L": 8,
       "T": 4
     },
@@ -7185,17 +7185,17 @@
       "T": 2
     },
     "Moore Misconduct": {
-      "W": 12,
+      "W": 13,
       "L": 7,
       "T": 1
     },
     "The Jackson 5 Holes": {
       "W": 11,
-      "L": 4,
+      "L": 5,
       "T": 5
     },
     "Hotdog\u2019s Hitters": {
-      "W": 12,
+      "W": 13,
       "L": 5,
       "T": 3
     }
