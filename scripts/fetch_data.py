@@ -185,32 +185,24 @@ def fetch_stat_ids(league_key, headers):
         }
 
 
-def fetch_week_players(league_key, week, headers, stat_ids, count=20):
-    """Return top players for the week sorted by Yahoo fantasy points."""
-    # sort=PTS = fantasy points scored that week (most reliable weekly sort)
-    url = (
-        "https://fantasysports.yahooapis.com/fantasy/v2"
-        "/league/{league}/players"
-        ";sort=PTS;sort_type=week;sort_week={week}"
-        ";count={count};out=stats;stats.type=week;stats.week={week}"
-    ).format(league=league_key, week=week, count=count)
+def _player_score(stats):
+    """Simple fantasy-point proxy to rank players for Player of the Week."""
+    return (stats.get("G", 0) * 6
+            + stats.get("A", 0) * 4
+            + stats.get("PPP", 0) * 2
+            + stats.get("SOG", 0) * 0.5
+            + stats.get("HIT", 0) * 0.5
+            + stats.get("BLK", 0) * 0.5
+            + stats.get("FW", 0) * 0.1
+            + stats.get("PIM", 0) * 0.5
+            + stats.get("W", 0) * 5
+            + stats.get("SV", 0) * 0.2
+            + stats.get("SHO", 0) * 5)
 
-    try:
-        data = api_get(url, headers)
-    except Exception as exc:
-        print("    [players] API error wk {}: {}".format(week, exc))
-        return []
 
-    try:
-        content     = _league_content(data)
-        players_raw = content.get("players", {})
-        n           = int(players_raw.get("count", 0))
-        print("    [players] wk {} returned {} players".format(week, n))
-    except Exception as exc:
-        print("    [players] parse error wk {}: {} | keys: {}".format(
-            week, exc, list(data.get("fantasy_content", {}).keys())))
-        return []
-
+def _parse_players_block(players_raw, stat_ids):
+    """Parse a Yahoo players dict (keyed '0','1',...,'count') into a list."""
+    n = int(players_raw.get("count", 0))
     result = []
     for i in range(n):
         entry = players_raw.get(str(i))
@@ -220,7 +212,6 @@ def fetch_week_players(league_key, week, headers, stat_ids, count=20):
             p    = entry["player"]
             info = p[0] if isinstance(p, list) else p.get("0", [])
 
-            # Stats may appear under player_stats or player_points
             stats_block = {}
             if isinstance(p, list) and len(p) > 1:
                 stats_block = p[1] if isinstance(p[1], dict) else {}
@@ -253,9 +244,45 @@ def fetch_week_players(league_key, week, headers, stat_ids, count=20):
             if name:
                 result.append({"name": name, "pos": pos, "nhl_team": nhl_team, "stats": stats})
         except Exception as exc:
-            print("    [players] player {} parse error wk {}: {}".format(i, week, exc))
-
+            print("    [players] parse error entry {}: {}".format(i, exc))
     return result
+
+
+def fetch_week_players(league_key, week, headers, stat_ids, total_teams=12, count=20):
+    """Return top players for the week by fetching each team's roster stats."""
+    all_players = []
+    seen_names  = set()
+
+    for team_num in range(1, total_teams + 1):
+        url = (
+            "https://fantasysports.yahooapis.com/fantasy/v2"
+            "/team/{league}.t.{team}/roster/players"
+            ";out=stats;stats.type=week;stats.week={week}"
+        ).format(league=league_key, team=team_num, week=week)
+        try:
+            data = api_get(url, headers)
+        except Exception as exc:
+            print("    [players] t{} API error wk {}: {}".format(team_num, week, exc))
+            continue
+
+        try:
+            team_data    = data["fantasy_content"]["team"]
+            roster_block = (team_data[1] if isinstance(team_data, list) else
+                            team_data.get("1", {}))
+            players_raw  = roster_block.get("roster", {}).get("players", {})
+            players      = _parse_players_block(players_raw, stat_ids)
+            for p in players:
+                if p["name"] not in seen_names:
+                    seen_names.add(p["name"])
+                    all_players.append(p)
+            print(".", end="", flush=True)
+        except Exception as exc:
+            print("    [players] t{} parse error wk {}: {}".format(team_num, week, exc))
+
+    print(" {} total players wk {}".format(len(all_players), week))
+
+    all_players.sort(key=lambda p: _player_score(p["stats"]), reverse=True)
+    return all_players[:count]
 
 
 # --- PWW scoring ---------------------------------------------------------
@@ -471,7 +498,7 @@ def main():
             print("  Week {:2d}: players cached".format(week))
             continue
         try:
-            players = fetch_week_players(league_key, week, headers, stat_ids)
+            players = fetch_week_players(league_key, week, headers, stat_ids, total_teams)
             if players:
                 weeks_data[wk]["players"] = players
                 print("  Week {:2d}: {} players fetched".format(week, len(players)))
