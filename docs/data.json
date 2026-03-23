@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-03-23T12:04:49.306186+00:00",
+    "last_updated": "2026-03-23T21:09:51.948634+00:00",
     "current_week": 21
   },
   "teams": {
@@ -391,148 +391,6 @@
         "The Jackson 5 Holes",
         "Jts blacktastics",
         "Don Cherry Lemons"
-      ],
-      "players": [
-        {
-          "name": "Ridly Greig",
-          "pos": "C,LW,RW",
-          "nhl_team": "OTT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Quinton Byfield",
-          "pos": "C,LW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Connor Bedard",
-          "pos": "C,RW",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Matthew Knies",
-          "pos": "LW",
-          "nhl_team": "TOR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Brandon Hagel",
-          "pos": "LW,RW",
-          "nhl_team": "TB",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexis Lafreniere",
-          "pos": "LW,RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Charlie Coyle",
-          "pos": "C,RW",
-          "nhl_team": "CBJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Gabe Perreault",
-          "pos": "RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Adrian Kempe",
-          "pos": "RW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Rasmus Dahlin",
-          "pos": "D",
-          "nhl_team": "BUF",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Moritz Seider",
-          "pos": "D",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Erik Karlsson",
-          "pos": "D",
-          "nhl_team": "PIT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Kaiden Guhle",
-          "pos": "D",
-          "nhl_team": "MTL",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Braden Schneider",
-          "pos": "D",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Bo Horvat",
-          "pos": "C",
-          "nhl_team": "NYI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Karel Vejmelka",
-          "pos": "G",
-          "nhl_team": "UTA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Spencer Knight",
-          "pos": "G",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Dylan Larkin",
-          "pos": "C",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexander Wennberg",
-          "pos": "C",
-          "nhl_team": "SJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Anton Lundell",
-          "pos": "C",
-          "nhl_team": "FLA",
-          "stats": {},
-          "contribution": 0.0
-        }
       ]
     },
     "2": {
@@ -872,148 +730,6 @@
         "Jts blacktastics",
         "Hotdog\u2019s Hitters",
         "The Beezus Christs"
-      ],
-      "players": [
-        {
-          "name": "Ridly Greig",
-          "pos": "C,LW,RW",
-          "nhl_team": "OTT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Quinton Byfield",
-          "pos": "C,LW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Connor Bedard",
-          "pos": "C,RW",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Matthew Knies",
-          "pos": "LW",
-          "nhl_team": "TOR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Brandon Hagel",
-          "pos": "LW,RW",
-          "nhl_team": "TB",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexis Lafreniere",
-          "pos": "LW,RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Charlie Coyle",
-          "pos": "C,RW",
-          "nhl_team": "CBJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Gabe Perreault",
-          "pos": "RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Adrian Kempe",
-          "pos": "RW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Rasmus Dahlin",
-          "pos": "D",
-          "nhl_team": "BUF",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Moritz Seider",
-          "pos": "D",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Erik Karlsson",
-          "pos": "D",
-          "nhl_team": "PIT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Kaiden Guhle",
-          "pos": "D",
-          "nhl_team": "MTL",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Braden Schneider",
-          "pos": "D",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Bo Horvat",
-          "pos": "C",
-          "nhl_team": "NYI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Karel Vejmelka",
-          "pos": "G",
-          "nhl_team": "UTA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Spencer Knight",
-          "pos": "G",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Dylan Larkin",
-          "pos": "C",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexander Wennberg",
-          "pos": "C",
-          "nhl_team": "SJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Anton Lundell",
-          "pos": "C",
-          "nhl_team": "FLA",
-          "stats": {},
-          "contribution": 0.0
-        }
       ]
     },
     "3": {
@@ -1353,148 +1069,6 @@
         "slap and tickle",
         "Jts blacktastics",
         "Thumpers \ud83c\udfd2"
-      ],
-      "players": [
-        {
-          "name": "Ridly Greig",
-          "pos": "C,LW,RW",
-          "nhl_team": "OTT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Quinton Byfield",
-          "pos": "C,LW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Connor Bedard",
-          "pos": "C,RW",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Matthew Knies",
-          "pos": "LW",
-          "nhl_team": "TOR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Brandon Hagel",
-          "pos": "LW,RW",
-          "nhl_team": "TB",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexis Lafreniere",
-          "pos": "LW,RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Charlie Coyle",
-          "pos": "C,RW",
-          "nhl_team": "CBJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Gabe Perreault",
-          "pos": "RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Adrian Kempe",
-          "pos": "RW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Rasmus Dahlin",
-          "pos": "D",
-          "nhl_team": "BUF",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Moritz Seider",
-          "pos": "D",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Erik Karlsson",
-          "pos": "D",
-          "nhl_team": "PIT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Kaiden Guhle",
-          "pos": "D",
-          "nhl_team": "MTL",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Braden Schneider",
-          "pos": "D",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Bo Horvat",
-          "pos": "C",
-          "nhl_team": "NYI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Karel Vejmelka",
-          "pos": "G",
-          "nhl_team": "UTA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Spencer Knight",
-          "pos": "G",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Dylan Larkin",
-          "pos": "C",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexander Wennberg",
-          "pos": "C",
-          "nhl_team": "SJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Anton Lundell",
-          "pos": "C",
-          "nhl_team": "FLA",
-          "stats": {},
-          "contribution": 0.0
-        }
       ]
     },
     "4": {
@@ -1834,148 +1408,6 @@
         "Don Cherry Lemons",
         "The Beezus Christs",
         "slap and tickle"
-      ],
-      "players": [
-        {
-          "name": "Ridly Greig",
-          "pos": "C,LW,RW",
-          "nhl_team": "OTT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Quinton Byfield",
-          "pos": "C,LW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Connor Bedard",
-          "pos": "C,RW",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Matthew Knies",
-          "pos": "LW",
-          "nhl_team": "TOR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Brandon Hagel",
-          "pos": "LW,RW",
-          "nhl_team": "TB",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexis Lafreniere",
-          "pos": "LW,RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Charlie Coyle",
-          "pos": "C,RW",
-          "nhl_team": "CBJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Gabe Perreault",
-          "pos": "RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Adrian Kempe",
-          "pos": "RW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Rasmus Dahlin",
-          "pos": "D",
-          "nhl_team": "BUF",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Moritz Seider",
-          "pos": "D",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Erik Karlsson",
-          "pos": "D",
-          "nhl_team": "PIT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Kaiden Guhle",
-          "pos": "D",
-          "nhl_team": "MTL",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Braden Schneider",
-          "pos": "D",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Bo Horvat",
-          "pos": "C",
-          "nhl_team": "NYI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Karel Vejmelka",
-          "pos": "G",
-          "nhl_team": "UTA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Spencer Knight",
-          "pos": "G",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Dylan Larkin",
-          "pos": "C",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexander Wennberg",
-          "pos": "C",
-          "nhl_team": "SJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Anton Lundell",
-          "pos": "C",
-          "nhl_team": "FLA",
-          "stats": {},
-          "contribution": 0.0
-        }
       ]
     },
     "5": {
@@ -2315,148 +1747,6 @@
         "slap and tickle",
         "Jts blacktastics",
         "The Beezus Christs"
-      ],
-      "players": [
-        {
-          "name": "Ridly Greig",
-          "pos": "C,LW,RW",
-          "nhl_team": "OTT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Quinton Byfield",
-          "pos": "C,LW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Connor Bedard",
-          "pos": "C,RW",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Matthew Knies",
-          "pos": "LW",
-          "nhl_team": "TOR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Brandon Hagel",
-          "pos": "LW,RW",
-          "nhl_team": "TB",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexis Lafreniere",
-          "pos": "LW,RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Charlie Coyle",
-          "pos": "C,RW",
-          "nhl_team": "CBJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Gabe Perreault",
-          "pos": "RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Adrian Kempe",
-          "pos": "RW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Rasmus Dahlin",
-          "pos": "D",
-          "nhl_team": "BUF",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Moritz Seider",
-          "pos": "D",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Erik Karlsson",
-          "pos": "D",
-          "nhl_team": "PIT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Kaiden Guhle",
-          "pos": "D",
-          "nhl_team": "MTL",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Braden Schneider",
-          "pos": "D",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Bo Horvat",
-          "pos": "C",
-          "nhl_team": "NYI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Karel Vejmelka",
-          "pos": "G",
-          "nhl_team": "UTA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Spencer Knight",
-          "pos": "G",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Dylan Larkin",
-          "pos": "C",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexander Wennberg",
-          "pos": "C",
-          "nhl_team": "SJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Anton Lundell",
-          "pos": "C",
-          "nhl_team": "FLA",
-          "stats": {},
-          "contribution": 0.0
-        }
       ]
     },
     "6": {
@@ -2796,148 +2086,6 @@
         "The Beezus Christs",
         "Thumpers \ud83c\udfd2",
         "Jts blacktastics"
-      ],
-      "players": [
-        {
-          "name": "Ridly Greig",
-          "pos": "C,LW,RW",
-          "nhl_team": "OTT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Quinton Byfield",
-          "pos": "C,LW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Connor Bedard",
-          "pos": "C,RW",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Matthew Knies",
-          "pos": "LW",
-          "nhl_team": "TOR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Brandon Hagel",
-          "pos": "LW,RW",
-          "nhl_team": "TB",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexis Lafreniere",
-          "pos": "LW,RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Charlie Coyle",
-          "pos": "C,RW",
-          "nhl_team": "CBJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Gabe Perreault",
-          "pos": "RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Adrian Kempe",
-          "pos": "RW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Rasmus Dahlin",
-          "pos": "D",
-          "nhl_team": "BUF",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Moritz Seider",
-          "pos": "D",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Erik Karlsson",
-          "pos": "D",
-          "nhl_team": "PIT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Kaiden Guhle",
-          "pos": "D",
-          "nhl_team": "MTL",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Braden Schneider",
-          "pos": "D",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Bo Horvat",
-          "pos": "C",
-          "nhl_team": "NYI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Karel Vejmelka",
-          "pos": "G",
-          "nhl_team": "UTA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Spencer Knight",
-          "pos": "G",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Dylan Larkin",
-          "pos": "C",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexander Wennberg",
-          "pos": "C",
-          "nhl_team": "SJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Anton Lundell",
-          "pos": "C",
-          "nhl_team": "FLA",
-          "stats": {},
-          "contribution": 0.0
-        }
       ]
     },
     "7": {
@@ -3277,148 +2425,6 @@
         "The Jackson 5 Holes",
         "Don Cherry Lemons",
         "The Beezus Christs"
-      ],
-      "players": [
-        {
-          "name": "Ridly Greig",
-          "pos": "C,LW,RW",
-          "nhl_team": "OTT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Quinton Byfield",
-          "pos": "C,LW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Connor Bedard",
-          "pos": "C,RW",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Matthew Knies",
-          "pos": "LW",
-          "nhl_team": "TOR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Brandon Hagel",
-          "pos": "LW,RW",
-          "nhl_team": "TB",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexis Lafreniere",
-          "pos": "LW,RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Charlie Coyle",
-          "pos": "C,RW",
-          "nhl_team": "CBJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Gabe Perreault",
-          "pos": "RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Adrian Kempe",
-          "pos": "RW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Rasmus Dahlin",
-          "pos": "D",
-          "nhl_team": "BUF",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Moritz Seider",
-          "pos": "D",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Erik Karlsson",
-          "pos": "D",
-          "nhl_team": "PIT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Kaiden Guhle",
-          "pos": "D",
-          "nhl_team": "MTL",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Braden Schneider",
-          "pos": "D",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Bo Horvat",
-          "pos": "C",
-          "nhl_team": "NYI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Karel Vejmelka",
-          "pos": "G",
-          "nhl_team": "UTA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Spencer Knight",
-          "pos": "G",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Dylan Larkin",
-          "pos": "C",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexander Wennberg",
-          "pos": "C",
-          "nhl_team": "SJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Anton Lundell",
-          "pos": "C",
-          "nhl_team": "FLA",
-          "stats": {},
-          "contribution": 0.0
-        }
       ]
     },
     "8": {
@@ -3758,148 +2764,6 @@
         "Don Cherry Lemons",
         "Jts blacktastics",
         "Ball Bag's Bandits"
-      ],
-      "players": [
-        {
-          "name": "Ridly Greig",
-          "pos": "C,LW,RW",
-          "nhl_team": "OTT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Quinton Byfield",
-          "pos": "C,LW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Connor Bedard",
-          "pos": "C,RW",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Matthew Knies",
-          "pos": "LW",
-          "nhl_team": "TOR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Brandon Hagel",
-          "pos": "LW,RW",
-          "nhl_team": "TB",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexis Lafreniere",
-          "pos": "LW,RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Charlie Coyle",
-          "pos": "C,RW",
-          "nhl_team": "CBJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Gabe Perreault",
-          "pos": "RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Adrian Kempe",
-          "pos": "RW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Rasmus Dahlin",
-          "pos": "D",
-          "nhl_team": "BUF",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Moritz Seider",
-          "pos": "D",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Erik Karlsson",
-          "pos": "D",
-          "nhl_team": "PIT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Kaiden Guhle",
-          "pos": "D",
-          "nhl_team": "MTL",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Braden Schneider",
-          "pos": "D",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Bo Horvat",
-          "pos": "C",
-          "nhl_team": "NYI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Karel Vejmelka",
-          "pos": "G",
-          "nhl_team": "UTA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Spencer Knight",
-          "pos": "G",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Dylan Larkin",
-          "pos": "C",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexander Wennberg",
-          "pos": "C",
-          "nhl_team": "SJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Anton Lundell",
-          "pos": "C",
-          "nhl_team": "FLA",
-          "stats": {},
-          "contribution": 0.0
-        }
       ]
     },
     "9": {
@@ -4239,148 +3103,6 @@
         "Jts blacktastics",
         "The Cougars",
         "Ball Bag's Bandits"
-      ],
-      "players": [
-        {
-          "name": "Ridly Greig",
-          "pos": "C,LW,RW",
-          "nhl_team": "OTT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Quinton Byfield",
-          "pos": "C,LW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Connor Bedard",
-          "pos": "C,RW",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Matthew Knies",
-          "pos": "LW",
-          "nhl_team": "TOR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Brandon Hagel",
-          "pos": "LW,RW",
-          "nhl_team": "TB",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexis Lafreniere",
-          "pos": "LW,RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Charlie Coyle",
-          "pos": "C,RW",
-          "nhl_team": "CBJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Gabe Perreault",
-          "pos": "RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Adrian Kempe",
-          "pos": "RW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Rasmus Dahlin",
-          "pos": "D",
-          "nhl_team": "BUF",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Moritz Seider",
-          "pos": "D",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Erik Karlsson",
-          "pos": "D",
-          "nhl_team": "PIT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Kaiden Guhle",
-          "pos": "D",
-          "nhl_team": "MTL",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Braden Schneider",
-          "pos": "D",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Bo Horvat",
-          "pos": "C",
-          "nhl_team": "NYI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Karel Vejmelka",
-          "pos": "G",
-          "nhl_team": "UTA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Spencer Knight",
-          "pos": "G",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Dylan Larkin",
-          "pos": "C",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexander Wennberg",
-          "pos": "C",
-          "nhl_team": "SJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Anton Lundell",
-          "pos": "C",
-          "nhl_team": "FLA",
-          "stats": {},
-          "contribution": 0.0
-        }
       ]
     },
     "10": {
@@ -4720,148 +3442,6 @@
         "slap and tickle",
         "Ball Bag's Bandits",
         "The Beezus Christs"
-      ],
-      "players": [
-        {
-          "name": "Ridly Greig",
-          "pos": "C,LW,RW",
-          "nhl_team": "OTT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Quinton Byfield",
-          "pos": "C,LW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Connor Bedard",
-          "pos": "C,RW",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Matthew Knies",
-          "pos": "LW",
-          "nhl_team": "TOR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Brandon Hagel",
-          "pos": "LW,RW",
-          "nhl_team": "TB",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexis Lafreniere",
-          "pos": "LW,RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Charlie Coyle",
-          "pos": "C,RW",
-          "nhl_team": "CBJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Gabe Perreault",
-          "pos": "RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Adrian Kempe",
-          "pos": "RW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Rasmus Dahlin",
-          "pos": "D",
-          "nhl_team": "BUF",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Moritz Seider",
-          "pos": "D",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Erik Karlsson",
-          "pos": "D",
-          "nhl_team": "PIT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Kaiden Guhle",
-          "pos": "D",
-          "nhl_team": "MTL",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Braden Schneider",
-          "pos": "D",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Bo Horvat",
-          "pos": "C",
-          "nhl_team": "NYI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Karel Vejmelka",
-          "pos": "G",
-          "nhl_team": "UTA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Spencer Knight",
-          "pos": "G",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Dylan Larkin",
-          "pos": "C",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexander Wennberg",
-          "pos": "C",
-          "nhl_team": "SJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Anton Lundell",
-          "pos": "C",
-          "nhl_team": "FLA",
-          "stats": {},
-          "contribution": 0.0
-        }
       ]
     },
     "11": {
@@ -5201,148 +3781,6 @@
         "Jts blacktastics",
         "Don Cherry Lemons",
         "The Beezus Christs"
-      ],
-      "players": [
-        {
-          "name": "Ridly Greig",
-          "pos": "C,LW,RW",
-          "nhl_team": "OTT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Quinton Byfield",
-          "pos": "C,LW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Connor Bedard",
-          "pos": "C,RW",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Matthew Knies",
-          "pos": "LW",
-          "nhl_team": "TOR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Brandon Hagel",
-          "pos": "LW,RW",
-          "nhl_team": "TB",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexis Lafreniere",
-          "pos": "LW,RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Charlie Coyle",
-          "pos": "C,RW",
-          "nhl_team": "CBJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Gabe Perreault",
-          "pos": "RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Adrian Kempe",
-          "pos": "RW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Rasmus Dahlin",
-          "pos": "D",
-          "nhl_team": "BUF",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Moritz Seider",
-          "pos": "D",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Erik Karlsson",
-          "pos": "D",
-          "nhl_team": "PIT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Kaiden Guhle",
-          "pos": "D",
-          "nhl_team": "MTL",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Braden Schneider",
-          "pos": "D",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Bo Horvat",
-          "pos": "C",
-          "nhl_team": "NYI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Karel Vejmelka",
-          "pos": "G",
-          "nhl_team": "UTA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Spencer Knight",
-          "pos": "G",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Dylan Larkin",
-          "pos": "C",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexander Wennberg",
-          "pos": "C",
-          "nhl_team": "SJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Anton Lundell",
-          "pos": "C",
-          "nhl_team": "FLA",
-          "stats": {},
-          "contribution": 0.0
-        }
       ]
     },
     "12": {
@@ -5682,148 +4120,6 @@
         "Jts blacktastics",
         "Moore Misconduct",
         "Ball Bag's Bandits"
-      ],
-      "players": [
-        {
-          "name": "Ridly Greig",
-          "pos": "C,LW,RW",
-          "nhl_team": "OTT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Quinton Byfield",
-          "pos": "C,LW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Connor Bedard",
-          "pos": "C,RW",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Matthew Knies",
-          "pos": "LW",
-          "nhl_team": "TOR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Brandon Hagel",
-          "pos": "LW,RW",
-          "nhl_team": "TB",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexis Lafreniere",
-          "pos": "LW,RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Charlie Coyle",
-          "pos": "C,RW",
-          "nhl_team": "CBJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Gabe Perreault",
-          "pos": "RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Adrian Kempe",
-          "pos": "RW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Rasmus Dahlin",
-          "pos": "D",
-          "nhl_team": "BUF",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Moritz Seider",
-          "pos": "D",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Erik Karlsson",
-          "pos": "D",
-          "nhl_team": "PIT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Kaiden Guhle",
-          "pos": "D",
-          "nhl_team": "MTL",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Braden Schneider",
-          "pos": "D",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Bo Horvat",
-          "pos": "C",
-          "nhl_team": "NYI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Karel Vejmelka",
-          "pos": "G",
-          "nhl_team": "UTA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Spencer Knight",
-          "pos": "G",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Dylan Larkin",
-          "pos": "C",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexander Wennberg",
-          "pos": "C",
-          "nhl_team": "SJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Anton Lundell",
-          "pos": "C",
-          "nhl_team": "FLA",
-          "stats": {},
-          "contribution": 0.0
-        }
       ]
     },
     "13": {
@@ -6163,148 +4459,6 @@
         "Thumpers \ud83c\udfd2",
         "Jts blacktastics",
         "Moore Misconduct"
-      ],
-      "players": [
-        {
-          "name": "Ridly Greig",
-          "pos": "C,LW,RW",
-          "nhl_team": "OTT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Quinton Byfield",
-          "pos": "C,LW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Connor Bedard",
-          "pos": "C,RW",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Matthew Knies",
-          "pos": "LW",
-          "nhl_team": "TOR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Brandon Hagel",
-          "pos": "LW,RW",
-          "nhl_team": "TB",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexis Lafreniere",
-          "pos": "LW,RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Charlie Coyle",
-          "pos": "C,RW",
-          "nhl_team": "CBJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Gabe Perreault",
-          "pos": "RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Adrian Kempe",
-          "pos": "RW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Rasmus Dahlin",
-          "pos": "D",
-          "nhl_team": "BUF",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Moritz Seider",
-          "pos": "D",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Erik Karlsson",
-          "pos": "D",
-          "nhl_team": "PIT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Kaiden Guhle",
-          "pos": "D",
-          "nhl_team": "MTL",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Braden Schneider",
-          "pos": "D",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Bo Horvat",
-          "pos": "C",
-          "nhl_team": "NYI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Karel Vejmelka",
-          "pos": "G",
-          "nhl_team": "UTA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Spencer Knight",
-          "pos": "G",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Dylan Larkin",
-          "pos": "C",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexander Wennberg",
-          "pos": "C",
-          "nhl_team": "SJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Anton Lundell",
-          "pos": "C",
-          "nhl_team": "FLA",
-          "stats": {},
-          "contribution": 0.0
-        }
       ]
     },
     "14": {
@@ -6644,148 +4798,6 @@
         "Adam's Assassins",
         "Ball Bag's Bandits",
         "The Beezus Christs"
-      ],
-      "players": [
-        {
-          "name": "Ridly Greig",
-          "pos": "C,LW,RW",
-          "nhl_team": "OTT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Quinton Byfield",
-          "pos": "C,LW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Connor Bedard",
-          "pos": "C,RW",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Matthew Knies",
-          "pos": "LW",
-          "nhl_team": "TOR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Brandon Hagel",
-          "pos": "LW,RW",
-          "nhl_team": "TB",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexis Lafreniere",
-          "pos": "LW,RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Charlie Coyle",
-          "pos": "C,RW",
-          "nhl_team": "CBJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Gabe Perreault",
-          "pos": "RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Adrian Kempe",
-          "pos": "RW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Rasmus Dahlin",
-          "pos": "D",
-          "nhl_team": "BUF",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Moritz Seider",
-          "pos": "D",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Erik Karlsson",
-          "pos": "D",
-          "nhl_team": "PIT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Kaiden Guhle",
-          "pos": "D",
-          "nhl_team": "MTL",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Braden Schneider",
-          "pos": "D",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Bo Horvat",
-          "pos": "C",
-          "nhl_team": "NYI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Karel Vejmelka",
-          "pos": "G",
-          "nhl_team": "UTA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Spencer Knight",
-          "pos": "G",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Dylan Larkin",
-          "pos": "C",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexander Wennberg",
-          "pos": "C",
-          "nhl_team": "SJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Anton Lundell",
-          "pos": "C",
-          "nhl_team": "FLA",
-          "stats": {},
-          "contribution": 0.0
-        }
       ]
     },
     "15": {
@@ -7125,148 +5137,6 @@
         "Jts blacktastics",
         "Moore Misconduct",
         "The Beezus Christs"
-      ],
-      "players": [
-        {
-          "name": "Ridly Greig",
-          "pos": "C,LW,RW",
-          "nhl_team": "OTT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Quinton Byfield",
-          "pos": "C,LW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Connor Bedard",
-          "pos": "C,RW",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Matthew Knies",
-          "pos": "LW",
-          "nhl_team": "TOR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Brandon Hagel",
-          "pos": "LW,RW",
-          "nhl_team": "TB",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexis Lafreniere",
-          "pos": "LW,RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Charlie Coyle",
-          "pos": "C,RW",
-          "nhl_team": "CBJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Gabe Perreault",
-          "pos": "RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Adrian Kempe",
-          "pos": "RW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Rasmus Dahlin",
-          "pos": "D",
-          "nhl_team": "BUF",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Moritz Seider",
-          "pos": "D",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Erik Karlsson",
-          "pos": "D",
-          "nhl_team": "PIT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Kaiden Guhle",
-          "pos": "D",
-          "nhl_team": "MTL",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Braden Schneider",
-          "pos": "D",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Bo Horvat",
-          "pos": "C",
-          "nhl_team": "NYI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Karel Vejmelka",
-          "pos": "G",
-          "nhl_team": "UTA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Spencer Knight",
-          "pos": "G",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Dylan Larkin",
-          "pos": "C",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexander Wennberg",
-          "pos": "C",
-          "nhl_team": "SJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Anton Lundell",
-          "pos": "C",
-          "nhl_team": "FLA",
-          "stats": {},
-          "contribution": 0.0
-        }
       ]
     },
     "16": {
@@ -7606,148 +5476,6 @@
         "Jts blacktastics",
         "Moore Misconduct",
         "The Beezus Christs"
-      ],
-      "players": [
-        {
-          "name": "Ridly Greig",
-          "pos": "C,LW,RW",
-          "nhl_team": "OTT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Quinton Byfield",
-          "pos": "C,LW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Connor Bedard",
-          "pos": "C,RW",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Matthew Knies",
-          "pos": "LW",
-          "nhl_team": "TOR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Brandon Hagel",
-          "pos": "LW,RW",
-          "nhl_team": "TB",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexis Lafreniere",
-          "pos": "LW,RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Charlie Coyle",
-          "pos": "C,RW",
-          "nhl_team": "CBJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Gabe Perreault",
-          "pos": "RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Adrian Kempe",
-          "pos": "RW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Rasmus Dahlin",
-          "pos": "D",
-          "nhl_team": "BUF",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Moritz Seider",
-          "pos": "D",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Erik Karlsson",
-          "pos": "D",
-          "nhl_team": "PIT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Kaiden Guhle",
-          "pos": "D",
-          "nhl_team": "MTL",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Braden Schneider",
-          "pos": "D",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Bo Horvat",
-          "pos": "C",
-          "nhl_team": "NYI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Karel Vejmelka",
-          "pos": "G",
-          "nhl_team": "UTA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Spencer Knight",
-          "pos": "G",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Dylan Larkin",
-          "pos": "C",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexander Wennberg",
-          "pos": "C",
-          "nhl_team": "SJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Anton Lundell",
-          "pos": "C",
-          "nhl_team": "FLA",
-          "stats": {},
-          "contribution": 0.0
-        }
       ]
     },
     "17": {
@@ -8087,148 +5815,6 @@
         "Hotdog\u2019s Hitters",
         "The Beezus Christs",
         "Jts blacktastics"
-      ],
-      "players": [
-        {
-          "name": "Ridly Greig",
-          "pos": "C,LW,RW",
-          "nhl_team": "OTT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Quinton Byfield",
-          "pos": "C,LW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Connor Bedard",
-          "pos": "C,RW",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Matthew Knies",
-          "pos": "LW",
-          "nhl_team": "TOR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Brandon Hagel",
-          "pos": "LW,RW",
-          "nhl_team": "TB",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexis Lafreniere",
-          "pos": "LW,RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Charlie Coyle",
-          "pos": "C,RW",
-          "nhl_team": "CBJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Gabe Perreault",
-          "pos": "RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Adrian Kempe",
-          "pos": "RW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Rasmus Dahlin",
-          "pos": "D",
-          "nhl_team": "BUF",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Moritz Seider",
-          "pos": "D",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Erik Karlsson",
-          "pos": "D",
-          "nhl_team": "PIT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Kaiden Guhle",
-          "pos": "D",
-          "nhl_team": "MTL",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Braden Schneider",
-          "pos": "D",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Bo Horvat",
-          "pos": "C",
-          "nhl_team": "NYI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Karel Vejmelka",
-          "pos": "G",
-          "nhl_team": "UTA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Spencer Knight",
-          "pos": "G",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Dylan Larkin",
-          "pos": "C",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexander Wennberg",
-          "pos": "C",
-          "nhl_team": "SJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Anton Lundell",
-          "pos": "C",
-          "nhl_team": "FLA",
-          "stats": {},
-          "contribution": 0.0
-        }
       ]
     },
     "18": {
@@ -8568,148 +6154,6 @@
         "Ball Bag's Bandits",
         "Jts blacktastics",
         "The Beezus Christs"
-      ],
-      "players": [
-        {
-          "name": "Ridly Greig",
-          "pos": "C,LW,RW",
-          "nhl_team": "OTT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Quinton Byfield",
-          "pos": "C,LW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Connor Bedard",
-          "pos": "C,RW",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Matthew Knies",
-          "pos": "LW",
-          "nhl_team": "TOR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Brandon Hagel",
-          "pos": "LW,RW",
-          "nhl_team": "TB",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexis Lafreniere",
-          "pos": "LW,RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Charlie Coyle",
-          "pos": "C,RW",
-          "nhl_team": "CBJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Gabe Perreault",
-          "pos": "RW",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Adrian Kempe",
-          "pos": "RW",
-          "nhl_team": "LA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Rasmus Dahlin",
-          "pos": "D",
-          "nhl_team": "BUF",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Moritz Seider",
-          "pos": "D",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Erik Karlsson",
-          "pos": "D",
-          "nhl_team": "PIT",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Kaiden Guhle",
-          "pos": "D",
-          "nhl_team": "MTL",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Braden Schneider",
-          "pos": "D",
-          "nhl_team": "NYR",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Bo Horvat",
-          "pos": "C",
-          "nhl_team": "NYI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Karel Vejmelka",
-          "pos": "G",
-          "nhl_team": "UTA",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Spencer Knight",
-          "pos": "G",
-          "nhl_team": "CHI",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Dylan Larkin",
-          "pos": "C",
-          "nhl_team": "DET",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Alexander Wennberg",
-          "pos": "C",
-          "nhl_team": "SJ",
-          "stats": {},
-          "contribution": 0.0
-        },
-        {
-          "name": "Anton Lundell",
-          "pos": "C",
-          "nhl_team": "FLA",
-          "stats": {},
-          "contribution": 0.0
-        }
       ]
     },
     "19": {
@@ -9055,140 +6499,180 @@
           "name": "Ridly Greig",
           "pos": "C,LW,RW",
           "nhl_team": "OTT",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/0r6g7p_dp3AZrtodtMdglw--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10162024/8668.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Quinton Byfield",
           "pos": "C,LW",
           "nhl_team": "LA",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/NL8pqwGF1nxIDhYy7e_MSQ--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10142025/8642.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Connor Bedard",
           "pos": "C,RW",
           "nhl_team": "CHI",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/7L_rsgu8nuss4FOKdvtEKg--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10082025/30544.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Matthew Knies",
           "pos": "LW",
           "nhl_team": "TOR",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/uCYGU_UMYp8.pgSJEnDh5A--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10272025/30227.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Brandon Hagel",
           "pos": "LW,RW",
           "nhl_team": "TB",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/6YFSGIdw.KlTPbxpSwYEOg--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10242025/7264.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Alexis Lafreniere",
           "pos": "LW,RW",
           "nhl_team": "NYR",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/cw2KL1H9eRlxKfthyKl3dQ--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10172025/8641.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Charlie Coyle",
           "pos": "C,RW",
           "nhl_team": "CBJ",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/00qBnG97XxHFf1fT2ruSeQ--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10092025/4988.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Gabe Perreault",
           "pos": "RW",
           "nhl_team": "NYR",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/BGptzRB4..zq2J45bE6_Eg--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10172025/30574.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Adrian Kempe",
           "pos": "RW",
           "nhl_team": "LA",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/CZBLZpQmAlQkHL5xwnhEHQ--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10142025/6395.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Rasmus Dahlin",
           "pos": "D",
           "nhl_team": "BUF",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/P2CRQXCLL_CT.ztobVJu1g--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10092025/7899.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Moritz Seider",
           "pos": "D",
           "nhl_team": "DET",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/EeKJQjk1Dj7rflrOdIkVYA--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10102025/8284.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Erik Karlsson",
           "pos": "D",
           "nhl_team": "PIT",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/Qi1wgoUdN9ivr1.XvThAtg--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10212025/4491.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Kaiden Guhle",
           "pos": "D",
           "nhl_team": "MTL",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/VONwiWY90ghRFzJaYNs2.Q--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10152025/8656.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Braden Schneider",
           "pos": "D",
           "nhl_team": "NYR",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/VmgS2Yo1as2iX6k_w_4kqg--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10172025/8659.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Bo Horvat",
           "pos": "C",
           "nhl_team": "NYI",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/WTBaHSsQzKIOSG7DhTD26Q--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10162025/5988.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Karel Vejmelka",
           "pos": "G",
           "nhl_team": "UTA",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/RQKgEQrEfmM8uz3TMDYiNA--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/11252025/6887.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Spencer Knight",
           "pos": "G",
           "nhl_team": "CHI",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/_wmltARiUtaoXp47fm3ccg--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10082025/8291.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Dylan Larkin",
           "pos": "C",
           "nhl_team": "DET",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/5c420jADlfWMDSFD81DYpQ--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10102025/6381.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Alexander Wennberg",
           "pos": "C",
           "nhl_team": "SJ",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/bJgzHmrAs7lAjrO6WVSRlg--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10222025/5993.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Anton Lundell",
           "pos": "C",
           "nhl_team": "FLA",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/VGoKChfo0X9NHeWEUQ5VCw--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10142025/8652.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         }
       ]
@@ -9536,140 +7020,180 @@
           "name": "Ridly Greig",
           "pos": "C,LW,RW",
           "nhl_team": "OTT",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/0r6g7p_dp3AZrtodtMdglw--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10162024/8668.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Quinton Byfield",
           "pos": "C,LW",
           "nhl_team": "LA",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/NL8pqwGF1nxIDhYy7e_MSQ--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10142025/8642.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Connor Bedard",
           "pos": "C,RW",
           "nhl_team": "CHI",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/7L_rsgu8nuss4FOKdvtEKg--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10082025/30544.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Matthew Knies",
           "pos": "LW",
           "nhl_team": "TOR",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/uCYGU_UMYp8.pgSJEnDh5A--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10272025/30227.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Brandon Hagel",
           "pos": "LW,RW",
           "nhl_team": "TB",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/6YFSGIdw.KlTPbxpSwYEOg--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10242025/7264.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Alexis Lafreniere",
           "pos": "LW,RW",
           "nhl_team": "NYR",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/cw2KL1H9eRlxKfthyKl3dQ--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10172025/8641.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Charlie Coyle",
           "pos": "C,RW",
           "nhl_team": "CBJ",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/00qBnG97XxHFf1fT2ruSeQ--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10092025/4988.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Gabe Perreault",
           "pos": "RW",
           "nhl_team": "NYR",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/BGptzRB4..zq2J45bE6_Eg--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10172025/30574.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Adrian Kempe",
           "pos": "RW",
           "nhl_team": "LA",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/CZBLZpQmAlQkHL5xwnhEHQ--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10142025/6395.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Rasmus Dahlin",
           "pos": "D",
           "nhl_team": "BUF",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/P2CRQXCLL_CT.ztobVJu1g--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10092025/7899.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Moritz Seider",
           "pos": "D",
           "nhl_team": "DET",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/EeKJQjk1Dj7rflrOdIkVYA--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10102025/8284.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Erik Karlsson",
           "pos": "D",
           "nhl_team": "PIT",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/Qi1wgoUdN9ivr1.XvThAtg--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10212025/4491.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Kaiden Guhle",
           "pos": "D",
           "nhl_team": "MTL",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/VONwiWY90ghRFzJaYNs2.Q--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10152025/8656.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Braden Schneider",
           "pos": "D",
           "nhl_team": "NYR",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/VmgS2Yo1as2iX6k_w_4kqg--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10172025/8659.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Bo Horvat",
           "pos": "C",
           "nhl_team": "NYI",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/WTBaHSsQzKIOSG7DhTD26Q--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10162025/5988.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Karel Vejmelka",
           "pos": "G",
           "nhl_team": "UTA",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/RQKgEQrEfmM8uz3TMDYiNA--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/11252025/6887.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Spencer Knight",
           "pos": "G",
           "nhl_team": "CHI",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/_wmltARiUtaoXp47fm3ccg--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10082025/8291.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Dylan Larkin",
           "pos": "C",
           "nhl_team": "DET",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/5c420jADlfWMDSFD81DYpQ--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10102025/6381.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Alexander Wennberg",
           "pos": "C",
           "nhl_team": "SJ",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/bJgzHmrAs7lAjrO6WVSRlg--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10222025/5993.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         },
         {
           "name": "Anton Lundell",
           "pos": "C",
           "nhl_team": "FLA",
+          "headshot": "https://s.yimg.com/iu/api/res/1.2/VGoKChfo0X9NHeWEUQ5VCw--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nhl_cutout/players_l/10142025/8652.png",
           "stats": {},
+          "fantasy_team": "MacHawks",
           "contribution": 0.0
         }
       ]
