@@ -248,6 +248,28 @@ def _parse_players_block(players_raw, stat_ids):
     return result
 
 
+def _collect_player_keys(obj, found=None, depth=0):
+    """Recursively find all player_key strings in a Yahoo API response object."""
+    if found is None:
+        found = []
+    if depth > 12:
+        return found
+    if isinstance(obj, dict):
+        pk = obj.get("player_key")
+        if isinstance(pk, str) and pk and pk not in found:
+            found.append(pk)
+        elif isinstance(pk, dict):
+            v = pk.get("value", "")
+            if v and v not in found:
+                found.append(v)
+        for v in obj.values():
+            _collect_player_keys(v, found, depth + 1)
+    elif isinstance(obj, list):
+        for item in obj:
+            _collect_player_keys(item, found, depth + 1)
+    return found
+
+
 def fetch_week_players(league_key, week, headers, stat_ids, total_teams=12, count=20):
     """Return top players for the week using roster keys + batch stats fetch."""
     # Step 1: collect all player keys from every team's roster
@@ -256,20 +278,11 @@ def fetch_week_players(league_key, week, headers, stat_ids, total_teams=12, coun
         url = ("https://fantasysports.yahooapis.com/fantasy/v2"
                "/team/{}.t.{}/roster".format(league_key, team_num))
         try:
-            data      = api_get(url, headers)
-            team_data = data["fantasy_content"]["team"]
-            roster    = (team_data[1] if isinstance(team_data, list)
-                         else team_data.get("1", {}))
-            players   = roster.get("roster", {}).get("players", {})
-            n = int(players.get("count", 0))
-            for i in range(n):
-                entry = players.get(str(i), {})
-                p     = entry.get("player", [])
-                info  = p[0] if isinstance(p, list) else p.get("0", [])
-                for item in (info if isinstance(info, list) else []):
-                    if isinstance(item, dict) and "player_key" in item:
-                        player_keys.append(item["player_key"])
-                        break
+            data = api_get(url, headers)
+            keys = _collect_player_keys(data["fantasy_content"]["team"])
+            if team_num == 1:
+                print("    [debug] t1 roster raw keys found: {}".format(keys[:3]))
+            player_keys.extend(k for k in keys if k not in player_keys)
         except Exception as exc:
             print("    [players] roster t{} error: {}".format(team_num, exc))
     print("    [players] wk {} collected {} keys".format(week, len(player_keys)))
