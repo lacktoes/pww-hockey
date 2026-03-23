@@ -483,18 +483,32 @@ function renderSeasonPage() {
       return ss[b].totalPww - ss[a].totalPww;
     });
 
-  // Weekly results
-  const wkRows = weeklyResults.map(({ week, first, second, third }) => `
-    <tr>
-      <td class="td-rank">${week}</td>
-      <td class="sn-logo-cell">${first  ? smLogoImg(first)  : "–"}</td>
-      <td class="sn-logo-cell">${second ? smLogoImg(second) : "–"}</td>
-      <td class="sn-logo-cell">${third  ? smLogoImg(third)  : "–"}</td>
-    </tr>`).join("");
+  // Weekly results — horizontal card per week
+  function wkrPlace(medal, team, pwwScore) {
+    if (!team) return "";
+    const score = pwwScore !== undefined ? `<span class="wkr-score">${fmtNum(pwwScore)}</span>` : "";
+    const short  = team.length > 14 ? team.slice(0, 13) + "…" : team;
+    return `<div class="wkr-place">
+      <span class="wkr-medal">${medal}</span>
+      ${smLogoImg(team)}
+      <span class="wkr-name" title="${team}">${short}</span>
+      ${score}
+    </div>`;
+  }
 
-  const wkTable = `<table class="sn-table">
-    <thead><tr><th>Wk</th><th>🥇</th><th>🥈</th><th>🥉</th></tr></thead>
-    <tbody>${wkRows}</tbody></table>`;
+  const wkCards = weeklyResults.map(({ week, first, second, third }) => {
+    const wkPww = appData.weeks[String(week)]?.pww || {};
+    return `<div class="wkr-card">
+      <div class="wkr-weeknum">Wk ${week}</div>
+      <div class="wkr-places">
+        ${wkrPlace("🥇", first,  wkPww[first])}
+        ${wkrPlace("🥈", second, wkPww[second])}
+        ${wkrPlace("🥉", third,  wkPww[third])}
+      </div>
+    </div>`;
+  }).join("");
+
+  const wkTable = `<div class="wkr-grid">${wkCards}</div>`;
 
   // Season summary
   const sumRows = sorted.map(name => {

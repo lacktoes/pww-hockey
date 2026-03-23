@@ -346,39 +346,55 @@ main { max-width: var(--max-w); margin: 0 auto; padding: 20px; display: flex; fl
 .section-hint { font-size: 11px; color: var(--text-2); margin-top: -8px; margin-bottom: 10px; }
 
 /* ── Season page layout ─────────────────────────────────────────────── */
-/* Weekly results (logo-only) stays in a fixed column; never collapses fully */
-.season-grid {
-  display: grid;
-  grid-template-columns: 200px 1fr; /* desktop: wider for bigger logos */
-  gap: 16px;
-  align-items: start;
-}
-@media (max-width: 700px) { .season-grid { grid-template-columns: 140px 1fr; gap: 10px; } }
-@media (max-width: 420px)  { .season-grid { grid-template-columns: 110px 1fr; gap: 8px; } }
-
 /* Lines chart: push to bottom on mobile using flex order */
 @media (max-width: 600px) { .lines-chart-section { order: 10; } }
 
 /* Lines chart: horizontal scroll on narrow screens */
 .lines-chart-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; width: 100%; }
 
-/* ── Weekly results table ───────────────────────────────────────────── */
-.sn-table { width: 100%; border-collapse: collapse; font-size: 12px; white-space: nowrap; }
-.sn-table th {
-  padding: 6px 10px; text-align: left;
-  font-size: 10px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.06em; color: var(--text-2);
-  border-bottom: 2px solid var(--border); background: var(--surface);
+/* ── Weekly results — horizontal card grid ──────────────────────────── */
+.wkr-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
-.sn-table td { padding: 4px 8px; border-bottom: 1px solid rgba(255,255,255,0.03); }
-.sn-table tr:last-child td { border-bottom: none; }
-.sn-table tr:hover td { filter: brightness(1.2); }
-.sn-team { font-weight: 600; }
-.sn-logo-cell { text-align: center; padding: 3px 6px; vertical-align: middle; }
-.sn-logo-cell img, .sn-logo-cell .bar-sm-logo-ph { margin: 0 auto; width: 28px; height: 28px; }
-@media (max-width: 700px) {
-  .sn-logo-cell { padding: 2px 4px; }
-  .sn-logo-cell img, .sn-logo-cell .bar-sm-logo-ph { width: 22px; height: 22px; }
+.wkr-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 7px 12px;
+  min-width: 260px;
+  flex: 1 1 260px;
+}
+.wkr-weeknum {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-2);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  min-width: 32px;
+}
+.wkr-places {
+  display: flex;
+  gap: 12px;
+  flex: 1;
+  flex-wrap: wrap;
+}
+.wkr-place {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+}
+.wkr-medal { font-size: 14px; }
+.wkr-name  { color: var(--text-1); font-weight: 500; white-space: nowrap; }
+.wkr-score { color: var(--text-2); font-size: 11px; }
+@media (max-width: 500px) {
+  .wkr-card  { flex-direction: column; align-items: flex-start; min-width: 100%; }
+  .wkr-places { gap: 8px; }
 }
 
 /* ── Season summary table extras ────────────────────────────────────── */
