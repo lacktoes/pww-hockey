@@ -249,38 +249,52 @@ def _parse_players_block(players_raw, stat_ids):
 
 
 def fetch_week_players(league_key, week, headers, stat_ids, total_teams=12, count=20):
-    """Return top players for the week by fetching each team's roster stats."""
-    all_players = []
-    seen_names  = set()
-
+    """Return top players for the week using roster keys + batch stats fetch."""
+    # Step 1: collect all player keys from every team's roster
+    player_keys = []
     for team_num in range(1, total_teams + 1):
+        url = ("https://fantasysports.yahooapis.com/fantasy/v2"
+               "/team/{}.t.{}/roster".format(league_key, team_num))
+        try:
+            data      = api_get(url, headers)
+            team_data = data["fantasy_content"]["team"]
+            roster    = (team_data[1] if isinstance(team_data, list)
+                         else team_data.get("1", {}))
+            players   = roster.get("roster", {}).get("players", {})
+            n = int(players.get("count", 0))
+            for i in range(n):
+                entry = players.get(str(i), {})
+                p     = entry.get("player", [])
+                info  = p[0] if isinstance(p, list) else p.get("0", [])
+                for item in (info if isinstance(info, list) else []):
+                    if isinstance(item, dict) and "player_key" in item:
+                        player_keys.append(item["player_key"])
+                        break
+        except Exception as exc:
+            print("    [players] roster t{} error: {}".format(team_num, exc))
+    print("    [players] wk {} collected {} keys".format(week, len(player_keys)))
+    if not player_keys:
+        return []
+
+    # Step 2: batch fetch stats in groups of 25
+    all_players = []
+    batch_size  = 25
+    for start in range(0, len(player_keys), batch_size):
+        keys_csv = ",".join(player_keys[start:start + batch_size])
         url = (
             "https://fantasysports.yahooapis.com/fantasy/v2"
-            "/team/{league}.t.{team}/roster/players"
+            "/players;player_keys={keys}"
             ";out=stats;stats.type=week;stats.week={week}"
-        ).format(league=league_key, team=team_num, week=week)
+        ).format(keys=keys_csv, week=week)
         try:
-            data = api_get(url, headers)
+            data        = api_get(url, headers)
+            players_raw = data["fantasy_content"].get("players", {})
+            all_players.extend(_parse_players_block(players_raw, stat_ids))
         except Exception as exc:
-            print("    [players] t{} API error wk {}: {}".format(team_num, week, exc))
-            continue
+            print("    [players] batch stats error wk {}: {}".format(week, exc))
+        time.sleep(0.2)
 
-        try:
-            team_data    = data["fantasy_content"]["team"]
-            roster_block = (team_data[1] if isinstance(team_data, list) else
-                            team_data.get("1", {}))
-            players_raw  = roster_block.get("roster", {}).get("players", {})
-            players      = _parse_players_block(players_raw, stat_ids)
-            for p in players:
-                if p["name"] not in seen_names:
-                    seen_names.add(p["name"])
-                    all_players.append(p)
-            print(".", end="", flush=True)
-        except Exception as exc:
-            print("    [players] t{} parse error wk {}: {}".format(team_num, week, exc))
-
-    print(" {} total players wk {}".format(len(all_players), week))
-
+    print("    [players] wk {} parsed {} players".format(week, len(all_players)))
     all_players.sort(key=lambda p: _player_score(p["stats"]), reverse=True)
     return all_players[:count]
 
