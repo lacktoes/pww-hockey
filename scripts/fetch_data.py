@@ -149,6 +149,82 @@ def ext_manager_direct(data):
     return None
 
 
+# --- player of the week --------------------------------------------------
+def fetch_stat_ids(league_key, headers):
+    """Return {stat_id_str: label} for our 12 scoring categories."""
+    try:
+        url  = ("https://fantasysports.yahooapis.com/fantasy/v2"
+                "/league/{}/settings".format(league_key))
+        data = api_get(url, headers)
+        cats = (data["fantasy_content"]["league"][1]["settings"][0]
+                ["stat_categories"]["stats"])
+        result = {}
+        for item in cats:
+            s  = item["stat"]
+            dn = s.get("display_name", "")
+            if dn in STAT_LABELS:
+                result[str(s["stat_id"])] = dn
+        print("  [players] stat ids: {}".format(result))
+        return result
+    except Exception as exc:
+        print("  [players] stat_id fetch failed ({}); using defaults".format(exc))
+        return {
+            "4": "G",  "5": "A",  "31": "PIM", "32": "PPP",
+            "41": "SOG","45": "FW","44": "HIT", "48": "BLK",
+            "19": "W", "27": "SV", "24": "SV%", "55": "SHO",
+        }
+
+
+def fetch_week_players(league_key, week, headers, stat_ids, count=20):
+    """Return top players for the week sorted by Yahoo overall rank."""
+    url = (
+        "https://fantasysports.yahooapis.com/fantasy/v2"
+        "/league/{league}/players"
+        ";sort=AR;sort_type=week;sort_week={week}"
+        ";count={count};out=stats;stats.type=week;stats.week={week}"
+    ).format(league=league_key, week=week, count=count)
+
+    data        = api_get(url, headers)
+    players_raw = data["fantasy_content"]["league"][1]["players"]
+    n           = int(players_raw.get("count", 0))
+
+    result = []
+    for i in range(n):
+        entry = players_raw.get(str(i))
+        if not entry:
+            continue
+        p      = entry["player"]
+        info   = p[0]
+        pstats = p[1].get("player_stats", {}).get("stats", [])
+
+        name = pos = nhl_team = ""
+        for item in info:
+            if not isinstance(item, dict):
+                continue
+            if "name" in item:
+                name = item["name"].get("full", "")
+            if "display_position" in item:
+                pos = item["display_position"]
+            if "editorial_team_abbr" in item:
+                nhl_team = item["editorial_team_abbr"]
+
+        stats = {}
+        for s in pstats:
+            sid   = str(s["stat"]["stat_id"])
+            val   = s["stat"].get("value")
+            label = stat_ids.get(sid)
+            if label and val not in (None, "-", ""):
+                try:
+                    stats[label] = float(val)
+                except ValueError:
+                    pass
+
+        if name:
+            result.append({"name": name, "pos": pos, "nhl_team": nhl_team, "stats": stats})
+
+    return result
+
+
 # --- PWW scoring ---------------------------------------------------------
 def compute_pww(all_stats):
     """Normalised PWW scores (0-1150) across all teams for one week."""
@@ -350,6 +426,25 @@ def main():
             for name, mgr in week_data.pop("managers", {}).items():
                 if mgr:
                     all_logos.setdefault(name, {})["manager"] = mgr
+
+    # ── Player of the week ────────────────────────────────────────────
+    print("\nFetching player stats...")
+    stat_ids = fetch_stat_ids(league_key, headers)
+    for week in range(1, current_week + 1):
+        wk = str(week)
+        if wk not in weeks_data:
+            continue
+        if "players" in weeks_data[wk]:
+            print("  Week {:2d}: players cached".format(week))
+            continue
+        try:
+            players = fetch_week_players(league_key, week, headers, stat_ids)
+            if players:
+                weeks_data[wk]["players"] = players
+                print("  Week {:2d}: {} players fetched".format(week, len(players)))
+        except Exception as exc:
+            print("  Week {:2d}: player fetch failed: {}".format(week, exc))
+        time.sleep(0.3)
 
     standings = build_standings(weeks_data)
 

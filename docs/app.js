@@ -84,6 +84,8 @@ function renderWeek(week) {
   const catContribs = computeCatContribs(wk);
 
   document.getElementById("podium-container").innerHTML   = renderPodium(wk);
+  document.getElementById("mvp-section").hidden           = !wk.players?.length;
+  document.getElementById("mvp-container").innerHTML      = renderMVP(wk);
   renderStackedBars(wk, catContribs);
   document.getElementById("matchups-container").innerHTML = renderMatchups(wk);
   document.getElementById("stats-table").innerHTML        = renderStatsTable(wk, week);
@@ -158,6 +160,26 @@ function getWeekMovement(week, isLive) {
   return movement;
 }
 
+// ── Hot / Cold streaks ───────────────────────────────────────────────────────
+function computeStreaks() {
+  const completed = availWeeks.filter(w => !appData.weeks[String(w)].is_current);
+  const rankHist  = {};
+  completed.slice(-4).forEach(w => {
+    (appData.weeks[String(w)].leaderboard || []).forEach((team, idx) => {
+      if (!rankHist[team]) rankHist[team] = [];
+      rankHist[team].push(idx + 1); // 1 = best rank
+    });
+  });
+  const result = {};
+  for (const [team, ranks] of Object.entries(rankHist)) {
+    if (ranks.length < 3) continue;
+    const r = ranks.slice(-3);
+    if (r[0] > r[1] && r[1] > r[2]) result[team] = "🔥"; // rank # falling = improving
+    else if (r[0] < r[1] && r[1] < r[2]) result[team] = "🧊"; // rank # rising = declining
+  }
+  return result;
+}
+
 // ── 1. Podium ────────────────────────────────────────────────────────────────
 function renderPodium(wk) {
   const board = wk.leaderboard || [];
@@ -166,18 +188,20 @@ function renderPodium(wk) {
   const medals   = ["🥇","🥈","🥉"];
   const posClass = ["first","second","third"];
   const order    = [1, 0, 2];
+  const streaks  = computeStreaks();
 
   return order.map(rank => {
     const name   = board[rank];
     const score  = (wk.pww[name] || 0).toFixed(1);
-    const pos = posClass[rank];
+    const pos    = posClass[rank];
+    const streak = streaks[name] ? `<span class="streak-badge">${streaks[name]}</span>` : "";
 
     return `
     <div class="podium-slot podium-${pos}">
       <div class="podium-info">
         ${logoImg(name, "podium-logo", pos === "first" ? 90 : pos === "second" ? 72 : 64)}
         <div class="podium-medal">${medals[rank]}</div>
-        <div class="podium-name" title="${name}">${name}</div>
+        <div class="podium-name" title="${name}">${name}${streak}</div>
         <div class="podium-score">${score}</div>
       </div>
       <div class="podium-block podium-block-${pos}">${rank + 1}</div>
@@ -229,6 +253,7 @@ function renderStatsTable(wk, week) {
   const standingsWk = isLive ? Math.max(...availWeeks.filter(w => w < week)) : week;
   const records     = computeStandingsThrough(standingsWk);
   const movement    = getWeekMovement(week, isLive);
+  const streaks     = computeStreaks();
   const allTeams    = Object.keys(wk.stats || {});
 
   const ranked = [...allTeams].sort((a, b) => {
@@ -275,7 +300,7 @@ function renderStatsTable(wk, week) {
         <div class="td-team-inner">
           ${smLogoImg(name)}
           <span title="${name}">${name}</span>
-          ${mvBadge}
+          ${mvBadge}${streaks[name] ? `<span class="streak-badge">${streaks[name]}</span>` : ""}
         </div>
       </td>
       <td class="td-pww">${pww}</td>
@@ -300,6 +325,10 @@ function renderMatchups(wk) {
     const win2 = s1 < 6;
 
     const scoreLabel = `${t1w}–${t2w}`;
+    const p1 = wk.pww?.[t1] || 0, p2 = wk.pww?.[t2] || 0;
+    const pwwGap = wk.is_current
+      ? `<div class="matchup-pww-gap">${p1.toFixed(1)} <span class="pww-gap-sep">pts vs</span> ${p2.toFixed(1)}</div>`
+      : "";
 
     const pills = m.cats.map((c, i) => {
       const label = STAT_LABELS[i];
@@ -327,6 +356,7 @@ function renderMatchups(wk) {
           ${logoImg(t2, "team-logo", 42)}
         </div>
       </div>
+      ${pwwGap}
       <div class="cat-strip">${pills}</div>
     </div>`;
   }).join("");
@@ -443,6 +473,128 @@ function teamHue(name) {
   return Math.abs(h) % 360;
 }
 
+// ── Player of the Week ───────────────────────────────────────────────────────
+const SKATER_CATS = ["G", "A", "PPP", "SOG", "HIT", "BLK", "FW", "PIM"];
+
+function fmtPStat(label, val) {
+  if (label === "SV%") return val.toFixed(3).replace("0.", ".");
+  return Number.isInteger(val) || val % 1 === 0 ? String(val | 0) : val.toFixed(1);
+}
+
+function renderMVP(wk) {
+  const players = wk.players;
+  if (!players || !players.length) return "";
+
+  const medals = ["🥇", "🥈", "🥉"];
+
+  const top3 = players.slice(0, 3).map((p, i) => {
+    const statEntries = Object.entries(p.stats || {})
+      .filter(([k, v]) => SKATER_CATS.includes(k) && v > 0)
+      .sort(([, a], [, b]) => b - a)
+      .slice(0, 5);
+    const statsHtml = statEntries.map(([k, v]) =>
+      `<span class="mvp-stat"><span class="mvp-stat-lbl">${k}</span>${fmtPStat(k, v)}</span>`
+    ).join("");
+    return `
+      <div class="mvp-card mvp-rank-${i}">
+        <div class="mvp-header">
+          <span class="mvp-medal">${medals[i]}</span>
+          <div class="mvp-id">
+            <div class="mvp-name">${p.name}</div>
+            <div class="mvp-meta">${p.pos}${p.nhl_team ? " · " + p.nhl_team : ""}</div>
+          </div>
+        </div>
+        <div class="mvp-stats">${statsHtml || '<span class="mvp-meta">goalie</span>'}</div>
+      </div>`;
+  }).join("");
+
+  // Category kings — best player per skater stat
+  const kings = SKATER_CATS.map(cat => {
+    let best = null, bestVal = 0;
+    for (const p of players) {
+      const v = p.stats?.[cat] || 0;
+      if (v > bestVal) { bestVal = v; best = p; }
+    }
+    if (!best || !bestVal) return "";
+    const lastName = best.name.split(" ").slice(1).join(" ") || best.name;
+    return `<div class="king-chip">
+      <span class="king-cat">${cat}</span>
+      <span class="king-name">${lastName}</span>
+      <span class="king-val">${fmtPStat(cat, bestVal)}</span>
+    </div>`;
+  }).filter(Boolean).join("");
+
+  return `
+    <div class="mvp-top3">${top3}</div>
+    ${kings ? `<div class="kings-row">${kings}</div>` : ""}`;
+}
+
+
+// ── Season-wide analytics helpers ────────────────────────────────────────────
+function computeSOS() {
+  const sos = {};
+  for (const wk of availWeeks) {
+    const weekObj = appData.weeks[String(wk)];
+    if (!weekObj || weekObj.is_current) continue;
+    for (const m of weekObj.matchups || []) {
+      const pww = weekObj.pww || {};
+      if (pww[m.t2] !== undefined) {
+        if (!sos[m.t1]) sos[m.t1] = { total: 0, n: 0 };
+        sos[m.t1].total += pww[m.t2]; sos[m.t1].n++;
+      }
+      if (pww[m.t1] !== undefined) {
+        if (!sos[m.t2]) sos[m.t2] = { total: 0, n: 0 };
+        sos[m.t2].total += pww[m.t1]; sos[m.t2].n++;
+      }
+    }
+  }
+  const result = {};
+  for (const [t, d] of Object.entries(sos)) result[t] = d.n ? d.total / d.n : 0;
+  return result;
+}
+
+function computeH2H() {
+  // Tracks total category wins (not matchup wins) across all meetings
+  // e.g. two meetings of 8-4 and 7-5 → 15-9
+  const h2h = {};
+  for (const wk of availWeeks) {
+    const weekObj = appData.weeks[String(wk)];
+    if (!weekObj || weekObj.is_current) continue;
+    for (const m of weekObj.matchups || []) {
+      const { t1, t2, cats } = m;
+      [t1, t2].forEach(t => { if (!h2h[t]) h2h[t] = {}; });
+      if (!h2h[t1][t2]) h2h[t1][t2] = { W: 0, L: 0 };
+      if (!h2h[t2][t1]) h2h[t2][t1] = { W: 0, L: 0 };
+      const t1cats = cats.filter(c => c === "1").length;
+      const t2cats = cats.filter(c => c === "2").length;
+      h2h[t1][t2].W += t1cats; h2h[t1][t2].L += t2cats;
+      h2h[t2][t1].W += t2cats; h2h[t2][t1].L += t1cats;
+    }
+  }
+  return h2h;
+}
+
+function computeCatWinRates() {
+  const rates = {};
+  for (const wk of availWeeks) {
+    const weekObj = appData.weeks[String(wk)];
+    if (!weekObj || weekObj.is_current) continue;
+    for (const m of weekObj.matchups || []) {
+      const { t1, t2, cats } = m;
+      [t1, t2].forEach(t => {
+        if (!rates[t]) { rates[t] = {}; STAT_LABELS.forEach(s => { rates[t][s] = { W: 0, L: 0, T: 0 }; }); }
+      });
+      cats.forEach((r, i) => {
+        const s = STAT_LABELS[i];
+        if      (r === "1") { rates[t1][s].W++; rates[t2][s].L++; }
+        else if (r === "2") { rates[t1][s].L++; rates[t2][s].W++; }
+        else                { rates[t1][s].T++; rates[t2][s].T++; }
+      });
+    }
+  }
+  return rates;
+}
+
 // ── Season page ──────────────────────────────────────────────────────────────
 function renderSeasonPage() {
   const completedWeeks = availWeeks.filter(w => !appData.weeks[String(w)].is_current);
@@ -510,15 +662,24 @@ function renderSeasonPage() {
 
   const wkTable = `<div class="wkr-grid">${wkCards}</div>`;
 
-  // Season summary
+  // Season summary (with SOS column)
+  const sos      = computeSOS();
+  const sosVals  = Object.values(sos);
+  const sosMin   = Math.min(...sosVals), sosMax = Math.max(...sosVals);
+  const streaks  = computeStreaks();
+
   const sumRows = sorted.map(name => {
     const t = ss[name];
     const n = t.scores.length;
     if (!n) return "";
-    const best  = t.scores.reduce((a, b) => b.score > a.score ? b : a);
-    const worst = t.scores.reduce((a, b) => b.score < a.score ? b : a);
+    const best    = t.scores.reduce((a, b) => b.score > a.score ? b : a);
+    const worst   = t.scores.reduce((a, b) => b.score < a.score ? b : a);
+    const sosVal  = sos[name] || 0;
+    const sosT    = (sosVal - sosMin) / (sosMax - sosMin || 1);
+    const sosBg   = `hsl(${((1 - sosT) * 120).toFixed(0)}, 60%, 26%)`; // green = easy schedule, red = hard
+    const streak  = streaks[name] ? `<span class="streak-badge">${streaks[name]}</span>` : "";
     return `<tr>
-      <td class="td-team"><div class="td-team-inner">${smLogoImg(name)}<span title="${name}">${name}</span></div></td>
+      <td class="td-team"><div class="td-team-inner">${smLogoImg(name)}<span title="${name}">${name}</span>${streak}</div></td>
       <td class="sn-medal sn-gold">${t.first}</td>
       <td class="sn-medal sn-silver">${t.second}</td>
       <td class="sn-medal sn-bronze">${t.third}</td>
@@ -528,6 +689,7 @@ function renderSeasonPage() {
       <td class="td-rank">Wk ${worst.week}</td>
       <td class="sn-worst">${fmtNum(worst.score)}</td>
       <td>${fmtNum(t.totalPww / n)}</td>
+      <td style="background:${sosBg}" title="Avg opponent PWW score — lower means easier schedule">${fmtNum(sosVal)}</td>
     </tr>`;
   }).join("");
 
@@ -541,6 +703,7 @@ function renderSeasonPage() {
       <th>Best Wk</th><th>Best Score</th>
       <th>Worst Wk</th><th>Worst Score</th>
       <th>Avg Score</th>
+      <th title="Average opponent PWW score — lower = easier schedule (green), higher = harder (red)">Avg Opp</th>
     </tr></thead>
     <tbody>${sumRows}</tbody></table>`;
 
@@ -572,9 +735,56 @@ function renderSeasonPage() {
     </tr></thead>
     <tbody>${csRows}</tbody></table>`;
 
-  document.getElementById("season-weekly-results").innerHTML   = wkTable;
+  // Head-to-head matrix
+  const h2h     = computeH2H();
+  const h2hRows = sorted.map(rowTeam => {
+    const cells = sorted.map(colTeam => {
+      if (rowTeam === colTeam) return `<td class="h2h-self">—</td>`;
+      const r   = h2h[rowTeam]?.[colTeam];
+      if (!r)   return `<td class="h2h-none">–</td>`;
+      const cls = r.W > r.L ? "h2h-win" : r.W < r.L ? "h2h-loss" : "h2h-even";
+      return `<td class="${cls}" title="${rowTeam} vs ${colTeam}">${r.W}–${r.L}</td>`;
+    }).join("");
+    return `<tr>
+      <td class="td-team h2h-label"><div class="td-team-inner">${smLogoImg(rowTeam)}<span title="${rowTeam}">${shortName(rowTeam)}</span></div></td>
+      ${cells}
+    </tr>`;
+  }).join("");
+  const h2hHeaders = sorted.map(n =>
+    `<th class="h2h-col-hdr" title="${n}">${smLogoImg(n)}</th>`).join("");
+  const h2hTable = `<table class="stats-table h2h-table">
+    <thead><tr><th class="th-team"></th>${h2hHeaders}</tr></thead>
+    <tbody>${h2hRows}</tbody></table>`;
+
+  // Category win rates heatmap
+  const catRates  = computeCatWinRates();
+  const cwrRows   = sorted.map(name => {
+    const r = catRates[name] || {};
+    const cells = STAT_LABELS.map(s => {
+      const d = r[s] || { W: 0, L: 0, T: 0 };
+      const total = d.W + d.L + d.T;
+      if (!total) return `<td>–</td>`;
+      const winPct = (d.W + 0.5 * d.T) / total;
+      const bg = `hsl(${(winPct * 120).toFixed(0)}, 60%, 26%)`;
+      return `<td style="background:${bg}" title="${s}: ${d.W}W-${d.L}L-${d.T}T">${Math.round(winPct * 100)}%</td>`;
+    }).join("");
+    return `<tr>
+      <td class="td-team"><div class="td-team-inner">${smLogoImg(name)}<span title="${name}">${name}</span></div></td>
+      ${cells}
+    </tr>`;
+  }).join("");
+  const cwrTable = `<table class="stats-table">
+    <thead><tr>
+      <th class="th-team">Team</th>
+      ${STAT_LABELS.map(s => `<th>${s}</th>`).join("")}
+    </tr></thead>
+    <tbody>${cwrRows}</tbody></table>`;
+
   document.getElementById("season-summary").innerHTML          = `<div class="table-wrap">${sumTable}</div>`;
+  document.getElementById("season-h2h").innerHTML              = `<div class="table-wrap">${h2hTable}</div>`;
+  document.getElementById("season-cat-rates").innerHTML        = `<div class="table-wrap">${cwrTable}</div>`;
   document.getElementById("season-cumulative-stats").innerHTML = `<div class="table-wrap">${csTable}</div>`;
+  document.getElementById("season-weekly-results").innerHTML   = wkTable;
 
   renderLeaguePtsChart();
 }

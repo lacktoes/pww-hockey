@@ -397,6 +397,56 @@ main { max-width: var(--max-w); margin: 0 auto; padding: 20px; display: flex; fl
   .wkr-places { gap: 8px; }
 }
 
+/* ── Player of the Week ─────────────────────────────────────────────── */
+.mvp-top3   { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+.mvp-card   {
+  flex: 1 1 200px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px;
+}
+.mvp-rank-0 { border-color: var(--gold); }
+.mvp-rank-1 { border-color: var(--silver); }
+.mvp-rank-2 { border-color: var(--bronze); }
+.mvp-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.mvp-medal  { font-size: 22px; flex-shrink: 0; }
+.mvp-name   { font-weight: 700; font-size: 14px; color: var(--text-1); }
+.mvp-meta   { font-size: 11px; color: var(--text-2); margin-top: 2px; }
+.mvp-stats  { display: flex; flex-wrap: wrap; gap: 8px; }
+.mvp-stat   { font-size: 13px; font-weight: 700; color: var(--text-1); }
+.mvp-stat-lbl { font-size: 10px; color: var(--text-2); font-weight: 400; margin-right: 2px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+.kings-row  { display: flex; flex-wrap: wrap; gap: 6px; }
+.king-chip  {
+  display: flex; align-items: center; gap: 5px;
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 20px; padding: 4px 11px; font-size: 12px;
+}
+.king-cat  { font-size: 10px; color: var(--text-2); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+.king-name { color: var(--text-1); font-weight: 600; }
+.king-val  { color: var(--accent); font-weight: 800; }
+
+/* ── Streak badge ───────────────────────────────────────────────────── */
+.streak-badge { font-size: 14px; margin-left: 4px; line-height: 1; }
+
+/* ── Live PWW gap on matchup cards ──────────────────────────────────── */
+.matchup-pww-gap {
+  text-align: center; font-size: 12px; font-weight: 700;
+  color: var(--accent); padding: 4px 0 2px;
+  letter-spacing: 0.02em;
+}
+.pww-gap-sep { font-weight: 400; color: var(--text-2); margin: 0 4px; }
+
+/* ── Head-to-head table ─────────────────────────────────────────────── */
+.h2h-table   { font-size: 12px; }
+.h2h-col-hdr { padding: 3px 4px; text-align: center; }
+.h2h-col-hdr img, .h2h-col-hdr .bar-sm-logo-ph { width: 20px; height: 20px; margin: 0 auto; }
+.h2h-label   { white-space: nowrap; }
+.h2h-table td { text-align: center; padding: 4px 6px; font-weight: 700; font-size: 11px; }
+.h2h-win  { color: var(--win);    background: hsla(137,50%,30%,0.25); }
+.h2h-loss { color: #f85149;       background: hsla(0,60%,40%,0.15);  }
+.h2h-even { color: var(--text-2); }
+.h2h-self { color: var(--text-3); }
+.h2h-none { color: var(--text-3); }
+
 /* ── Season summary table extras ────────────────────────────────────── */
 .sn-medal { text-align: center; font-size: 14px; font-weight: 800; }
 .sn-gold   { color: var(--gold);   }
