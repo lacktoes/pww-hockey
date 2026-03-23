@@ -200,7 +200,32 @@ def _player_score(stats):
             + stats.get("SHO", 0) * 5)
 
 
-def _parse_players_block(players_raw, stat_ids):
+def _collect_stats(obj, stat_ids, found=None, depth=0):
+    """Recursively find all {stat_id, value} pairs anywhere in a player entry."""
+    if found is None:
+        found = {}
+    if depth > 12:
+        return found
+    if isinstance(obj, dict):
+        sid = obj.get("stat_id")
+        val = obj.get("value")
+        if sid is not None:
+            label = stat_ids.get(str(sid))
+            if label and val not in (None, "-", ""):
+                try:
+                    found[label] = float(val)
+                except (ValueError, TypeError):
+                    pass
+        else:
+            for v in obj.values():
+                _collect_stats(v, stat_ids, found, depth + 1)
+    elif isinstance(obj, list):
+        for item in obj:
+            _collect_stats(item, stat_ids, found, depth + 1)
+    return found
+
+
+def _parse_players_block(players_raw, stat_ids, debug=False):
     """Parse a Yahoo players dict (keyed '0','1',...,'count') into a list."""
     n = int(players_raw.get("count", 0))
     result = []
@@ -212,18 +237,12 @@ def _parse_players_block(players_raw, stat_ids):
             p    = entry["player"]
             info = p[0] if isinstance(p, list) else p.get("0", [])
 
-            stats_block = {}
-            if isinstance(p, list) and len(p) > 1:
-                stats_block = p[1] if isinstance(p[1], dict) else {}
-            raw_stats = (stats_block.get("player_stats")
-                         or stats_block.get("player_points")
-                         or {}).get("stats", [])
-            # Yahoo returns stats as a list OR as a dict {"0":{...},"1":{...},"count":N}
-            if isinstance(raw_stats, dict):
-                pstats = [v for k, v in raw_stats.items()
-                          if isinstance(v, dict) and "stat" in v]
-            else:
-                pstats = raw_stats
+            if debug and i == 0:
+                print("    [debug] player[0] keys: {}".format(
+                    [list(x.keys())[0] if isinstance(x, dict) and x else type(x).__name__
+                     for x in (info if isinstance(info, list) else [])[:8]]))
+                print("    [debug] player[1]: {}".format(
+                    str(p[1] if isinstance(p, list) and len(p) > 1 else "missing")[:200]))
 
             name = pos = nhl_team = headshot = ""
             for item in (info if isinstance(info, list) else []):
@@ -238,16 +257,8 @@ def _parse_players_block(players_raw, stat_ids):
                 if "headshot" in item:
                     headshot = item["headshot"].get("url", "")
 
-            stats = {}
-            for s in pstats:
-                sid   = str(s["stat"]["stat_id"])
-                val   = s["stat"].get("value")
-                label = stat_ids.get(sid)
-                if label and val not in (None, "-", ""):
-                    try:
-                        stats[label] = float(val)
-                    except ValueError:
-                        pass
+            # Recursively find stats anywhere in the player entry
+            stats = _collect_stats(p, stat_ids)
 
             if name:
                 result.append({
@@ -327,7 +338,7 @@ def fetch_week_players(league_key, week, headers, stat_ids, total_teams=12, coun
             data        = api_get(url, headers)
             content     = _league_content(data)
             players_raw = content.get("players", {})
-            parsed      = _parse_players_block(players_raw, stat_ids)
+            parsed      = _parse_players_block(players_raw, stat_ids, debug=(start == 0))
             # Attach fantasy team name using position in batch
             for j, p in enumerate(parsed):
                 pk = batch_keys[j] if j < len(batch_keys) else ""
