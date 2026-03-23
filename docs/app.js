@@ -499,12 +499,13 @@ function renderMVP(wk) {
       <div class="mvp-card mvp-rank-${i}">
         <div class="mvp-header">
           <span class="mvp-medal">${medals[i]}</span>
+          ${p.headshot ? `<img class="mvp-headshot" src="${p.headshot}" alt="" loading="lazy">` : ""}
           <div class="mvp-id">
             <div class="mvp-name">${p.name}</div>
-            <div class="mvp-meta">${p.pos}${p.nhl_team ? " · " + p.nhl_team : ""}</div>
+            <div class="mvp-meta">${p.pos}${p.nhl_team ? " · " + p.nhl_team : ""}${p.fantasy_team ? " · " + p.fantasy_team : ""}</div>
           </div>
         </div>
-        <div class="mvp-stats">${statsHtml || '<span class="mvp-meta">goalie</span>'}</div>
+        <div class="mvp-stats">${statsHtml || '<span class="mvp-meta">no stats</span>'}</div>
       </div>`;
   }).join("");
 
@@ -824,7 +825,7 @@ function computeLeaguePtsData() {
   return data;
 }
 
-function spreadLabels(items, minGap, yMin, yMax) {
+function spreadLabels(items, minGap, _yMin, yMax) {
   if (!items.length) return [];
   const arr = items.map(it => ({ ...it })).sort((a, b) => a.y - b.y);
   // Push down from top

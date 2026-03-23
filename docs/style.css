@@ -406,8 +406,9 @@ main { max-width: var(--max-w); margin: 0 auto; padding: 20px; display: flex; fl
 .mvp-rank-0 { border-color: var(--gold); }
 .mvp-rank-1 { border-color: var(--silver); }
 .mvp-rank-2 { border-color: var(--bronze); }
-.mvp-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-.mvp-medal  { font-size: 22px; flex-shrink: 0; }
+.mvp-header  { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.mvp-medal   { font-size: 22px; flex-shrink: 0; }
+.mvp-headshot { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex-shrink: 0; background: var(--surface-2); }
 .mvp-name   { font-weight: 700; font-size: 14px; color: var(--text-1); }
 .mvp-meta   { font-size: 11px; color: var(--text-2); margin-top: 2px; }
 .mvp-stats  { display: flex; flex-wrap: wrap; gap: 8px; }

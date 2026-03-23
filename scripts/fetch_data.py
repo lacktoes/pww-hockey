@@ -215,11 +215,17 @@ def _parse_players_block(players_raw, stat_ids):
             stats_block = {}
             if isinstance(p, list) and len(p) > 1:
                 stats_block = p[1] if isinstance(p[1], dict) else {}
-            pstats = (stats_block.get("player_stats")
-                      or stats_block.get("player_points")
-                      or {}).get("stats", [])
+            raw_stats = (stats_block.get("player_stats")
+                         or stats_block.get("player_points")
+                         or {}).get("stats", [])
+            # Yahoo returns stats as a list OR as a dict {"0":{...},"1":{...},"count":N}
+            if isinstance(raw_stats, dict):
+                pstats = [v for k, v in raw_stats.items()
+                          if isinstance(v, dict) and "stat" in v]
+            else:
+                pstats = raw_stats
 
-            name = pos = nhl_team = ""
+            name = pos = nhl_team = headshot = ""
             for item in (info if isinstance(info, list) else []):
                 if not isinstance(item, dict):
                     continue
@@ -229,6 +235,8 @@ def _parse_players_block(players_raw, stat_ids):
                     pos = item["display_position"]
                 if "editorial_team_abbr" in item:
                     nhl_team = item["editorial_team_abbr"]
+                if "headshot" in item:
+                    headshot = item["headshot"].get("url", "")
 
             stats = {}
             for s in pstats:
@@ -242,7 +250,10 @@ def _parse_players_block(players_raw, stat_ids):
                         pass
 
             if name:
-                result.append({"name": name, "pos": pos, "nhl_team": nhl_team, "stats": stats})
+                result.append({
+                    "name": name, "pos": pos, "nhl_team": nhl_team,
+                    "headshot": headshot, "stats": stats,
+                })
         except Exception as exc:
             print("    [players] parse error entry {}: {}".format(i, exc))
     return result
@@ -273,16 +284,28 @@ def _collect_player_keys(obj, found=None, depth=0):
 def fetch_week_players(league_key, week, headers, stat_ids, total_teams=12, count=20):
     """Return top players for the week using roster keys + batch stats fetch."""
     # Step 1: collect all player keys from every team's roster
-    player_keys = []
+    player_keys   = []   # ordered list of player_key strings
+    key_to_fteam  = {}   # player_key -> fantasy team name
     for team_num in range(1, total_teams + 1):
         url = ("https://fantasysports.yahooapis.com/fantasy/v2"
                "/team/{}.t.{}/roster".format(league_key, team_num))
         try:
-            data = api_get(url, headers)
-            keys = _collect_player_keys(data["fantasy_content"]["team"])
+            data      = api_get(url, headers)
+            team_node = data["fantasy_content"]["team"]
+            # Extract fantasy team name from team info array
+            fteam_name = ""
+            info_list = team_node[0] if isinstance(team_node, list) else []
+            for item in (info_list if isinstance(info_list, list) else []):
+                if isinstance(item, dict) and "name" in item:
+                    fteam_name = item["name"]
+                    break
+            keys = _collect_player_keys(team_node)
             if team_num == 1:
-                print("    [debug] t1 roster raw keys found: {}".format(keys[:3]))
-            player_keys.extend(k for k in keys if k not in player_keys)
+                print("    [debug] t1 '{}' keys: {}".format(fteam_name, keys[:3]))
+            for k in keys:
+                if k not in player_keys:
+                    player_keys.append(k)
+                    key_to_fteam[k] = fteam_name
         except Exception as exc:
             print("    [players] roster t{} error: {}".format(team_num, exc))
     print("    [players] wk {} collected {} keys".format(week, len(player_keys)))
@@ -293,7 +316,8 @@ def fetch_week_players(league_key, week, headers, stat_ids, total_teams=12, coun
     all_players = []
     batch_size  = 25
     for start in range(0, len(player_keys), batch_size):
-        keys_csv = ",".join(player_keys[start:start + batch_size])
+        batch_keys = player_keys[start:start + batch_size]
+        keys_csv   = ",".join(batch_keys)
         url = (
             "https://fantasysports.yahooapis.com/fantasy/v2"
             "/players;player_keys={keys}"
@@ -302,7 +326,12 @@ def fetch_week_players(league_key, week, headers, stat_ids, total_teams=12, coun
         try:
             data        = api_get(url, headers)
             players_raw = data["fantasy_content"].get("players", {})
-            all_players.extend(_parse_players_block(players_raw, stat_ids))
+            parsed      = _parse_players_block(players_raw, stat_ids)
+            # Attach fantasy team name using position in batch
+            for j, p in enumerate(parsed):
+                pk = batch_keys[j] if j < len(batch_keys) else ""
+                p["fantasy_team"] = key_to_fteam.get(pk, "")
+            all_players.extend(parsed)
         except Exception as exc:
             print("    [players] batch stats error wk {}: {}".format(week, exc))
         time.sleep(0.2)
@@ -517,7 +546,9 @@ def main():
     # ── Player of the week ────────────────────────────────────────────
     print("\nFetching player stats...")
     stat_ids = fetch_stat_ids(league_key, headers)
-    for week in range(1, current_week + 1):
+    # Only fetch players for recent weeks -- current roster is only meaningful recently
+    player_fetch_start = max(1, current_week - 3)
+    for week in range(player_fetch_start, current_week + 1):
         wk = str(week)
         if wk not in weeks_data:
             continue
