@@ -2,10 +2,11 @@ name: Update Dashboard Data
 
 on:
   schedule:
-    # Hourly 10am–3pm AEST (00:00–05:00 UTC), NHL season only (Oct–Apr)
+    # Hourly 9am–3pm AEST (23:00–05:00 UTC), NHL season only (Oct–Apr)
+    # 23 UTC = 9am AEST next day; stops at 05 UTC = 3pm AEST
+    # No later runs -- Yahoo rolls over ~07 UTC (midnight US Pacific) causing bad data
+    - cron: "0 23 * 1-4,10-12 *"
     - cron: "0 0,1,2,3,4,5 * 1-4,10-12 *"
-    # Daily catch-up at 06:00 UTC (4pm AEST) for any final scores
-    - cron: "0 6 * 1-4,10-12 *"
   workflow_dispatch:   # allow manual trigger from GitHub Actions tab
 
 permissions:

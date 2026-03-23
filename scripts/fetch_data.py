@@ -120,7 +120,10 @@ def ext_stats_direct(data):
     """Extract 12 scoring stats from /team/.../stats response."""
     stats_list = data["fantasy_content"]["team"][1]["team_stats"]["stats"]
     vals = [float(s["stat"]["value"]) for s in stats_list]
-    del vals[10]   # remove SA -- not a scoring category
+    if len(vals) > 10:
+        del vals[10]   # remove SA -- not a scoring category
+    if len(vals) != 12:
+        raise ValueError("unexpected stat count: {}".format(len(vals)))
     return vals
 
 
@@ -223,6 +226,14 @@ def fetch_week(league_key, week, current_week, total_teams, headers):
 
     if not all_stats:
         return None
+
+    # If this is the current week and no team has scored anything yet,
+    # the week hasn't started (Yahoo rollover window). Skip to avoid bad data.
+    if week == current_week:
+        total_goals = sum(s[0] for s in all_stats.values())
+        if total_goals == 0:
+            print("  Week {:2d}: no goals yet -- skipping (week not started)".format(week))
+            return None
 
     pww = compute_pww(all_stats)
 
