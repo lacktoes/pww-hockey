@@ -317,10 +317,12 @@ def fetch_week_players(league_key, week, headers, stat_ids, total_teams=12, coun
             # Players are under team[1].roster.players
             details     = team_node[1] if isinstance(team_node, list) else team_node.get("1", {})
             roster_obj  = details.get("roster", {})
-            players_raw = roster_obj.get("players", {})
+            # Roster data sits under roster["0"] when week params are used
+            players_raw = (roster_obj.get("players")
+                           or roster_obj.get("0", {}).get("players", {}))
             n = int(players_raw.get("count", 0))
             if team_num == 1:
-                print("    [debug] t1 '{}' roster count={} roster_keys={}".format(
+                print("    [debug] t1 '{}' count={} roster_keys={}".format(
                     fteam_name, n, list(roster_obj.keys())[:5]))
 
             for i in range(n):
