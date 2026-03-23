@@ -320,12 +320,13 @@ def fetch_week_players(league_key, week, headers, stat_ids, total_teams=12, coun
         keys_csv   = ",".join(batch_keys)
         url = (
             "https://fantasysports.yahooapis.com/fantasy/v2"
-            "/players;player_keys={keys}"
+            "/league/{league}/players;player_keys={keys}"
             ";out=stats;stats.type=week;stats.week={week}"
-        ).format(keys=keys_csv, week=week)
+        ).format(league=league_key, keys=keys_csv, week=week)
         try:
             data        = api_get(url, headers)
-            players_raw = data["fantasy_content"].get("players", {})
+            content     = _league_content(data)
+            players_raw = content.get("players", {})
             parsed      = _parse_players_block(players_raw, stat_ids)
             # Attach fantasy team name using position in batch
             for j, p in enumerate(parsed):
@@ -588,6 +589,12 @@ def main():
     stat_ids = fetch_stat_ids(league_key, headers)
     # Only fetch players for recent weeks -- current roster is only meaningful recently
     player_fetch_start = max(1, current_week - 3)
+    # Purge any cached player data that has no stats (broken from earlier runs)
+    for wk in list(weeks_data.keys()):
+        pl = weeks_data[wk].get("players", [])
+        if pl and all(not p.get("stats") for p in pl):
+            print("  Week {:2d}: clearing empty player cache".format(int(wk)))
+            del weeks_data[wk]["players"]
     for week in range(player_fetch_start, current_week + 1):
         wk = str(week)
         if wk not in weeks_data:
