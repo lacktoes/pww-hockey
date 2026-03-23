@@ -21,7 +21,11 @@ async function init() {
     appData    = await res.json();
     availWeeks = Object.keys(appData.weeks).map(Number).sort((a, b) => a - b);
     initTabs();
-    selectWeek(appData.meta.current_week);
+    // Fall back to the most recent available week if current_week has no data yet
+    const startWeek = appData.weeks[String(appData.meta.current_week)]
+      ? appData.meta.current_week
+      : availWeeks[availWeeks.length - 1];
+    selectWeek(startWeek);
   } catch (e) {
     show("error");
   }

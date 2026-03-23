@@ -353,10 +353,13 @@ def main():
 
     standings = build_standings(weeks_data)
 
+    # If current_week has no data (week not started yet), report the last week that does
+    reported_week = current_week if str(current_week) in weeks_data else max(int(k) for k in weeks_data)
+
     output = {
         "meta": {
             "last_updated": datetime.now(timezone.utc).isoformat(),
-            "current_week": current_week,
+            "current_week": reported_week,
         },
         "teams":     all_logos,
         "weeks":     weeks_data,
