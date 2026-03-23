@@ -350,6 +350,46 @@ def compute_pww(all_stats):
     return df.sub(df.min()).div(range_vals).dot(score_s)
 
 
+# --- player marginal PWW contribution ------------------------------------
+def compute_player_contributions(week_obj):
+    """
+    For each player in week_obj['players'], compute how many PWW points
+    they contributed to their team's weekly score (score drops by this
+    much if you remove the player). Re-sorts players by contribution.
+    """
+    if "players" not in week_obj or "stats" not in week_obj:
+        return
+
+    # Rebuild all_stats as {team: [12 floats]} in STAT_LABELS order
+    all_stats = {
+        name: [float(s.get(cat, 0)) for cat in STAT_LABELS]
+        for name, s in week_obj["stats"].items()
+    }
+    pww_scores = week_obj.get("pww", {})
+
+    for p in week_obj["players"]:
+        fteam = p.get("fantasy_team", "")
+        if fteam not in all_stats:
+            p["contribution"] = 0.0
+            continue
+
+        p_vec   = [float(p.get("stats", {}).get(cat, 0)) for cat in STAT_LABELS]
+        orig    = all_stats[fteam]
+        mod_vec = [max(0.0, orig[i] - p_vec[i]) for i in range(len(STAT_LABELS))]
+
+        mod_stats          = dict(all_stats)
+        mod_stats[fteam]   = mod_vec
+        try:
+            mod_pww = compute_pww(mod_stats)
+            orig_score = float(pww_scores.get(fteam, 0))
+            new_score  = float(mod_pww.get(fteam, 0))
+            p["contribution"] = round(orig_score - new_score, 1)
+        except Exception:
+            p["contribution"] = 0.0
+
+    week_obj["players"].sort(key=lambda p: p.get("contribution", 0), reverse=True)
+
+
 # --- category comparison -------------------------------------------------
 def compare_cats(s1, s2):
     """Returns list of '1'/'2'/'T' for each of the 12 categories."""
@@ -563,6 +603,13 @@ def main():
         except Exception as exc:
             print("  Week {:2d}: player fetch failed: {}".format(week, exc))
         time.sleep(0.3)
+
+    # Compute marginal PWW contributions for all weeks with player data
+    print("\nComputing player PWW contributions...")
+    for wk, week_obj in weeks_data.items():
+        if "players" in week_obj and "stats" in week_obj:
+            compute_player_contributions(week_obj)
+            print("  Week {:2d}: contributions computed".format(int(wk)))
 
     standings = build_standings(weeks_data)
 

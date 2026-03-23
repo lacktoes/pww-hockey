@@ -409,7 +409,8 @@ main { max-width: var(--max-w); margin: 0 auto; padding: 20px; display: flex; fl
 .mvp-header  { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
 .mvp-medal   { font-size: 22px; flex-shrink: 0; }
 .mvp-headshot { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex-shrink: 0; background: var(--surface-2); }
-.mvp-name   { font-weight: 700; font-size: 14px; color: var(--text-1); }
+.mvp-name    { font-weight: 700; font-size: 14px; color: var(--text-1); }
+.mvp-contrib { margin-left: auto; font-size: 12px; font-weight: 700; color: var(--gold); white-space: nowrap; }
 .mvp-meta   { font-size: 11px; color: var(--text-2); margin-top: 2px; }
 .mvp-stats  { display: flex; flex-wrap: wrap; gap: 8px; }
 .mvp-stat   { font-size: 13px; font-weight: 700; color: var(--text-1); }

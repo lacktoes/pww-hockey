@@ -481,13 +481,25 @@ function fmtPStat(label, val) {
   return Number.isInteger(val) || val % 1 === 0 ? String(val | 0) : val.toFixed(1);
 }
 
+function _playerScore(stats) {
+  const s = stats || {};
+  return (s.G||0)*6 + (s.A||0)*4 + (s.PPP||0)*2 + (s.SOG||0)*0.5
+       + (s.HIT||0)*0.5 + (s.BLK||0)*0.5 + (s.FW||0)*0.1
+       + (s.PIM||0)*0.5 + (s.W||0)*5 + (s.SV||0)*0.2 + (s.SHO||0)*5;
+}
+
 function renderMVP(wk) {
   const players = wk.players;
   if (!players || !players.length) return "";
 
   const medals = ["🥇", "🥈", "🥉"];
 
-  const top3 = players.slice(0, 3).map((p, i) => {
+  // Sort by marginal PWW contribution if available, else fall back to proxy score
+  const sorted = [...players].sort((a, b) =>
+    (b.contribution ?? _playerScore(b.stats)) - (a.contribution ?? _playerScore(a.stats))
+  );
+
+  const top3 = sorted.slice(0, 3).map((p, i) => {
     const statEntries = Object.entries(p.stats || {})
       .filter(([k, v]) => SKATER_CATS.includes(k) && v > 0)
       .sort(([, a], [, b]) => b - a)
@@ -495,6 +507,8 @@ function renderMVP(wk) {
     const statsHtml = statEntries.map(([k, v]) =>
       `<span class="mvp-stat"><span class="mvp-stat-lbl">${k}</span>${fmtPStat(k, v)}</span>`
     ).join("");
+    const contrib = p.contribution != null
+      ? `<span class="mvp-contrib">+${fmtNum(p.contribution)} PWW</span>` : "";
     return `
       <div class="mvp-card mvp-rank-${i}">
         <div class="mvp-header">
@@ -504,6 +518,7 @@ function renderMVP(wk) {
             <div class="mvp-name">${p.name}</div>
             <div class="mvp-meta">${p.pos}${p.nhl_team ? " · " + p.nhl_team : ""}${p.fantasy_team ? " · " + p.fantasy_team : ""}</div>
           </div>
+          ${contrib}
         </div>
         <div class="mvp-stats">${statsHtml || '<span class="mvp-meta">no stats</span>'}</div>
       </div>`;
