@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p \"c:/Users/shane/OneDrive/Fant/PWWWW/web/thumpers-manager/data/exports\")",
+      "Bash(mkdir -p \"c:/Users/shane/OneDrive/Fant/PWWWW/web/thumpers-manager/src\")",
+      "Bash(mkdir -p \"c:/Users/shane/OneDrive/Fant/PWWWW/web/thumpers-manager/pages\")",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:api.github.com)",
+      "WebFetch(domain:api-web.nhle.com)"
+    ]
+  }
+}

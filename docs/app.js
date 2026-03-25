@@ -84,8 +84,6 @@ function renderWeek(week) {
   const catContribs = computeCatContribs(wk);
 
   document.getElementById("podium-container").innerHTML   = renderPodium(wk);
-  document.getElementById("mvp-section").hidden           = !wk.players?.length;
-  document.getElementById("mvp-container").innerHTML      = renderMVP(wk);
   renderStackedBars(wk, catContribs);
   document.getElementById("matchups-container").innerHTML = renderMatchups(wk);
   document.getElementById("stats-table").innerHTML        = renderStatsTable(wk, week);
@@ -472,79 +470,6 @@ function teamHue(name) {
   for (const c of name) h = ((h * 31) + c.charCodeAt(0)) | 0;
   return Math.abs(h) % 360;
 }
-
-// ── Player of the Week ───────────────────────────────────────────────────────
-const SKATER_CATS = ["G", "A", "PPP", "SOG", "HIT", "BLK", "FW", "PIM"];
-
-function fmtPStat(label, val) {
-  if (label === "SV%") return val.toFixed(3).replace("0.", ".");
-  return Number.isInteger(val) || val % 1 === 0 ? String(val | 0) : val.toFixed(1);
-}
-
-function _playerScore(stats) {
-  const s = stats || {};
-  return (s.G||0)*6 + (s.A||0)*4 + (s.PPP||0)*2 + (s.SOG||0)*0.5
-       + (s.HIT||0)*0.5 + (s.BLK||0)*0.5 + (s.FW||0)*0.1
-       + (s.PIM||0)*0.5 + (s.W||0)*5 + (s.SV||0)*0.2 + (s.SHO||0)*5;
-}
-
-function renderMVP(wk) {
-  const players = wk.players;
-  if (!players || !players.length) return "";
-
-  const medals = ["🥇", "🥈", "🥉"];
-
-  // Sort by marginal PWW contribution if available, else fall back to proxy score
-  const sorted = [...players].sort((a, b) =>
-    (b.contribution ?? _playerScore(b.stats)) - (a.contribution ?? _playerScore(a.stats))
-  );
-
-  const top3 = sorted.slice(0, 3).map((p, i) => {
-    const statEntries = Object.entries(p.stats || {})
-      .filter(([k, v]) => SKATER_CATS.includes(k) && v > 0)
-      .sort(([, a], [, b]) => b - a)
-      .slice(0, 5);
-    const statsHtml = statEntries.map(([k, v]) =>
-      `<span class="mvp-stat"><span class="mvp-stat-lbl">${k}</span>${fmtPStat(k, v)}</span>`
-    ).join("");
-    const contrib = p.contribution != null
-      ? `<span class="mvp-contrib">+${fmtNum(p.contribution)} PWW</span>` : "";
-    return `
-      <div class="mvp-card mvp-rank-${i}">
-        <div class="mvp-header">
-          <span class="mvp-medal">${medals[i]}</span>
-          ${p.headshot ? `<img class="mvp-headshot" src="${p.headshot}" alt="" loading="lazy">` : ""}
-          <div class="mvp-id">
-            <div class="mvp-name">${p.name}</div>
-            <div class="mvp-meta">${p.pos}${p.nhl_team ? " · " + p.nhl_team : ""}${p.fantasy_team ? " · " + p.fantasy_team : ""}</div>
-          </div>
-          ${contrib}
-        </div>
-        <div class="mvp-stats">${statsHtml || '<span class="mvp-meta">no stats</span>'}</div>
-      </div>`;
-  }).join("");
-
-  // Category kings — best player per skater stat
-  const kings = SKATER_CATS.map(cat => {
-    let best = null, bestVal = 0;
-    for (const p of players) {
-      const v = p.stats?.[cat] || 0;
-      if (v > bestVal) { bestVal = v; best = p; }
-    }
-    if (!best || !bestVal) return "";
-    const lastName = best.name.split(" ").slice(1).join(" ") || best.name;
-    return `<div class="king-chip">
-      <span class="king-cat">${cat}</span>
-      <span class="king-name">${lastName}</span>
-      <span class="king-val">${fmtPStat(cat, bestVal)}</span>
-    </div>`;
-  }).filter(Boolean).join("");
-
-  return `
-    <div class="mvp-top3">${top3}</div>
-    ${kings ? `<div class="kings-row">${kings}</div>` : ""}`;
-}
-
 
 // ── Season-wide analytics helpers ────────────────────────────────────────────
 function computeSOS() {
