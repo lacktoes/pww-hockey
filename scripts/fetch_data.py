@@ -293,44 +293,36 @@ def _collect_player_keys(obj, found=None, depth=0):
 
 
 def fetch_week_players(league_key, week, headers, stat_ids, total_teams=12, count=20):
-    """Fetch each team's roster with weekly stats directly (type=week;week=N pattern)."""
-    all_players = []
-    seen_keys   = set()
+    """Two-step: roster fetch for player info, then batch /stats path for weekly stats."""
+
+    # ── Step 1: collect player info + keys from each team's roster ────────
+    players_by_key = {}   # player_key -> {name, pos, nhl_team, headshot, fantasy_team}
+    key_order      = []   # insertion order (team 1 first, etc.)
 
     for team_num in range(1, total_teams + 1):
-        # Same param pattern as the working /team/stats;type=week;week=N endpoint
         url = ("https://fantasysports.yahooapis.com/fantasy/v2"
-               "/team/{}.t.{}/roster;type=week;week={}".format(
-                   league_key, team_num, week))
+               "/team/{}.t.{}/roster;type=week;week={}".format(league_key, team_num, week))
         try:
             data      = api_get(url, headers)
             team_node = data["fantasy_content"]["team"]
 
-            # Fantasy team name
             fteam_name = ""
-            info_list  = team_node[0] if isinstance(team_node, list) else []
-            for item in (info_list if isinstance(info_list, list) else []):
+            for item in (team_node[0] if isinstance(team_node, list) else []):
                 if isinstance(item, dict) and "name" in item:
                     fteam_name = item["name"]
                     break
 
-            # Players are under team[1].roster.players
             details     = team_node[1] if isinstance(team_node, list) else team_node.get("1", {})
             roster_obj  = details.get("roster", {})
-            # Roster data sits under roster["0"] when week params are used
             players_raw = (roster_obj.get("players")
                            or roster_obj.get("0", {}).get("players", {}))
             n = int(players_raw.get("count", 0))
-            if team_num == 1:
-                print("    [debug] t1 '{}' count={} roster_keys={}".format(
-                    fteam_name, n, list(roster_obj.keys())[:5]))
 
             for i in range(n):
                 entry = players_raw.get(str(i), {})
                 p     = entry.get("player", [])
                 info  = p[0] if isinstance(p, list) else p.get("0", {})
 
-                # Info may be a flat dict or a list of dicts
                 if isinstance(info, dict):
                     pk       = info.get("player_key", "")
                     name_raw = info.get("name", {})
@@ -341,35 +333,71 @@ def fetch_week_players(league_key, week, headers, stat_ids, total_teams=12, coun
                     headshot = hs_raw.get("url", "") if isinstance(hs_raw, dict) else ""
                 else:
                     pk = name = pos = nhl_team = headshot = ""
-                    for item in (info if isinstance(info, list) else []):
-                        if not isinstance(item, dict):
+                    for itm in (info if isinstance(info, list) else []):
+                        if not isinstance(itm, dict):
                             continue
-                        pk       = pk       or item.get("player_key", "")
-                        if "name" in item:
-                            name = item["name"].get("full", "")
-                        pos      = pos      or item.get("display_position", "")
-                        nhl_team = nhl_team or item.get("editorial_team_abbr", "")
-                        if "headshot" in item:
-                            headshot = item["headshot"].get("url", "")
+                        pk       = pk or itm.get("player_key", "")
+                        if "name" in itm:
+                            name = itm["name"].get("full", "")
+                        pos      = pos or itm.get("display_position", "")
+                        nhl_team = nhl_team or itm.get("editorial_team_abbr", "")
+                        if "headshot" in itm:
+                            headshot = itm["headshot"].get("url", "")
 
-                if not name or pk in seen_keys:
-                    continue
-                seen_keys.add(pk)
-
-                stats = _collect_stats(p, stat_ids)
-                if team_num == 1 and i == 0:
-                    print("    [debug] t1 p0 name='{}' stats={}".format(name, stats))
-
-                all_players.append({
-                    "name": name, "pos": pos, "nhl_team": nhl_team,
-                    "headshot": headshot, "stats": stats,
-                    "fantasy_team": fteam_name,
-                })
+                if name and pk and pk not in players_by_key:
+                    players_by_key[pk] = {
+                        "name": name, "pos": pos, "nhl_team": nhl_team,
+                        "headshot": headshot, "fantasy_team": fteam_name,
+                        "stats": {},
+                    }
+                    key_order.append(pk)
             print(".", end="", flush=True)
         except Exception as exc:
-            print("    [players] t{} error wk {}: {}".format(team_num, week, exc))
+            print("    [players] roster t{} wk {}: {}".format(team_num, week, exc))
 
-    print(" wk {} {} players".format(week, len(all_players)))
+    print(" {} players found wk {}".format(len(key_order), week))
+    if not key_order:
+        return []
+
+    # ── Step 2: batch fetch stats via /stats;type=week;week=N path ────────
+    # Correct format per Yahoo API docs: path-based /stats sub-resource
+    batch_size = 25
+    first_batch = True
+    for start in range(0, len(key_order), batch_size):
+        batch = key_order[start:start + batch_size]
+        url = (
+            "https://fantasysports.yahooapis.com/fantasy/v2"
+            "/league/{league}/players;player_keys={keys}"
+            "/stats;type=week;week={week}"
+        ).format(league=league_key, keys=",".join(batch), week=week)
+        try:
+            data        = api_get(url, headers)
+            content     = _league_content(data)
+            players_raw = content.get("players", {})
+            n = int(players_raw.get("count", 0))
+            if first_batch:
+                first_batch = False
+                p0 = players_raw.get("0", {})
+                print("    [debug] stats batch count={} p0_keys={}".format(
+                    n, list(p0.get("player", [{}])[1].keys())
+                    if isinstance(p0.get("player"), list) and len(p0.get("player", [])) > 1
+                    else "player[1] missing"))
+            for i in range(n):
+                entry = players_raw.get(str(i), {})
+                p     = entry.get("player", [])
+                # Extract player_key to match back to our roster data
+                info  = p[0] if isinstance(p, list) else {}
+                pk = (info.get("player_key", "") if isinstance(info, dict)
+                      else next((x.get("player_key","") for x in info
+                                 if isinstance(x, dict) and "player_key" in x), ""))
+                stats = _collect_stats(p, stat_ids)
+                if pk in players_by_key:
+                    players_by_key[pk]["stats"] = stats
+        except Exception as exc:
+            print("    [players] stats batch wk {}: {}".format(week, exc))
+        time.sleep(0.2)
+
+    all_players = list(players_by_key.values())
     all_players.sort(key=lambda p: _player_score(p["stats"]), reverse=True)
     return all_players[:count]
 
