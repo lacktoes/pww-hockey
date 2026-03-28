@@ -34,9 +34,10 @@ from yahoo_oauth import refresh_access_token
 STAT_LABELS = ["G", "A", "PIM", "PPP", "SOG", "FW", "HIT", "BLK", "W", "SV", "SV%", "SHO"]
 CAT_SCORES  = [100, 100, 100,   100,   100,   100,  100,   100,   100, 100, 100,   50]
 
-DOCS_DIR  = Path(__file__).parent.parent / "docs"
+DOCS_DIR       = Path(__file__).parent.parent / "docs"
 DOCS_DIR.mkdir(exist_ok=True)
-DATA_FILE = DOCS_DIR / "data.json"
+DATA_FILE      = DOCS_DIR / "data.json"
+OVERRIDES_FILE = DOCS_DIR / "matchup_overrides.json"
 
 
 # --- HTTP helper ---------------------------------------------------------
@@ -350,6 +351,28 @@ def main():
             for name, mgr in week_data.pop("managers", {}).items():
                 if mgr:
                     all_logos.setdefault(name, {})["manager"] = mgr
+
+    # Apply any manual matchup overrides (preserves manual pairings across auto-updates)
+    if OVERRIDES_FILE.exists():
+        overrides = json.loads(OVERRIDES_FILE.read_text(encoding="utf-8"))
+        for wk_str, pairs in overrides.items():
+            if wk_str not in weeks_data:
+                continue
+            wk_stats = weeks_data[wk_str].get("stats", {})
+            new_matchups = []
+            # Keep any pairs not involving overridden teams
+            overridden_teams = {t for pair in pairs for t in pair}
+            for m in weeks_data[wk_str].get("matchups", []):
+                if m["t1"] not in overridden_teams and m["t2"] not in overridden_teams:
+                    new_matchups.append(m)
+            # Add the overridden pairs with recalculated cats from live stats
+            for t1, t2 in pairs:
+                if t1 in wk_stats and t2 in wk_stats:
+                    s1 = [wk_stats[t1][s] for s in STAT_LABELS]
+                    s2 = [wk_stats[t2][s] for s in STAT_LABELS]
+                    new_matchups.append({"t1": t1, "t2": t2, "cats": compare_cats(s1, s2)})
+            weeks_data[wk_str]["matchups"] = new_matchups
+            print("  Week {}: matchup override applied ({} pairs)".format(wk_str, len(pairs)))
 
     standings = build_standings(weeks_data)
 

@@ -8,7 +8,7 @@
       "logo": "https://yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/c6a4759b39ceac01f19d8fbf60517cfd352dffe21619c49fb855f7784321c065.jpg",
       "manager": "Michael"
     },
-    "Thumpers \ud83c\udfd2": {
+    "Thumpers 🏒": {
       "logo": "https://yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/455a5dd7d764de8d35c2915d3cf16a96182098625b6a17ccf710e127e8753a51.png",
       "manager": "Shane"
     },
@@ -48,7 +48,7 @@
       "logo": "https://yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/8b1bfc12b83b9a1ec6bed6cdd01b9cc68c41cce22416566e18a05a6e33ab29e2.jpg",
       "manager": "elliot"
     },
-    "Hotdog\u2019s Hitters": {
+    "Hotdog’s Hitters": {
       "logo": "https://yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/6c952d181a7087d7c38cdad05a4c133a6cfae31222fdcceaae481e17cddad5cb.jpg",
       "manager": "Matt"
     }
@@ -59,7 +59,7 @@
       "matchups": [
         {
           "t1": "MacHawks",
-          "t2": "Thumpers \ud83c\udfd2",
+          "t2": "Thumpers 🏒",
           "cats": [
             "2",
             "1",
@@ -149,7 +149,7 @@
         },
         {
           "t1": "The Jackson 5 Holes",
-          "t2": "Hotdog\u2019s Hitters",
+          "t2": "Hotdog’s Hitters",
           "cats": [
             "2",
             "2",
@@ -293,7 +293,7 @@
           "SV%": 0.868,
           "SHO": 0.0
         },
-        "Thumpers \ud83c\udfd2": {
+        "Thumpers 🏒": {
           "G": 12.0,
           "A": 16.0,
           "PIM": 25.0,
@@ -321,7 +321,7 @@
           "SV%": 0.872,
           "SHO": 1.0
         },
-        "Hotdog\u2019s Hitters": {
+        "Hotdog’s Hitters": {
           "G": 11.0,
           "A": 18.0,
           "PIM": 18.0,
@@ -346,9 +346,9 @@
         "slap and tickle": 607.21,
         "The Beezus Christs": 677.54,
         "The Jackson 5 Holes": 434.7,
-        "Thumpers \ud83c\udfd2": 643.94,
+        "Thumpers 🏒": 643.94,
         "The Cougars": 590.36,
-        "Hotdog\u2019s Hitters": 684.11
+        "Hotdog’s Hitters": 684.11
       },
       "deltas": {
         "MacHawks": null,
@@ -360,9 +360,9 @@
         "slap and tickle": null,
         "The Beezus Christs": null,
         "The Jackson 5 Holes": null,
-        "Thumpers \ud83c\udfd2": null,
+        "Thumpers 🏒": null,
         "The Cougars": null,
-        "Hotdog\u2019s Hitters": null
+        "Hotdog’s Hitters": null
       },
       "leaders": {
         "G": "Adam's Assassins",
@@ -372,17 +372,17 @@
         "SOG": "MacHawks",
         "FW": "The Cougars",
         "HIT": "MacHawks",
-        "BLK": "Hotdog\u2019s Hitters",
-        "W": "Hotdog\u2019s Hitters",
+        "BLK": "Hotdog’s Hitters",
+        "W": "Hotdog’s Hitters",
         "SV": "The Beezus Christs",
         "SV%": "The Beezus Christs",
         "SHO": "Moore Misconduct"
       },
       "leaderboard": [
         "MacHawks",
-        "Hotdog\u2019s Hitters",
+        "Hotdog’s Hitters",
         "The Beezus Christs",
-        "Thumpers \ud83c\udfd2",
+        "Thumpers 🏒",
         "Adam's Assassins",
         "slap and tickle",
         "Moore Misconduct",
@@ -434,7 +434,7 @@
         },
         {
           "t1": "Don Cherry Lemons",
-          "t2": "Thumpers \ud83c\udfd2",
+          "t2": "Thumpers 🏒",
           "cats": [
             "2",
             "2",
@@ -488,7 +488,7 @@
         },
         {
           "t1": "The Beezus Christs",
-          "t2": "Hotdog\u2019s Hitters",
+          "t2": "Hotdog’s Hitters",
           "cats": [
             "1",
             "2",
@@ -632,7 +632,7 @@
           "SV%": 0.902,
           "SHO": 0.0
         },
-        "Thumpers \ud83c\udfd2": {
+        "Thumpers 🏒": {
           "G": 17.0,
           "A": 24.0,
           "PIM": 34.0,
@@ -660,7 +660,7 @@
           "SV%": 0.883,
           "SHO": 0.0
         },
-        "Hotdog\u2019s Hitters": {
+        "Hotdog’s Hitters": {
           "G": 13.0,
           "A": 20.0,
           "PIM": 20.0,
@@ -685,9 +685,9 @@
         "slap and tickle": 526.99,
         "The Beezus Christs": 383.35,
         "The Jackson 5 Holes": 495.95,
-        "Thumpers \ud83c\udfd2": 604.07,
+        "Thumpers 🏒": 604.07,
         "The Cougars": 510.39,
-        "Hotdog\u2019s Hitters": 451.19
+        "Hotdog’s Hitters": 451.19
       },
       "deltas": {
         "MacHawks": null,
@@ -699,9 +699,9 @@
         "slap and tickle": null,
         "The Beezus Christs": null,
         "The Jackson 5 Holes": null,
-        "Thumpers \ud83c\udfd2": null,
+        "Thumpers 🏒": null,
         "The Cougars": null,
-        "Hotdog\u2019s Hitters": null
+        "Hotdog’s Hitters": null
       },
       "leaders": {
         "G": "The Beezus Christs",
@@ -710,7 +710,7 @@
         "PPP": "slap and tickle",
         "SOG": "Moore Misconduct",
         "FW": "The Cougars",
-        "HIT": "Hotdog\u2019s Hitters",
+        "HIT": "Hotdog’s Hitters",
         "BLK": "Don Cherry Lemons",
         "W": "MacHawks",
         "SV": "The Cougars",
@@ -719,7 +719,7 @@
       },
       "leaderboard": [
         "MacHawks",
-        "Thumpers \ud83c\udfd2",
+        "Thumpers 🏒",
         "Ball Bag's Bandits",
         "slap and tickle",
         "The Cougars",
@@ -728,7 +728,7 @@
         "Adam's Assassins",
         "Don Cherry Lemons",
         "Jts blacktastics",
-        "Hotdog\u2019s Hitters",
+        "Hotdog’s Hitters",
         "The Beezus Christs"
       ]
     },
@@ -737,7 +737,7 @@
       "matchups": [
         {
           "t1": "MacHawks",
-          "t2": "Hotdog\u2019s Hitters",
+          "t2": "Hotdog’s Hitters",
           "cats": [
             "2",
             "2",
@@ -826,7 +826,7 @@
           ]
         },
         {
-          "t1": "Thumpers \ud83c\udfd2",
+          "t1": "Thumpers 🏒",
           "t2": "The Cougars",
           "cats": [
             "2",
@@ -971,7 +971,7 @@
           "SV%": 0.904,
           "SHO": 0.0
         },
-        "Thumpers \ud83c\udfd2": {
+        "Thumpers 🏒": {
           "G": 11.0,
           "A": 28.0,
           "PIM": 22.0,
@@ -999,7 +999,7 @@
           "SV%": 0.908,
           "SHO": 0.0
         },
-        "Hotdog\u2019s Hitters": {
+        "Hotdog’s Hitters": {
           "G": 21.0,
           "A": 31.0,
           "PIM": 18.0,
@@ -1024,9 +1024,9 @@
         "slap and tickle": 451.41,
         "The Beezus Christs": 536.1,
         "The Jackson 5 Holes": 532.82,
-        "Thumpers \ud83c\udfd2": 259.42,
+        "Thumpers 🏒": 259.42,
         "The Cougars": 635.29,
-        "Hotdog\u2019s Hitters": 740.33
+        "Hotdog’s Hitters": 740.33
       },
       "deltas": {
         "MacHawks": null,
@@ -1038,9 +1038,9 @@
         "slap and tickle": null,
         "The Beezus Christs": null,
         "The Jackson 5 Holes": null,
-        "Thumpers \ud83c\udfd2": null,
+        "Thumpers 🏒": null,
         "The Cougars": null,
-        "Hotdog\u2019s Hitters": null
+        "Hotdog’s Hitters": null
       },
       "leaders": {
         "G": "The Beezus Christs",
@@ -1048,16 +1048,16 @@
         "PIM": "MacHawks",
         "PPP": "The Jackson 5 Holes",
         "SOG": "Moore Misconduct",
-        "FW": "Hotdog\u2019s Hitters",
+        "FW": "Hotdog’s Hitters",
         "HIT": "Adam's Assassins",
         "BLK": "Adam's Assassins",
         "W": "MacHawks",
         "SV": "Adam's Assassins",
         "SV%": "Ball Bag's Bandits",
-        "SHO": "Hotdog\u2019s Hitters"
+        "SHO": "Hotdog’s Hitters"
       },
       "leaderboard": [
-        "Hotdog\u2019s Hitters",
+        "Hotdog’s Hitters",
         "The Cougars",
         "Don Cherry Lemons",
         "MacHawks",
@@ -1068,7 +1068,7 @@
         "The Jackson 5 Holes",
         "slap and tickle",
         "Jts blacktastics",
-        "Thumpers \ud83c\udfd2"
+        "Thumpers 🏒"
       ]
     },
     "4": {
@@ -1094,7 +1094,7 @@
         },
         {
           "t1": "Adam's Assassins",
-          "t2": "Thumpers \ud83c\udfd2",
+          "t2": "Thumpers 🏒",
           "cats": [
             "2",
             "1",
@@ -1112,7 +1112,7 @@
         },
         {
           "t1": "Don Cherry Lemons",
-          "t2": "Hotdog\u2019s Hitters",
+          "t2": "Hotdog’s Hitters",
           "cats": [
             "2",
             "T",
@@ -1310,7 +1310,7 @@
           "SV%": 0.924,
           "SHO": 1.0
         },
-        "Thumpers \ud83c\udfd2": {
+        "Thumpers 🏒": {
           "G": 23.0,
           "A": 26.0,
           "PIM": 22.0,
@@ -1338,7 +1338,7 @@
           "SV%": 0.906,
           "SHO": 0.0
         },
-        "Hotdog\u2019s Hitters": {
+        "Hotdog’s Hitters": {
           "G": 13.0,
           "A": 18.0,
           "PIM": 32.0,
@@ -1363,9 +1363,9 @@
         "slap and tickle": 331.15,
         "The Beezus Christs": 370.83,
         "The Jackson 5 Holes": 583.71,
-        "Thumpers \ud83c\udfd2": 547.15,
+        "Thumpers 🏒": 547.15,
         "The Cougars": 596.1,
-        "Hotdog\u2019s Hitters": 567.43
+        "Hotdog’s Hitters": 567.43
       },
       "deltas": {
         "MacHawks": null,
@@ -1377,18 +1377,18 @@
         "slap and tickle": null,
         "The Beezus Christs": null,
         "The Jackson 5 Holes": null,
-        "Thumpers \ud83c\udfd2": null,
+        "Thumpers 🏒": null,
         "The Cougars": null,
-        "Hotdog\u2019s Hitters": null
+        "Hotdog’s Hitters": null
       },
       "leaders": {
-        "G": "Thumpers \ud83c\udfd2",
+        "G": "Thumpers 🏒",
         "A": "The Jackson 5 Holes",
         "PIM": "Ball Bag's Bandits",
         "PPP": "slap and tickle",
         "SOG": "Adam's Assassins",
-        "FW": "Hotdog\u2019s Hitters",
-        "HIT": "Hotdog\u2019s Hitters",
+        "FW": "Hotdog’s Hitters",
+        "HIT": "Hotdog’s Hitters",
         "BLK": "The Cougars",
         "W": "The Cougars",
         "SV": "The Jackson 5 Holes",
@@ -1399,8 +1399,8 @@
         "The Cougars",
         "The Jackson 5 Holes",
         "Adam's Assassins",
-        "Hotdog\u2019s Hitters",
-        "Thumpers \ud83c\udfd2",
+        "Hotdog’s Hitters",
+        "Thumpers 🏒",
         "MacHawks",
         "Moore Misconduct",
         "Ball Bag's Bandits",
@@ -1504,8 +1504,8 @@
           ]
         },
         {
-          "t1": "Thumpers \ud83c\udfd2",
-          "t2": "Hotdog\u2019s Hitters",
+          "t1": "Thumpers 🏒",
+          "t2": "Hotdog’s Hitters",
           "cats": [
             "2",
             "1",
@@ -1649,7 +1649,7 @@
           "SV%": 0.881,
           "SHO": 1.0
         },
-        "Thumpers \ud83c\udfd2": {
+        "Thumpers 🏒": {
           "G": 11.0,
           "A": 24.0,
           "PIM": 22.0,
@@ -1677,7 +1677,7 @@
           "SV%": 0.91,
           "SHO": 0.0
         },
-        "Hotdog\u2019s Hitters": {
+        "Hotdog’s Hitters": {
           "G": 18.0,
           "A": 19.0,
           "PIM": 24.0,
@@ -1702,9 +1702,9 @@
         "slap and tickle": 472.13,
         "The Beezus Christs": 373.15,
         "The Jackson 5 Holes": 590.08,
-        "Thumpers \ud83c\udfd2": 570.52,
+        "Thumpers 🏒": 570.52,
         "The Cougars": 705.64,
-        "Hotdog\u2019s Hitters": 707.28
+        "Hotdog’s Hitters": 707.28
       },
       "deltas": {
         "MacHawks": null,
@@ -1716,9 +1716,9 @@
         "slap and tickle": null,
         "The Beezus Christs": null,
         "The Jackson 5 Holes": null,
-        "Thumpers \ud83c\udfd2": null,
+        "Thumpers 🏒": null,
         "The Cougars": null,
-        "Hotdog\u2019s Hitters": null
+        "Hotdog’s Hitters": null
       },
       "leaders": {
         "G": "Moore Misconduct",
@@ -1727,7 +1727,7 @@
         "PPP": "Moore Misconduct",
         "SOG": "slap and tickle",
         "FW": "The Cougars",
-        "HIT": "Hotdog\u2019s Hitters",
+        "HIT": "Hotdog’s Hitters",
         "BLK": "Moore Misconduct",
         "W": "Moore Misconduct",
         "SV": "The Cougars",
@@ -1736,12 +1736,12 @@
       },
       "leaderboard": [
         "Moore Misconduct",
-        "Hotdog\u2019s Hitters",
+        "Hotdog’s Hitters",
         "The Cougars",
         "MacHawks",
         "Adam's Assassins",
         "The Jackson 5 Holes",
-        "Thumpers \ud83c\udfd2",
+        "Thumpers 🏒",
         "Don Cherry Lemons",
         "Ball Bag's Bandits",
         "slap and tickle",
@@ -1772,7 +1772,7 @@
         },
         {
           "t1": "Adam's Assassins",
-          "t2": "Hotdog\u2019s Hitters",
+          "t2": "Hotdog’s Hitters",
           "cats": [
             "1",
             "1",
@@ -1790,7 +1790,7 @@
         },
         {
           "t1": "Ball Bag's Bandits",
-          "t2": "Thumpers \ud83c\udfd2",
+          "t2": "Thumpers 🏒",
           "cats": [
             "2",
             "1",
@@ -1988,7 +1988,7 @@
           "SV%": 0.92,
           "SHO": 0.0
         },
-        "Thumpers \ud83c\udfd2": {
+        "Thumpers 🏒": {
           "G": 23.0,
           "A": 19.0,
           "PIM": 14.0,
@@ -2016,7 +2016,7 @@
           "SV%": 0.917,
           "SHO": 0.0
         },
-        "Hotdog\u2019s Hitters": {
+        "Hotdog’s Hitters": {
           "G": 9.0,
           "A": 14.0,
           "PIM": 22.0,
@@ -2041,9 +2041,9 @@
         "slap and tickle": 465.7,
         "The Beezus Christs": 422.15,
         "The Jackson 5 Holes": 643.64,
-        "Thumpers \ud83c\udfd2": 352.43,
+        "Thumpers 🏒": 352.43,
         "The Cougars": 665.31,
-        "Hotdog\u2019s Hitters": 424.91
+        "Hotdog’s Hitters": 424.91
       },
       "deltas": {
         "MacHawks": null,
@@ -2055,18 +2055,18 @@
         "slap and tickle": null,
         "The Beezus Christs": null,
         "The Jackson 5 Holes": null,
-        "Thumpers \ud83c\udfd2": null,
+        "Thumpers 🏒": null,
         "The Cougars": null,
-        "Hotdog\u2019s Hitters": null
+        "Hotdog’s Hitters": null
       },
       "leaders": {
-        "G": "Thumpers \ud83c\udfd2",
+        "G": "Thumpers 🏒",
         "A": "slap and tickle",
         "PIM": "The Jackson 5 Holes",
         "PPP": "Moore Misconduct",
         "SOG": "slap and tickle",
         "FW": "MacHawks",
-        "HIT": "Hotdog\u2019s Hitters",
+        "HIT": "Hotdog’s Hitters",
         "BLK": "Don Cherry Lemons",
         "W": "The Beezus Christs",
         "SV": "The Beezus Christs",
@@ -2082,9 +2082,9 @@
         "Don Cherry Lemons",
         "MacHawks",
         "slap and tickle",
-        "Hotdog\u2019s Hitters",
+        "Hotdog’s Hitters",
         "The Beezus Christs",
-        "Thumpers \ud83c\udfd2",
+        "Thumpers 🏒",
         "Jts blacktastics"
       ]
     },
@@ -2147,7 +2147,7 @@
         },
         {
           "t1": "Moore Misconduct",
-          "t2": "Thumpers \ud83c\udfd2",
+          "t2": "Thumpers 🏒",
           "cats": [
             "1",
             "1",
@@ -2183,7 +2183,7 @@
         },
         {
           "t1": "The Cougars",
-          "t2": "Hotdog\u2019s Hitters",
+          "t2": "Hotdog’s Hitters",
           "cats": [
             "2",
             "2",
@@ -2327,7 +2327,7 @@
           "SV%": 0.914,
           "SHO": 0.0
         },
-        "Thumpers \ud83c\udfd2": {
+        "Thumpers 🏒": {
           "G": 10.0,
           "A": 20.0,
           "PIM": 31.0,
@@ -2355,7 +2355,7 @@
           "SV%": 0.949,
           "SHO": 1.0
         },
-        "Hotdog\u2019s Hitters": {
+        "Hotdog’s Hitters": {
           "G": 17.0,
           "A": 19.0,
           "PIM": 36.0,
@@ -2380,9 +2380,9 @@
         "slap and tickle": 552.19,
         "The Beezus Christs": 332.09,
         "The Jackson 5 Holes": 363.87,
-        "Thumpers \ud83c\udfd2": 377.36,
+        "Thumpers 🏒": 377.36,
         "The Cougars": 559.25,
-        "Hotdog\u2019s Hitters": 640.78
+        "Hotdog’s Hitters": 640.78
       },
       "deltas": {
         "MacHawks": null,
@@ -2394,9 +2394,9 @@
         "slap and tickle": null,
         "The Beezus Christs": null,
         "The Jackson 5 Holes": null,
-        "Thumpers \ud83c\udfd2": null,
+        "Thumpers 🏒": null,
         "The Cougars": null,
-        "Hotdog\u2019s Hitters": null
+        "Hotdog’s Hitters": null
       },
       "leaders": {
         "G": "Moore Misconduct",
@@ -2405,23 +2405,23 @@
         "PPP": "slap and tickle",
         "SOG": "slap and tickle",
         "FW": "The Cougars",
-        "HIT": "Hotdog\u2019s Hitters",
+        "HIT": "Hotdog’s Hitters",
         "BLK": "Ball Bag's Bandits",
         "W": "Moore Misconduct",
         "SV": "Moore Misconduct",
         "SV%": "Ball Bag's Bandits",
-        "SHO": "Thumpers \ud83c\udfd2"
+        "SHO": "Thumpers 🏒"
       },
       "leaderboard": [
         "Moore Misconduct",
-        "Hotdog\u2019s Hitters",
+        "Hotdog’s Hitters",
         "The Cougars",
         "slap and tickle",
         "Ball Bag's Bandits",
         "MacHawks",
         "Jts blacktastics",
         "Adam's Assassins",
-        "Thumpers \ud83c\udfd2",
+        "Thumpers 🏒",
         "The Jackson 5 Holes",
         "Don Cherry Lemons",
         "The Beezus Christs"
@@ -2468,7 +2468,7 @@
         },
         {
           "t1": "Ball Bag's Bandits",
-          "t2": "Hotdog\u2019s Hitters",
+          "t2": "Hotdog’s Hitters",
           "cats": [
             "2",
             "1",
@@ -2504,7 +2504,7 @@
         },
         {
           "t1": "Jts blacktastics",
-          "t2": "Thumpers \ud83c\udfd2",
+          "t2": "Thumpers 🏒",
           "cats": [
             "2",
             "2",
@@ -2666,7 +2666,7 @@
           "SV%": 0.904,
           "SHO": 0.0
         },
-        "Thumpers \ud83c\udfd2": {
+        "Thumpers 🏒": {
           "G": 18.0,
           "A": 27.0,
           "PIM": 22.0,
@@ -2694,7 +2694,7 @@
           "SV%": 0.949,
           "SHO": 1.0
         },
-        "Hotdog\u2019s Hitters": {
+        "Hotdog’s Hitters": {
           "G": 19.0,
           "A": 20.0,
           "PIM": 28.0,
@@ -2719,9 +2719,9 @@
         "slap and tickle": 589.09,
         "The Beezus Christs": 515.06,
         "The Jackson 5 Holes": 384.93,
-        "Thumpers \ud83c\udfd2": 695.64,
+        "Thumpers 🏒": 695.64,
         "The Cougars": 745.98,
-        "Hotdog\u2019s Hitters": 452.21
+        "Hotdog’s Hitters": 452.21
       },
       "deltas": {
         "MacHawks": null,
@@ -2733,9 +2733,9 @@
         "slap and tickle": null,
         "The Beezus Christs": null,
         "The Jackson 5 Holes": null,
-        "Thumpers \ud83c\udfd2": null,
+        "Thumpers 🏒": null,
         "The Cougars": null,
-        "Hotdog\u2019s Hitters": null
+        "Hotdog’s Hitters": null
       },
       "leaders": {
         "G": "Moore Misconduct",
@@ -2754,12 +2754,12 @@
       "leaderboard": [
         "The Cougars",
         "Adam's Assassins",
-        "Thumpers \ud83c\udfd2",
+        "Thumpers 🏒",
         "Moore Misconduct",
         "MacHawks",
         "slap and tickle",
         "The Beezus Christs",
-        "Hotdog\u2019s Hitters",
+        "Hotdog’s Hitters",
         "The Jackson 5 Holes",
         "Don Cherry Lemons",
         "Jts blacktastics",
@@ -2843,7 +2843,7 @@
         },
         {
           "t1": "Moore Misconduct",
-          "t2": "Hotdog\u2019s Hitters",
+          "t2": "Hotdog’s Hitters",
           "cats": [
             "2",
             "2",
@@ -2861,7 +2861,7 @@
         },
         {
           "t1": "slap and tickle",
-          "t2": "Thumpers \ud83c\udfd2",
+          "t2": "Thumpers 🏒",
           "cats": [
             "T",
             "2",
@@ -3005,7 +3005,7 @@
           "SV%": 0.956,
           "SHO": 2.0
         },
-        "Thumpers \ud83c\udfd2": {
+        "Thumpers 🏒": {
           "G": 10.0,
           "A": 27.0,
           "PIM": 32.0,
@@ -3033,7 +3033,7 @@
           "SV%": 0.883,
           "SHO": 0.0
         },
-        "Hotdog\u2019s Hitters": {
+        "Hotdog’s Hitters": {
           "G": 17.0,
           "A": 34.0,
           "PIM": 18.0,
@@ -3058,9 +3058,9 @@
         "slap and tickle": 562.12,
         "The Beezus Christs": 570.79,
         "The Jackson 5 Holes": 751.99,
-        "Thumpers \ud83c\udfd2": 581.0,
+        "Thumpers 🏒": 581.0,
         "The Cougars": 475.69,
-        "Hotdog\u2019s Hitters": 584.16
+        "Hotdog’s Hitters": 584.16
       },
       "deltas": {
         "MacHawks": null,
@@ -3072,17 +3072,17 @@
         "slap and tickle": null,
         "The Beezus Christs": null,
         "The Jackson 5 Holes": null,
-        "Thumpers \ud83c\udfd2": null,
+        "Thumpers 🏒": null,
         "The Cougars": null,
-        "Hotdog\u2019s Hitters": null
+        "Hotdog’s Hitters": null
       },
       "leaders": {
-        "G": "Hotdog\u2019s Hitters",
-        "A": "Hotdog\u2019s Hitters",
+        "G": "Hotdog’s Hitters",
+        "A": "Hotdog’s Hitters",
         "PIM": "MacHawks",
         "PPP": "Don Cherry Lemons",
         "SOG": "Adam's Assassins",
-        "FW": "Hotdog\u2019s Hitters",
+        "FW": "Hotdog’s Hitters",
         "HIT": "The Cougars",
         "BLK": "The Cougars",
         "W": "Don Cherry Lemons",
@@ -3095,8 +3095,8 @@
         "MacHawks",
         "Don Cherry Lemons",
         "Adam's Assassins",
-        "Hotdog\u2019s Hitters",
-        "Thumpers \ud83c\udfd2",
+        "Hotdog’s Hitters",
+        "Thumpers 🏒",
         "The Beezus Christs",
         "slap and tickle",
         "Moore Misconduct",
@@ -3182,7 +3182,7 @@
         },
         {
           "t1": "Jts blacktastics",
-          "t2": "Hotdog\u2019s Hitters",
+          "t2": "Hotdog’s Hitters",
           "cats": [
             "2",
             "2",
@@ -3200,7 +3200,7 @@
         },
         {
           "t1": "The Jackson 5 Holes",
-          "t2": "Thumpers \ud83c\udfd2",
+          "t2": "Thumpers 🏒",
           "cats": [
             "1",
             "1",
@@ -3344,7 +3344,7 @@
           "SV%": 0.91,
           "SHO": 0.0
         },
-        "Thumpers \ud83c\udfd2": {
+        "Thumpers 🏒": {
           "G": 8.0,
           "A": 25.0,
           "PIM": 13.0,
@@ -3372,7 +3372,7 @@
           "SV%": 0.872,
           "SHO": 0.0
         },
-        "Hotdog\u2019s Hitters": {
+        "Hotdog’s Hitters": {
           "G": 17.0,
           "A": 31.0,
           "PIM": 26.0,
@@ -3397,9 +3397,9 @@
         "slap and tickle": 436.94,
         "The Beezus Christs": 213.75,
         "The Jackson 5 Holes": 612.64,
-        "Thumpers \ud83c\udfd2": 570.45,
+        "Thumpers 🏒": 570.45,
         "The Cougars": 484.09,
-        "Hotdog\u2019s Hitters": 749.19
+        "Hotdog’s Hitters": 749.19
       },
       "deltas": {
         "MacHawks": null,
@@ -3411,30 +3411,30 @@
         "slap and tickle": null,
         "The Beezus Christs": null,
         "The Jackson 5 Holes": null,
-        "Thumpers \ud83c\udfd2": null,
+        "Thumpers 🏒": null,
         "The Cougars": null,
-        "Hotdog\u2019s Hitters": null
+        "Hotdog’s Hitters": null
       },
       "leaders": {
         "G": "MacHawks",
         "A": "The Jackson 5 Holes",
         "PIM": "Jts blacktastics",
-        "PPP": "Hotdog\u2019s Hitters",
-        "SOG": "Hotdog\u2019s Hitters",
+        "PPP": "Hotdog’s Hitters",
+        "SOG": "Hotdog’s Hitters",
         "FW": "MacHawks",
         "HIT": "Jts blacktastics",
         "BLK": "The Cougars",
-        "W": "Thumpers \ud83c\udfd2",
+        "W": "Thumpers 🏒",
         "SV": "MacHawks",
-        "SV%": "Thumpers \ud83c\udfd2",
+        "SV%": "Thumpers 🏒",
         "SHO": "MacHawks"
       },
       "leaderboard": [
         "MacHawks",
-        "Hotdog\u2019s Hitters",
+        "Hotdog’s Hitters",
         "Moore Misconduct",
         "The Jackson 5 Holes",
-        "Thumpers \ud83c\udfd2",
+        "Thumpers 🏒",
         "Jts blacktastics",
         "Don Cherry Lemons",
         "The Cougars",
@@ -3521,7 +3521,7 @@
         },
         {
           "t1": "slap and tickle",
-          "t2": "Hotdog\u2019s Hitters",
+          "t2": "Hotdog’s Hitters",
           "cats": [
             "2",
             "2",
@@ -3539,7 +3539,7 @@
         },
         {
           "t1": "The Beezus Christs",
-          "t2": "Thumpers \ud83c\udfd2",
+          "t2": "Thumpers 🏒",
           "cats": [
             "2",
             "2",
@@ -3683,7 +3683,7 @@
           "SV%": 0.93,
           "SHO": 0.0
         },
-        "Thumpers \ud83c\udfd2": {
+        "Thumpers 🏒": {
           "G": 17.0,
           "A": 30.0,
           "PIM": 36.0,
@@ -3711,7 +3711,7 @@
           "SV%": 0.917,
           "SHO": 0.0
         },
-        "Hotdog\u2019s Hitters": {
+        "Hotdog’s Hitters": {
           "G": 17.0,
           "A": 28.0,
           "PIM": 27.0,
@@ -3736,9 +3736,9 @@
         "slap and tickle": 460.87,
         "The Beezus Christs": 261.14,
         "The Jackson 5 Holes": 635.72,
-        "Thumpers \ud83c\udfd2": 808.44,
+        "Thumpers 🏒": 808.44,
         "The Cougars": 654.69,
-        "Hotdog\u2019s Hitters": 661.87
+        "Hotdog’s Hitters": 661.87
       },
       "deltas": {
         "MacHawks": null,
@@ -3750,27 +3750,27 @@
         "slap and tickle": null,
         "The Beezus Christs": null,
         "The Jackson 5 Holes": null,
-        "Thumpers \ud83c\udfd2": null,
+        "Thumpers 🏒": null,
         "The Cougars": null,
-        "Hotdog\u2019s Hitters": null
+        "Hotdog’s Hitters": null
       },
       "leaders": {
         "G": "Moore Misconduct",
         "A": "The Jackson 5 Holes",
         "PIM": "Adam's Assassins",
         "PPP": "The Jackson 5 Holes",
-        "SOG": "Thumpers \ud83c\udfd2",
+        "SOG": "Thumpers 🏒",
         "FW": "The Cougars",
         "HIT": "Jts blacktastics",
         "BLK": "Don Cherry Lemons",
-        "W": "Hotdog\u2019s Hitters",
+        "W": "Hotdog’s Hitters",
         "SV": "slap and tickle",
         "SV%": "slap and tickle",
         "SHO": "Ball Bag's Bandits"
       },
       "leaderboard": [
-        "Thumpers \ud83c\udfd2",
-        "Hotdog\u2019s Hitters",
+        "Thumpers 🏒",
+        "Hotdog’s Hitters",
         "The Cougars",
         "The Jackson 5 Holes",
         "Adam's Assassins",
@@ -3788,7 +3788,7 @@
       "matchups": [
         {
           "t1": "MacHawks",
-          "t2": "Thumpers \ud83c\udfd2",
+          "t2": "Thumpers 🏒",
           "cats": [
             "1",
             "2",
@@ -3878,7 +3878,7 @@
         },
         {
           "t1": "The Jackson 5 Holes",
-          "t2": "Hotdog\u2019s Hitters",
+          "t2": "Hotdog’s Hitters",
           "cats": [
             "2",
             "1",
@@ -4022,7 +4022,7 @@
           "SV%": 0.903,
           "SHO": 0.0
         },
-        "Thumpers \ud83c\udfd2": {
+        "Thumpers 🏒": {
           "G": 9.0,
           "A": 12.0,
           "PIM": 18.0,
@@ -4050,7 +4050,7 @@
           "SV%": 0.926,
           "SHO": 0.0
         },
-        "Hotdog\u2019s Hitters": {
+        "Hotdog’s Hitters": {
           "G": 16.0,
           "A": 8.0,
           "PIM": 18.0,
@@ -4075,9 +4075,9 @@
         "slap and tickle": 488.77,
         "The Beezus Christs": 505.44,
         "The Jackson 5 Holes": 663.06,
-        "Thumpers \ud83c\udfd2": 472.85,
+        "Thumpers 🏒": 472.85,
         "The Cougars": 650.65,
-        "Hotdog\u2019s Hitters": 606.49
+        "Hotdog’s Hitters": 606.49
       },
       "deltas": {
         "MacHawks": null,
@@ -4089,12 +4089,12 @@
         "slap and tickle": null,
         "The Beezus Christs": null,
         "The Jackson 5 Holes": null,
-        "Thumpers \ud83c\udfd2": null,
+        "Thumpers 🏒": null,
         "The Cougars": null,
-        "Hotdog\u2019s Hitters": null
+        "Hotdog’s Hitters": null
       },
       "leaders": {
-        "G": "Hotdog\u2019s Hitters",
+        "G": "Hotdog’s Hitters",
         "A": "Adam's Assassins",
         "PIM": "Ball Bag's Bandits",
         "PPP": "Don Cherry Lemons",
@@ -4112,11 +4112,11 @@
         "MacHawks",
         "The Cougars",
         "Don Cherry Lemons",
-        "Hotdog\u2019s Hitters",
+        "Hotdog’s Hitters",
         "Adam's Assassins",
         "The Beezus Christs",
         "slap and tickle",
-        "Thumpers \ud83c\udfd2",
+        "Thumpers 🏒",
         "Jts blacktastics",
         "Moore Misconduct",
         "Ball Bag's Bandits"
@@ -4163,7 +4163,7 @@
         },
         {
           "t1": "Don Cherry Lemons",
-          "t2": "Thumpers \ud83c\udfd2",
+          "t2": "Thumpers 🏒",
           "cats": [
             "1",
             "1",
@@ -4217,7 +4217,7 @@
         },
         {
           "t1": "The Beezus Christs",
-          "t2": "Hotdog\u2019s Hitters",
+          "t2": "Hotdog’s Hitters",
           "cats": [
             "2",
             "2",
@@ -4361,7 +4361,7 @@
           "SV%": 0.877,
           "SHO": 0.0
         },
-        "Thumpers \ud83c\udfd2": {
+        "Thumpers 🏒": {
           "G": 17.0,
           "A": 20.0,
           "PIM": 31.0,
@@ -4389,7 +4389,7 @@
           "SV%": 0.905,
           "SHO": 1.0
         },
-        "Hotdog\u2019s Hitters": {
+        "Hotdog’s Hitters": {
           "G": 12.0,
           "A": 21.0,
           "PIM": 20.0,
@@ -4414,9 +4414,9 @@
         "slap and tickle": 421.23,
         "The Beezus Christs": 428.62,
         "The Jackson 5 Holes": 572.07,
-        "Thumpers \ud83c\udfd2": 414.25,
+        "Thumpers 🏒": 414.25,
         "The Cougars": 851.88,
-        "Hotdog\u2019s Hitters": 417.69
+        "Hotdog’s Hitters": 417.69
       },
       "deltas": {
         "MacHawks": null,
@@ -4428,9 +4428,9 @@
         "slap and tickle": null,
         "The Beezus Christs": null,
         "The Jackson 5 Holes": null,
-        "Thumpers \ud83c\udfd2": null,
+        "Thumpers 🏒": null,
         "The Cougars": null,
-        "Hotdog\u2019s Hitters": null
+        "Hotdog’s Hitters": null
       },
       "leaders": {
         "G": "The Cougars",
@@ -4455,8 +4455,8 @@
         "Ball Bag's Bandits",
         "The Beezus Christs",
         "slap and tickle",
-        "Hotdog\u2019s Hitters",
-        "Thumpers \ud83c\udfd2",
+        "Hotdog’s Hitters",
+        "Thumpers 🏒",
         "Jts blacktastics",
         "Moore Misconduct"
       ]
@@ -4466,7 +4466,7 @@
       "matchups": [
         {
           "t1": "MacHawks",
-          "t2": "Hotdog\u2019s Hitters",
+          "t2": "Hotdog’s Hitters",
           "cats": [
             "2",
             "2",
@@ -4555,7 +4555,7 @@
           ]
         },
         {
-          "t1": "Thumpers \ud83c\udfd2",
+          "t1": "Thumpers 🏒",
           "t2": "The Cougars",
           "cats": [
             "T",
@@ -4700,7 +4700,7 @@
           "SV%": 0.856,
           "SHO": 0.0
         },
-        "Thumpers \ud83c\udfd2": {
+        "Thumpers 🏒": {
           "G": 14.0,
           "A": 23.0,
           "PIM": 38.0,
@@ -4728,7 +4728,7 @@
           "SV%": 0.898,
           "SHO": 0.0
         },
-        "Hotdog\u2019s Hitters": {
+        "Hotdog’s Hitters": {
           "G": 17.0,
           "A": 26.0,
           "PIM": 14.0,
@@ -4753,9 +4753,9 @@
         "slap and tickle": 463.39,
         "The Beezus Christs": 262.88,
         "The Jackson 5 Holes": 378.71,
-        "Thumpers \ud83c\udfd2": 498.85,
+        "Thumpers 🏒": 498.85,
         "The Cougars": 747.74,
-        "Hotdog\u2019s Hitters": 503.41
+        "Hotdog’s Hitters": 503.41
       },
       "deltas": {
         "MacHawks": null,
@@ -4767,15 +4767,15 @@
         "slap and tickle": null,
         "The Beezus Christs": null,
         "The Jackson 5 Holes": null,
-        "Thumpers \ud83c\udfd2": null,
+        "Thumpers 🏒": null,
         "The Cougars": null,
-        "Hotdog\u2019s Hitters": null
+        "Hotdog’s Hitters": null
       },
       "leaders": {
-        "G": "Hotdog\u2019s Hitters",
+        "G": "Hotdog’s Hitters",
         "A": "Ball Bag's Bandits",
         "PIM": "The Cougars",
-        "PPP": "Hotdog\u2019s Hitters",
+        "PPP": "Hotdog’s Hitters",
         "SOG": "slap and tickle",
         "FW": "The Cougars",
         "HIT": "The Cougars",
@@ -4790,8 +4790,8 @@
         "Don Cherry Lemons",
         "MacHawks",
         "Jts blacktastics",
-        "Hotdog\u2019s Hitters",
-        "Thumpers \ud83c\udfd2",
+        "Hotdog’s Hitters",
+        "Thumpers 🏒",
         "slap and tickle",
         "The Jackson 5 Holes",
         "Moore Misconduct",
@@ -4823,7 +4823,7 @@
         },
         {
           "t1": "Adam's Assassins",
-          "t2": "Thumpers \ud83c\udfd2",
+          "t2": "Thumpers 🏒",
           "cats": [
             "2",
             "1",
@@ -4841,7 +4841,7 @@
         },
         {
           "t1": "Don Cherry Lemons",
-          "t2": "Hotdog\u2019s Hitters",
+          "t2": "Hotdog’s Hitters",
           "cats": [
             "1",
             "2",
@@ -5039,7 +5039,7 @@
           "SV%": 0.913,
           "SHO": 0.0
         },
-        "Thumpers \ud83c\udfd2": {
+        "Thumpers 🏒": {
           "G": 21.0,
           "A": 30.0,
           "PIM": 16.0,
@@ -5067,7 +5067,7 @@
           "SV%": 0.94,
           "SHO": 0.0
         },
-        "Hotdog\u2019s Hitters": {
+        "Hotdog’s Hitters": {
           "G": 14.0,
           "A": 28.0,
           "PIM": 10.0,
@@ -5092,9 +5092,9 @@
         "slap and tickle": 526.17,
         "The Beezus Christs": 337.47,
         "The Jackson 5 Holes": 614.91,
-        "Thumpers \ud83c\udfd2": 605.88,
+        "Thumpers 🏒": 605.88,
         "The Cougars": 695.83,
-        "Hotdog\u2019s Hitters": 563.48
+        "Hotdog’s Hitters": 563.48
       },
       "deltas": {
         "MacHawks": null,
@@ -5106,9 +5106,9 @@
         "slap and tickle": null,
         "The Beezus Christs": null,
         "The Jackson 5 Holes": null,
-        "Thumpers \ud83c\udfd2": null,
+        "Thumpers 🏒": null,
         "The Cougars": null,
-        "Hotdog\u2019s Hitters": null
+        "Hotdog’s Hitters": null
       },
       "leaders": {
         "G": "Don Cherry Lemons",
@@ -5130,8 +5130,8 @@
         "The Cougars",
         "Ball Bag's Bandits",
         "The Jackson 5 Holes",
-        "Thumpers \ud83c\udfd2",
-        "Hotdog\u2019s Hitters",
+        "Thumpers 🏒",
+        "Hotdog’s Hitters",
         "slap and tickle",
         "MacHawks",
         "Jts blacktastics",
@@ -5233,8 +5233,8 @@
           ]
         },
         {
-          "t1": "Thumpers \ud83c\udfd2",
-          "t2": "Hotdog\u2019s Hitters",
+          "t1": "Thumpers 🏒",
+          "t2": "Hotdog’s Hitters",
           "cats": [
             "1",
             "1",
@@ -5378,7 +5378,7 @@
           "SV%": 0.856,
           "SHO": 0.0
         },
-        "Thumpers \ud83c\udfd2": {
+        "Thumpers 🏒": {
           "G": 15.0,
           "A": 34.0,
           "PIM": 30.0,
@@ -5406,7 +5406,7 @@
           "SV%": 0.919,
           "SHO": 0.0
         },
-        "Hotdog\u2019s Hitters": {
+        "Hotdog’s Hitters": {
           "G": 14.0,
           "A": 15.0,
           "PIM": 36.0,
@@ -5431,9 +5431,9 @@
         "slap and tickle": 672.5,
         "The Beezus Christs": 221.75,
         "The Jackson 5 Holes": 542.87,
-        "Thumpers \ud83c\udfd2": 726.09,
+        "Thumpers 🏒": 726.09,
         "The Cougars": 691.53,
-        "Hotdog\u2019s Hitters": 505.78
+        "Hotdog’s Hitters": 505.78
       },
       "deltas": {
         "MacHawks": null,
@@ -5445,13 +5445,13 @@
         "slap and tickle": null,
         "The Beezus Christs": null,
         "The Jackson 5 Holes": null,
-        "Thumpers \ud83c\udfd2": null,
+        "Thumpers 🏒": null,
         "The Cougars": null,
-        "Hotdog\u2019s Hitters": null
+        "Hotdog’s Hitters": null
       },
       "leaders": {
         "G": "Don Cherry Lemons",
-        "A": "Thumpers \ud83c\udfd2",
+        "A": "Thumpers 🏒",
         "PIM": "The Cougars",
         "PPP": "Ball Bag's Bandits",
         "SOG": "slap and tickle",
@@ -5459,19 +5459,19 @@
         "HIT": "Jts blacktastics",
         "BLK": "The Cougars",
         "W": "MacHawks",
-        "SV": "Thumpers \ud83c\udfd2",
+        "SV": "Thumpers 🏒",
         "SV%": "MacHawks",
         "SHO": "MacHawks"
       },
       "leaderboard": [
-        "Thumpers \ud83c\udfd2",
+        "Thumpers 🏒",
         "The Cougars",
         "slap and tickle",
         "Adam's Assassins",
         "MacHawks",
         "The Jackson 5 Holes",
         "Don Cherry Lemons",
-        "Hotdog\u2019s Hitters",
+        "Hotdog’s Hitters",
         "Ball Bag's Bandits",
         "Jts blacktastics",
         "Moore Misconduct",
@@ -5501,7 +5501,7 @@
         },
         {
           "t1": "Adam's Assassins",
-          "t2": "Hotdog\u2019s Hitters",
+          "t2": "Hotdog’s Hitters",
           "cats": [
             "1",
             "1",
@@ -5519,7 +5519,7 @@
         },
         {
           "t1": "Ball Bag's Bandits",
-          "t2": "Thumpers \ud83c\udfd2",
+          "t2": "Thumpers 🏒",
           "cats": [
             "1",
             "2",
@@ -5717,7 +5717,7 @@
           "SV%": 0.879,
           "SHO": 0.0
         },
-        "Thumpers \ud83c\udfd2": {
+        "Thumpers 🏒": {
           "G": 17.0,
           "A": 25.0,
           "PIM": 16.0,
@@ -5745,7 +5745,7 @@
           "SV%": 0.896,
           "SHO": 1.0
         },
-        "Hotdog\u2019s Hitters": {
+        "Hotdog’s Hitters": {
           "G": 12.0,
           "A": 20.0,
           "PIM": 14.0,
@@ -5770,9 +5770,9 @@
         "slap and tickle": 456.17,
         "The Beezus Christs": 339.96,
         "The Jackson 5 Holes": 585.02,
-        "Thumpers \ud83c\udfd2": 599.49,
+        "Thumpers 🏒": 599.49,
         "The Cougars": 799.17,
-        "Hotdog\u2019s Hitters": 410.83
+        "Hotdog’s Hitters": 410.83
       },
       "deltas": {
         "MacHawks": null,
@@ -5784,22 +5784,22 @@
         "slap and tickle": null,
         "The Beezus Christs": null,
         "The Jackson 5 Holes": null,
-        "Thumpers \ud83c\udfd2": null,
+        "Thumpers 🏒": null,
         "The Cougars": null,
-        "Hotdog\u2019s Hitters": null
+        "Hotdog’s Hitters": null
       },
       "leaders": {
         "G": "Ball Bag's Bandits",
         "A": "Don Cherry Lemons",
         "PIM": "The Cougars",
-        "PPP": "Thumpers \ud83c\udfd2",
+        "PPP": "Thumpers 🏒",
         "SOG": "slap and tickle",
         "FW": "The Cougars",
         "HIT": "The Cougars",
         "BLK": "The Cougars",
         "W": "The Cougars",
         "SV": "The Cougars",
-        "SV%": "Thumpers \ud83c\udfd2",
+        "SV%": "Thumpers 🏒",
         "SHO": "Don Cherry Lemons"
       },
       "leaderboard": [
@@ -5808,11 +5808,11 @@
         "Adam's Assassins",
         "Don Cherry Lemons",
         "MacHawks",
-        "Thumpers \ud83c\udfd2",
+        "Thumpers 🏒",
         "The Jackson 5 Holes",
         "Moore Misconduct",
         "slap and tickle",
-        "Hotdog\u2019s Hitters",
+        "Hotdog’s Hitters",
         "The Beezus Christs",
         "Jts blacktastics"
       ]
@@ -5876,7 +5876,7 @@
         },
         {
           "t1": "Moore Misconduct",
-          "t2": "Thumpers \ud83c\udfd2",
+          "t2": "Thumpers 🏒",
           "cats": [
             "1",
             "1",
@@ -5912,7 +5912,7 @@
         },
         {
           "t1": "The Cougars",
-          "t2": "Hotdog\u2019s Hitters",
+          "t2": "Hotdog’s Hitters",
           "cats": [
             "2",
             "T",
@@ -6056,7 +6056,7 @@
           "SV%": 0.882,
           "SHO": 1.0
         },
-        "Thumpers \ud83c\udfd2": {
+        "Thumpers 🏒": {
           "G": 21.0,
           "A": 29.0,
           "PIM": 46.0,
@@ -6084,7 +6084,7 @@
           "SV%": 0.899,
           "SHO": 1.0
         },
-        "Hotdog\u2019s Hitters": {
+        "Hotdog’s Hitters": {
           "G": 16.0,
           "A": 30.0,
           "PIM": 40.0,
@@ -6109,9 +6109,9 @@
         "slap and tickle": 670.67,
         "The Beezus Christs": 286.39,
         "The Jackson 5 Holes": 569.79,
-        "Thumpers \ud83c\udfd2": 600.22,
+        "Thumpers 🏒": 600.22,
         "The Cougars": 627.11,
-        "Hotdog\u2019s Hitters": 559.76
+        "Hotdog’s Hitters": 559.76
       },
       "deltas": {
         "MacHawks": null,
@@ -6123,9 +6123,9 @@
         "slap and tickle": null,
         "The Beezus Christs": null,
         "The Jackson 5 Holes": null,
-        "Thumpers \ud83c\udfd2": null,
+        "Thumpers 🏒": null,
         "The Cougars": null,
-        "Hotdog\u2019s Hitters": null
+        "Hotdog’s Hitters": null
       },
       "leaders": {
         "G": "Adam's Assassins",
@@ -6148,9 +6148,9 @@
         "slap and tickle",
         "The Cougars",
         "Don Cherry Lemons",
-        "Thumpers \ud83c\udfd2",
+        "Thumpers 🏒",
         "The Jackson 5 Holes",
-        "Hotdog\u2019s Hitters",
+        "Hotdog’s Hitters",
         "Ball Bag's Bandits",
         "Jts blacktastics",
         "The Beezus Christs"
@@ -6197,7 +6197,7 @@
         },
         {
           "t1": "Ball Bag's Bandits",
-          "t2": "Hotdog\u2019s Hitters",
+          "t2": "Hotdog’s Hitters",
           "cats": [
             "2",
             "1",
@@ -6233,7 +6233,7 @@
         },
         {
           "t1": "Jts blacktastics",
-          "t2": "Thumpers \ud83c\udfd2",
+          "t2": "Thumpers 🏒",
           "cats": [
             "1",
             "2",
@@ -6395,7 +6395,7 @@
           "SV%": 0.892,
           "SHO": 0.0
         },
-        "Thumpers \ud83c\udfd2": {
+        "Thumpers 🏒": {
           "G": 15.0,
           "A": 21.0,
           "PIM": 28.0,
@@ -6423,7 +6423,7 @@
           "SV%": 0.857,
           "SHO": 0.0
         },
-        "Hotdog\u2019s Hitters": {
+        "Hotdog’s Hitters": {
           "G": 20.0,
           "A": 33.0,
           "PIM": 19.0,
@@ -6448,9 +6448,9 @@
         "slap and tickle": 677.93,
         "The Beezus Christs": 508.12,
         "The Jackson 5 Holes": 601.09,
-        "Thumpers \ud83c\udfd2": 601.74,
+        "Thumpers 🏒": 601.74,
         "The Cougars": 584.18,
-        "Hotdog\u2019s Hitters": 690.46
+        "Hotdog’s Hitters": 690.46
       },
       "deltas": {
         "MacHawks": -98.91,
@@ -6462,9 +6462,9 @@
         "slap and tickle": 7.26,
         "The Beezus Christs": 221.73,
         "The Jackson 5 Holes": 31.3,
-        "Thumpers \ud83c\udfd2": 1.52,
+        "Thumpers 🏒": 1.52,
         "The Cougars": -42.93,
-        "Hotdog\u2019s Hitters": 130.7
+        "Hotdog’s Hitters": 130.7
       },
       "leaders": {
         "G": "slap and tickle",
@@ -6482,11 +6482,11 @@
       },
       "leaderboard": [
         "Adam's Assassins",
-        "Hotdog\u2019s Hitters",
+        "Hotdog’s Hitters",
         "slap and tickle",
         "Moore Misconduct",
         "MacHawks",
-        "Thumpers \ud83c\udfd2",
+        "Thumpers 🏒",
         "The Jackson 5 Holes",
         "The Cougars",
         "The Beezus Christs",
@@ -6754,7 +6754,7 @@
         },
         {
           "t1": "Moore Misconduct",
-          "t2": "Hotdog\u2019s Hitters",
+          "t2": "Hotdog’s Hitters",
           "cats": [
             "1",
             "2",
@@ -6772,7 +6772,7 @@
         },
         {
           "t1": "slap and tickle",
-          "t2": "Thumpers \ud83c\udfd2",
+          "t2": "Thumpers 🏒",
           "cats": [
             "1",
             "1",
@@ -6916,7 +6916,7 @@
           "SV%": 0.93,
           "SHO": 0.0
         },
-        "Thumpers \ud83c\udfd2": {
+        "Thumpers 🏒": {
           "G": 11.0,
           "A": 19.0,
           "PIM": 31.0,
@@ -6944,7 +6944,7 @@
           "SV%": 0.911,
           "SHO": 0.0
         },
-        "Hotdog\u2019s Hitters": {
+        "Hotdog’s Hitters": {
           "G": 15.0,
           "A": 14.0,
           "PIM": 48.0,
@@ -6969,9 +6969,9 @@
         "slap and tickle": 636.17,
         "The Beezus Christs": 530.96,
         "The Jackson 5 Holes": 745.16,
-        "Thumpers \ud83c\udfd2": 369.65,
+        "Thumpers 🏒": 369.65,
         "The Cougars": 656.86,
-        "Hotdog\u2019s Hitters": 478.99
+        "Hotdog’s Hitters": 478.99
       },
       "deltas": {
         "MacHawks": -118.23,
@@ -6983,9 +6983,9 @@
         "slap and tickle": -41.76,
         "The Beezus Christs": 22.84,
         "The Jackson 5 Holes": 144.07,
-        "Thumpers \ud83c\udfd2": -232.09,
+        "Thumpers 🏒": -232.09,
         "The Cougars": 72.68,
-        "Hotdog\u2019s Hitters": -211.47
+        "Hotdog’s Hitters": -211.47
       },
       "leaders": {
         "G": "Moore Misconduct",
@@ -6994,7 +6994,7 @@
         "PPP": "Adam's Assassins",
         "SOG": "The Jackson 5 Holes",
         "FW": "The Cougars",
-        "HIT": "Thumpers \ud83c\udfd2",
+        "HIT": "Thumpers 🏒",
         "BLK": "The Jackson 5 Holes",
         "W": "slap and tickle",
         "SV": "The Cougars",
@@ -7011,9 +7011,9 @@
         "The Beezus Christs",
         "Adam's Assassins",
         "MacHawks",
-        "Hotdog\u2019s Hitters",
+        "Hotdog’s Hitters",
         "Jts blacktastics",
-        "Thumpers \ud83c\udfd2"
+        "Thumpers 🏒"
       ],
       "players": [
         {
@@ -7239,7 +7239,7 @@
         },
         {
           "t1": "Moore Misconduct",
-          "t2": "Thumpers \ud83c\udfd2",
+          "t2": "Thumpers 🏒",
           "cats": [
             "1",
             "1",
@@ -7257,7 +7257,7 @@
         },
         {
           "t1": "slap and tickle",
-          "t2": "Hotdog\u2019s Hitters",
+          "t2": "Hotdog’s Hitters",
           "cats": [
             "2",
             "2",
@@ -7401,7 +7401,7 @@
           "SV%": 0.918,
           "SHO": 0.0
         },
-        "Thumpers \ud83c\udfd2": {
+        "Thumpers 🏒": {
           "G": 10.0,
           "A": 18.0,
           "PIM": 31.0,
@@ -7429,7 +7429,7 @@
           "SV%": 0.927,
           "SHO": 2.0
         },
-        "Hotdog\u2019s Hitters": {
+        "Hotdog’s Hitters": {
           "G": 12.0,
           "A": 36.0,
           "PIM": 39.0,
@@ -7454,9 +7454,9 @@
         "slap and tickle": 508.28,
         "The Beezus Christs": 337.03,
         "The Jackson 5 Holes": 438.6,
-        "Thumpers \ud83c\udfd2": 488.18,
+        "Thumpers 🏒": 488.18,
         "The Cougars": 655.35,
-        "Hotdog\u2019s Hitters": 641.42
+        "Hotdog’s Hitters": 641.42
       },
       "deltas": {
         "MacHawks": 197.23,
@@ -7468,15 +7468,15 @@
         "slap and tickle": -127.89,
         "The Beezus Christs": -193.93,
         "The Jackson 5 Holes": -306.56,
-        "Thumpers \ud83c\udfd2": 118.53,
+        "Thumpers 🏒": 118.53,
         "The Cougars": -1.51,
-        "Hotdog\u2019s Hitters": 162.43
+        "Hotdog’s Hitters": 162.43
       },
       "leaders": {
         "G": "Adam's Assassins",
-        "A": "Hotdog\u2019s Hitters",
+        "A": "Hotdog’s Hitters",
         "PIM": "MacHawks",
-        "PPP": "Hotdog\u2019s Hitters",
+        "PPP": "Hotdog’s Hitters",
         "SOG": "Adam's Assassins",
         "FW": "The Cougars",
         "HIT": "Adam's Assassins",
@@ -7490,10 +7490,10 @@
         "Adam's Assassins",
         "MacHawks",
         "The Cougars",
-        "Hotdog\u2019s Hitters",
+        "Hotdog’s Hitters",
         "Ball Bag's Bandits",
         "slap and tickle",
-        "Thumpers \ud83c\udfd2",
+        "Thumpers 🏒",
         "Don Cherry Lemons",
         "Moore Misconduct",
         "The Jackson 5 Holes",
@@ -7506,7 +7506,7 @@
       "matchups": [
         {
           "t1": "MacHawks",
-          "t2": "Hotdog\u2019s Hitters",
+          "t2": "Hotdog’s Hitters",
           "cats": [
             "1",
             "2",
@@ -7541,60 +7541,6 @@
           ]
         },
         {
-          "t1": "Ball Bag's Bandits",
-          "t2": "Thumpers \ud83c\udfd2",
-          "cats": [
-            "2",
-            "1",
-            "1",
-            "1",
-            "1",
-            "1",
-            "2",
-            "2",
-            "T",
-            "1",
-            "1",
-            "T"
-          ]
-        },
-        {
-          "t1": "Don Cherry Lemons",
-          "t2": "The Beezus Christs",
-          "cats": [
-            "2",
-            "1",
-            "1",
-            "2",
-            "2",
-            "2",
-            "2",
-            "1",
-            "T",
-            "1",
-            "1",
-            "T"
-          ]
-        },
-        {
-          "t1": "Jts blacktastics",
-          "t2": "Moore Misconduct",
-          "cats": [
-            "2",
-            "2",
-            "1",
-            "2",
-            "1",
-            "2",
-            "2",
-            "1",
-            "2",
-            "2",
-            "2",
-            "2"
-          ]
-        },
-        {
           "t1": "slap and tickle",
           "t2": "The Jackson 5 Holes",
           "cats": [
@@ -7609,6 +7555,60 @@
             "1",
             "1",
             "1",
+            "2"
+          ]
+        },
+        {
+          "t1": "Thumpers 🏒",
+          "t2": "The Beezus Christs",
+          "cats": [
+            "1",
+            "T",
+            "1",
+            "2",
+            "1",
+            "2",
+            "1",
+            "1",
+            "1",
+            "T",
+            "2",
+            "T"
+          ]
+        },
+        {
+          "t1": "Ball Bag's Bandits",
+          "t2": "Jts blacktastics",
+          "cats": [
+            "2",
+            "1",
+            "2",
+            "1",
+            "1",
+            "1",
+            "2",
+            "2",
+            "1",
+            "1",
+            "1",
+            "T"
+          ]
+        },
+        {
+          "t1": "Don Cherry Lemons",
+          "t2": "Moore Misconduct",
+          "cats": [
+            "2",
+            "2",
+            "1",
+            "2",
+            "2",
+            "2",
+            "2",
+            "1",
+            "2",
+            "2",
+            "2",
             "2"
           ]
         }
@@ -7740,7 +7740,7 @@
           "SV%": 0.893,
           "SHO": 1.0
         },
-        "Thumpers \ud83c\udfd2": {
+        "Thumpers 🏒": {
           "G": 11.0,
           "A": 11.0,
           "PIM": 14.0,
@@ -7768,7 +7768,7 @@
           "SV%": 0.84,
           "SHO": 0.0
         },
-        "Hotdog\u2019s Hitters": {
+        "Hotdog’s Hitters": {
           "G": 8.0,
           "A": 14.0,
           "PIM": 23.0,
@@ -7793,9 +7793,9 @@
         "slap and tickle": 487.51,
         "The Beezus Christs": 401.95,
         "The Jackson 5 Holes": 661.49,
-        "Thumpers \ud83c\udfd2": 426.92,
+        "Thumpers 🏒": 426.92,
         "The Cougars": 603.7,
-        "Hotdog\u2019s Hitters": 539.9
+        "Hotdog’s Hitters": 539.9
       },
       "deltas": {
         "MacHawks": -82.66,
@@ -7807,9 +7807,9 @@
         "slap and tickle": -20.77,
         "The Beezus Christs": 64.92,
         "The Jackson 5 Holes": 222.89,
-        "Thumpers \ud83c\udfd2": -61.26,
+        "Thumpers 🏒": -61.26,
         "The Cougars": -51.65,
-        "Hotdog\u2019s Hitters": -101.52
+        "Hotdog’s Hitters": -101.52
       },
       "leaders": {
         "G": "The Jackson 5 Holes",
@@ -7831,11 +7831,11 @@
         "The Jackson 5 Holes",
         "The Cougars",
         "MacHawks",
-        "Hotdog\u2019s Hitters",
+        "Hotdog’s Hitters",
         "Ball Bag's Bandits",
         "slap and tickle",
         "Jts blacktastics",
-        "Thumpers \ud83c\udfd2",
+        "Thumpers 🏒",
         "The Beezus Christs",
         "Don Cherry Lemons"
       ]
@@ -7847,7 +7847,7 @@
       "L": 6,
       "T": 4
     },
-    "Thumpers \ud83c\udfd2": {
+    "Thumpers 🏒": {
       "W": 5,
       "L": 14,
       "T": 2
@@ -7897,7 +7897,7 @@
       "L": 5,
       "T": 5
     },
-    "Hotdog\u2019s Hitters": {
+    "Hotdog’s Hitters": {
       "W": 13,
       "L": 5,
       "T": 3
