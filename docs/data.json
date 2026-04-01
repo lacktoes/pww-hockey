@@ -1,7 +1,7 @@
 {
   "meta": {
-    "last_updated": "2026-03-30T23:26:39.390983+00:00",
-    "current_week": 22
+    "last_updated": "2026-04-01T02:52:46.152737+00:00",
+    "current_week": 23
   },
   "teams": {
     "MacHawks": {
@@ -7838,6 +7838,309 @@
         "The Beezus Christs",
         "Jts blacktastics",
         "Don Cherry Lemons"
+      ]
+    },
+    "23": {
+      "is_current": true,
+      "matchups": [
+        {
+          "t1": "MacHawks",
+          "t2": "The Cougars",
+          "cats": [
+            "2",
+            "2",
+            "1",
+            "1",
+            "1",
+            "1",
+            "T",
+            "1",
+            "2",
+            "2",
+            "2",
+            "T"
+          ]
+        },
+        {
+          "t1": "Adam's Assassins",
+          "t2": "Hotdog\u2019s Hitters",
+          "cats": [
+            "2",
+            "T",
+            "T",
+            "T",
+            "2",
+            "2",
+            "2",
+            "1",
+            "T",
+            "2",
+            "2",
+            "T"
+          ]
+        },
+        {
+          "t1": "Don Cherry Lemons",
+          "t2": "Jts blacktastics",
+          "cats": [
+            "1",
+            "T",
+            "1",
+            "2",
+            "1",
+            "2",
+            "2",
+            "1",
+            "1",
+            "1",
+            "1",
+            "T"
+          ]
+        },
+        {
+          "t1": "Moore Misconduct",
+          "t2": "The Beezus Christs",
+          "cats": [
+            "T",
+            "2",
+            "T",
+            "2",
+            "2",
+            "2",
+            "2",
+            "1",
+            "2",
+            "1",
+            "2",
+            "T"
+          ]
+        }
+      ],
+      "stats": {
+        "MacHawks": {
+          "G": 5.0,
+          "A": 5.0,
+          "PIM": 6.0,
+          "PPP": 6.0,
+          "SOG": 33.0,
+          "FW": 73.0,
+          "HIT": 27.0,
+          "BLK": 13.0,
+          "W": 0.0,
+          "SV": 19.0,
+          "SV%": 0.864,
+          "SHO": 0.0
+        },
+        "Adam's Assassins": {
+          "G": 3.0,
+          "A": 9.0,
+          "PIM": 8.0,
+          "PPP": 5.0,
+          "SOG": 22.0,
+          "FW": 24.0,
+          "HIT": 14.0,
+          "BLK": 10.0,
+          "W": 0.0,
+          "SV": 11.0,
+          "SV%": 0.786,
+          "SHO": 0.0
+        },
+        "Ball Bag's Bandits": {
+          "G": 4.0,
+          "A": 11.0,
+          "PIM": 8.0,
+          "PPP": 3.0,
+          "SOG": 29.0,
+          "FW": 39.0,
+          "HIT": 24.0,
+          "BLK": 12.0,
+          "W": 0.0,
+          "SV": 13.0,
+          "SV%": 0.812,
+          "SHO": 0.0
+        },
+        "Don Cherry Lemons": {
+          "G": 4.0,
+          "A": 10.0,
+          "PIM": 8.0,
+          "PPP": 3.0,
+          "SOG": 42.0,
+          "FW": 13.0,
+          "HIT": 10.0,
+          "BLK": 11.0,
+          "W": 1.0,
+          "SV": 72.0,
+          "SV%": 0.857,
+          "SHO": 0.0
+        },
+        "Jts blacktastics": {
+          "G": 3.0,
+          "A": 10.0,
+          "PIM": 6.0,
+          "PPP": 6.0,
+          "SOG": 28.0,
+          "FW": 44.0,
+          "HIT": 20.0,
+          "BLK": 8.0,
+          "W": 0.0,
+          "SV": 12.0,
+          "SV%": 0.706,
+          "SHO": 0.0
+        },
+        "Moore Misconduct": {
+          "G": 6.0,
+          "A": 3.0,
+          "PIM": 10.0,
+          "PPP": 1.0,
+          "SOG": 26.0,
+          "FW": 19.0,
+          "HIT": 14.0,
+          "BLK": 13.0,
+          "W": 0.0,
+          "SV": 35.0,
+          "SV%": 0.778,
+          "SHO": 0.0
+        },
+        "slap and tickle": {
+          "G": 4.0,
+          "A": 6.0,
+          "PIM": 4.0,
+          "PPP": 7.0,
+          "SOG": 22.0,
+          "FW": 30.0,
+          "HIT": 14.0,
+          "BLK": 10.0,
+          "W": 2.0,
+          "SV": 47.0,
+          "SV%": 0.887,
+          "SHO": 0.0
+        },
+        "The Beezus Christs": {
+          "G": 6.0,
+          "A": 9.0,
+          "PIM": 10.0,
+          "PPP": 6.0,
+          "SOG": 32.0,
+          "FW": 23.0,
+          "HIT": 15.0,
+          "BLK": 2.0,
+          "W": 1.0,
+          "SV": 34.0,
+          "SV%": 0.872,
+          "SHO": 0.0
+        },
+        "The Jackson 5 Holes": {
+          "G": 3.0,
+          "A": 7.0,
+          "PIM": 4.0,
+          "PPP": 3.0,
+          "SOG": 22.0,
+          "FW": 25.0,
+          "HIT": 15.0,
+          "BLK": 7.0,
+          "W": 0.0,
+          "SV": 17.0,
+          "SV%": 0.81,
+          "SHO": 0.0
+        },
+        "Thumpers \ud83c\udfd2": {
+          "G": 4.0,
+          "A": 9.0,
+          "PIM": 2.0,
+          "PPP": 5.0,
+          "SOG": 21.0,
+          "FW": 12.0,
+          "HIT": 20.0,
+          "BLK": 10.0,
+          "W": 0.0,
+          "SV": 26.0,
+          "SV%": 0.867,
+          "SHO": 0.0
+        },
+        "The Cougars": {
+          "G": 7.0,
+          "A": 9.0,
+          "PIM": 4.0,
+          "PPP": 4.0,
+          "SOG": 23.0,
+          "FW": 62.0,
+          "HIT": 27.0,
+          "BLK": 8.0,
+          "W": 1.0,
+          "SV": 44.0,
+          "SV%": 0.898,
+          "SHO": 0.0
+        },
+        "Hotdog\u2019s Hitters": {
+          "G": 10.0,
+          "A": 9.0,
+          "PIM": 8.0,
+          "PPP": 5.0,
+          "SOG": 36.0,
+          "FW": 50.0,
+          "HIT": 19.0,
+          "BLK": 7.0,
+          "W": 0.0,
+          "SV": 18.0,
+          "SV%": 0.818,
+          "SHO": 0.0
+        }
+      },
+      "pww": {
+        "MacHawks": 639.45,
+        "Adam's Assassins": 379.02,
+        "Ball Bag's Bandits": 536.73,
+        "Don Cherry Lemons": 622.22,
+        "Jts blacktastics": 421.63,
+        "Moore Misconduct": 378.52,
+        "slap and tickle": 560.6,
+        "The Beezus Christs": 575.18,
+        "The Jackson 5 Holes": 273.28,
+        "Thumpers \ud83c\udfd2": 395.95,
+        "The Cougars": 657.28,
+        "Hotdog\u2019s Hitters": 618.59
+      },
+      "deltas": {
+        "MacHawks": 1.94,
+        "Adam's Assassins": -388.23,
+        "Ball Bag's Bandits": -72.59,
+        "Don Cherry Lemons": 356.32,
+        "Jts blacktastics": -15.19,
+        "Moore Misconduct": -186.65,
+        "slap and tickle": -6.52,
+        "The Beezus Christs": 99.95,
+        "The Jackson 5 Holes": -281.06,
+        "Thumpers \ud83c\udfd2": -89.87,
+        "The Cougars": -41.42,
+        "Hotdog\u2019s Hitters": 51.05
+      },
+      "leaders": {
+        "G": "Hotdog\u2019s Hitters",
+        "A": "Ball Bag's Bandits",
+        "PIM": "Moore Misconduct",
+        "PPP": "slap and tickle",
+        "SOG": "Don Cherry Lemons",
+        "FW": "MacHawks",
+        "HIT": "MacHawks",
+        "BLK": "MacHawks",
+        "W": "slap and tickle",
+        "SV": "Don Cherry Lemons",
+        "SV%": "The Cougars",
+        "SHO": "MacHawks"
+      },
+      "leaderboard": [
+        "The Cougars",
+        "MacHawks",
+        "Don Cherry Lemons",
+        "Hotdog\u2019s Hitters",
+        "The Beezus Christs",
+        "slap and tickle",
+        "Ball Bag's Bandits",
+        "Jts blacktastics",
+        "Thumpers \ud83c\udfd2",
+        "Adam's Assassins",
+        "Moore Misconduct",
+        "The Jackson 5 Holes"
       ]
     }
   },
