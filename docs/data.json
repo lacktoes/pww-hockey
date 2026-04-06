@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-06T05:28:31.857455+00:00",
+    "last_updated": "2026-04-06T23:26:31.476456+00:00",
     "current_week": 23
   },
   "teams": {
@@ -7922,13 +7922,13 @@
           "A": 21.0,
           "PIM": 16.0,
           "PPP": 12.0,
-          "SOG": 116.0,
+          "SOG": 117.0,
           "FW": 274.0,
           "HIT": 65.0,
           "BLK": 49.0,
           "W": 2.0,
-          "SV": 119.0,
-          "SV%": 0.862,
+          "SV": 120.0,
+          "SV%": 0.863,
           "SHO": 0.0
         },
         "Adam's Assassins": {
@@ -7936,7 +7936,7 @@
           "A": 26.0,
           "PIM": 48.0,
           "PPP": 13.0,
-          "SOG": 113.0,
+          "SOG": 114.0,
           "FW": 108.0,
           "HIT": 71.0,
           "BLK": 37.0,
@@ -7967,10 +7967,10 @@
           "SOG": 130.0,
           "FW": 99.0,
           "HIT": 39.0,
-          "BLK": 35.0,
+          "BLK": 36.0,
           "W": 1.0,
-          "SV": 125.0,
-          "SV%": 0.862,
+          "SV": 126.0,
+          "SV%": 0.863,
           "SHO": 0.0
         },
         "Jts blacktastics": {
@@ -8009,7 +8009,7 @@
           "SOG": 88.0,
           "FW": 123.0,
           "HIT": 36.0,
-          "BLK": 35.0,
+          "BLK": 34.0,
           "W": 4.0,
           "SV": 129.0,
           "SV%": 0.896,
@@ -8034,13 +8034,13 @@
           "A": 21.0,
           "PIM": 31.0,
           "PPP": 7.0,
-          "SOG": 100.0,
+          "SOG": 101.0,
           "FW": 123.0,
           "HIT": 57.0,
-          "BLK": 31.0,
+          "BLK": 32.0,
           "W": 2.0,
-          "SV": 83.0,
-          "SV%": 0.856,
+          "SV": 84.0,
+          "SV%": 0.857,
           "SHO": 1.0
         },
         "Thumpers \ud83c\udfd2": {
@@ -8053,8 +8053,8 @@
           "HIT": 77.0,
           "BLK": 32.0,
           "W": 2.0,
-          "SV": 135.0,
-          "SV%": 0.865,
+          "SV": 138.0,
+          "SV%": 0.868,
           "SHO": 0.0
         },
         "The Cougars": {
@@ -8081,38 +8081,38 @@
           "HIT": 64.0,
           "BLK": 27.0,
           "W": 2.0,
-          "SV": 77.0,
-          "SV%": 0.875,
+          "SV": 78.0,
+          "SV%": 0.876,
           "SHO": 1.0
         }
       },
       "pww": {
-        "MacHawks": 498.89,
-        "Adam's Assassins": 573.5,
+        "MacHawks": 502.47,
+        "Adam's Assassins": 575.23,
         "Ball Bag's Bandits": 480.29,
-        "Don Cherry Lemons": 469.89,
-        "Jts blacktastics": 592.95,
-        "Moore Misconduct": 455.52,
-        "slap and tickle": 530.86,
-        "The Beezus Christs": 585.61,
-        "The Jackson 5 Holes": 272.09,
-        "Thumpers \ud83c\udfd2": 372.42,
-        "The Cougars": 665.91,
-        "Hotdog\u2019s Hitters": 574.79
+        "Don Cherry Lemons": 474.5,
+        "Jts blacktastics": 592.79,
+        "Moore Misconduct": 454.08,
+        "slap and tickle": 527.66,
+        "The Beezus Christs": 584.23,
+        "The Jackson 5 Holes": 278.37,
+        "Thumpers \ud83c\udfd2": 381.43,
+        "The Cougars": 665.19,
+        "Hotdog\u2019s Hitters": 577.09
       },
       "deltas": {
-        "MacHawks": -138.62,
-        "Adam's Assassins": -193.75,
+        "MacHawks": -135.04,
+        "Adam's Assassins": -192.02,
         "Ball Bag's Bandits": -129.03,
-        "Don Cherry Lemons": 203.99,
-        "Jts blacktastics": 156.13,
-        "Moore Misconduct": -109.65,
-        "slap and tickle": -36.26,
-        "The Beezus Christs": 110.38,
-        "The Jackson 5 Holes": -282.25,
-        "Thumpers \ud83c\udfd2": -113.4,
-        "The Cougars": -32.79,
-        "Hotdog\u2019s Hitters": 7.25
+        "Don Cherry Lemons": 208.6,
+        "Jts blacktastics": 155.97,
+        "Moore Misconduct": -111.09,
+        "slap and tickle": -39.46,
+        "The Beezus Christs": 109.0,
+        "The Jackson 5 Holes": -275.97,
+        "Thumpers \ud83c\udfd2": -104.39,
+        "The Cougars": -33.51,
+        "Hotdog\u2019s Hitters": 9.55
       },
       "leaders": {
         "G": "The Beezus Christs",
