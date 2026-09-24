@@ -2,7 +2,7 @@
 discover_leagues.py
 -------------------
 Lists every NHL fantasy league your Yahoo account has ever joined, across all
-seasons, and writes docs/seasons.json -- the season->league_key map that
+seasons, and writes docs/league_keys.json -- the season->league_key map that
 fetch_data.py uses to build a multi-season dashboard.
 
 Yahoo assigns a new *game key* each season (2025-26 = 449, and so on). The
@@ -13,7 +13,7 @@ league ID stays the same year to year, so the full league key is:
 That is why the key has to be rediscovered every season rather than guessed.
 
 Run:
-    python scripts/discover_leagues.py                 # list + write seasons.json
+    python scripts/discover_leagues.py                 # list + write league_keys.json
     python scripts/discover_leagues.py --league 1809   # only that league ID
     python scripts/discover_leagues.py --dry-run       # list only, write nothing
 
@@ -41,7 +41,7 @@ from yahoo_oauth import refresh_access_token
 
 YAHOO_BASE   = "https://fantasysports.yahooapis.com/fantasy/v2"
 DOCS_DIR     = Path(__file__).parent.parent / "docs"
-SEASONS_FILE = DOCS_DIR / "seasons.json"
+KEYS_FILE    = DOCS_DIR / "league_keys.json"
 
 
 def api_get(path, headers, retries=3):
@@ -148,7 +148,7 @@ def season_label(season):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--league", help="Only include this league ID (e.g. 1809)")
-    ap.add_argument("--dry-run", action="store_true", help="Print only, do not write seasons.json")
+    ap.add_argument("--dry-run", action="store_true", help="Print only, do not write league_keys.json")
     args = ap.parse_args()
 
     print("Yahoo NHL League Discovery")
@@ -177,7 +177,7 @@ def main():
             str(r["num_teams"]), r["name"]))
 
     if args.dry_run:
-        print("\n(--dry-run: seasons.json not written)")
+        print("\n(--dry-run: league_keys.json not written)")
         return
 
     # Group by league ID so a multi-league account still produces a clean map.
@@ -196,14 +196,14 @@ def main():
     current = max(seasons, key=lambda s: s)
 
     DOCS_DIR.mkdir(exist_ok=True)
-    SEASONS_FILE.write_text(json.dumps({
+    KEYS_FILE.write_text(json.dumps({
         "league_id": primary,
         "current":   current,
         "seasons":   seasons,
     }, indent=2))
 
     print()
-    print("Wrote -> {}".format(SEASONS_FILE))
+    print("Wrote -> {}".format(KEYS_FILE))
     print("  league_id : {}".format(primary))
     print("  seasons   : {}".format(len(seasons)))
     print("  current   : {}  ({})".format(current, seasons[current]["league_key"]))

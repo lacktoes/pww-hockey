@@ -1,0 +1,13 @@
+{
+  "current": "2025-26",
+  "seasons": [
+    {
+      "season": "2025-26",
+      "file": "data-2025-26.json",
+      "weeks": 23,
+      "teams": 12,
+      "complete": false,
+      "last_updated": "2026-04-30T23:41:49.410584+00:00"
+    }
+  ]
+}
