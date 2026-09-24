@@ -178,39 +178,6 @@ def probe_game_keys(league_id, headers, lo=380, hi=500):
     return None, None
 
 
-def resolve_start_key(league_id, headers, explicit=None):
-    """
-    Work out which league key to start the renew walk from, cheapest first:
-
-      1. --start-key
-      2. $YAHOO_LEAGUE_KEY  -- the working key an existing tool already uses
-      3. /game/nhl + league_id
-      4. probing game keys against league_id
-    """
-    if explicit:
-        print("  start key from --start-key: {}".format(explicit))
-        return explicit
-
-    env_key = os.environ.get("YAHOO_LEAGUE_KEY")
-    if env_key and ".l." in env_key:
-        print("  start key from YAHOO_LEAGUE_KEY: {}".format(env_key))
-        return env_key
-
-    try:
-        gk, season = current_game_key(headers)
-        if gk:
-            print("  current NHL game key: {} (season {})".format(gk, season))
-            return "{}.l.{}".format(gk, league_id)
-    except ApiError as exc:
-        print("  /game/nhl refused ({}) -- this app is limited to "
-              "league-scoped reads.".format(exc))
-
-    if not league_id:
-        return None
-    gk, _ = probe_game_keys(league_id, headers)
-    return "{}.l.{}".format(gk, league_id) if gk else None
-
-
 def _renew_to_key(renew):
     """Yahoo writes the previous season as '427_1809'; we need '427.l.1809'."""
     if not renew or "_" not in str(renew):
@@ -223,8 +190,92 @@ def _renew_to_key(renew):
 
 def league_meta(league_key, headers):
     data = api_get("league/{}/".format(league_key), headers, quiet=True)
-    node = data["fantasy_content"]["league"]
-    return _flatten(node)
+    return _flatten(data["fantasy_content"]["league"])
+
+
+def candidate_start_keys(league_id, headers, explicit=None):
+    """
+    Yield (league_key, why) to try as the head of the renew walk, cheapest first.
+
+    Several are tried rather than one, because the first plausible key is not
+    always readable: an env file may name a different league, and a key can be
+    well-formed but refused. Crucially, $YAHOO_LEAGUE_KEY reveals the CURRENT
+    game key even when /game/nhl is forbidden, so it can be recombined with the
+    league ID actually being asked for.
+
+    This is a generator so the later, more expensive candidates -- which hit
+    endpoints that may themselves be forbidden -- are never reached once an
+    earlier one works.
+    """
+    seen = set()
+
+    def fresh(key):
+        if not key or key in seen:
+            return False
+        seen.add(key)
+        return True
+
+    if fresh(explicit):
+        yield explicit, "--start-key"
+
+    env_key = os.environ.get("YAHOO_LEAGUE_KEY", "")
+    if ".l." in env_key:
+        if fresh(env_key):
+            yield env_key, "$YAHOO_LEAGUE_KEY"
+        # Same season, the league ID actually requested.
+        recombined = "{}.l.{}".format(env_key.split(".l.")[0], league_id)
+        if league_id and fresh(recombined):
+            yield recombined, "game key from $YAHOO_LEAGUE_KEY + --league"
+
+    if league_id:
+        try:
+            gk, _season = current_game_key(headers)
+        except Exception:
+            gk = None
+        if gk:
+            key = "{}.l.{}".format(gk, league_id)
+            if fresh(key):
+                yield key, "/game/nhl + --league"
+
+
+def resolve_start_key(league_id, headers, explicit=None):
+    """
+    Try each candidate until one actually reads. Returns (key, meta) or (None, None).
+    """
+    tried = []
+    for key, why in candidate_start_keys(league_id, headers, explicit):
+        print("  trying {:18s} ({})".format(key, why))
+        try:
+            meta = league_meta(key, headers)
+            print("    -> readable: season {}, {}".format(
+                meta.get("season", "?"), meta.get("name", "")))
+            return key, meta
+        except ApiError as exc:
+            tried.append((key, exc.status))
+            print("    -> HTTP {}".format(exc.status))
+        except Exception as exc:
+            tried.append((key, str(exc)))
+            print("    -> {}".format(exc))
+
+    if league_id:
+        gk, _ = probe_game_keys(league_id, headers)
+        if gk:
+            key = "{}.l.{}".format(gk, league_id)
+            try:
+                return key, league_meta(key, headers)
+            except Exception:
+                pass
+
+    print("\n  None of the candidate league keys could be read:")
+    for key, status in tried:
+        print("    {:20s} {}".format(key, status))
+    print("\n  403 means the key is well-formed but this token may not read that")
+    print("  league: it may belong to another account, or the season may not be")
+    print("  active yet. 404 means no such league.")
+    print("  Open your league in a browser; the URL is")
+    print("    hockey.fantasysports.yahoo.com/hockey/<league_id>/<team_id>")
+    print("  then pass  --start-key <game_key>.l.<league_id>")
+    return None, None
 
 
 def discover_by_renew_chain(league_id, headers, max_hops=25, start_key=None):
@@ -236,27 +287,28 @@ def discover_by_renew_chain(league_id, headers, max_hops=25, start_key=None):
     far as it goes. League IDs are NOT stable across seasons, so the chain is
     the only reliable way to link them.
     """
-    key = resolve_start_key(league_id, headers, start_key)
+    key, meta = resolve_start_key(league_id, headers, start_key)
     if not key:
-        print("\n  Could not determine a starting league key.")
-        print("  Find the key your working Yahoo script uses (it looks like")
-        print("  '449.l.1809') and pass it:  --start-key <key>")
         return []
 
+    print()
     rows, seen = [], set()
+    first_meta = meta
 
     while key and key not in seen and len(rows) < max_hops:
         seen.add(key)
-        try:
-            meta = league_meta(key, headers)
-        except ApiError as exc:
-            if not rows:
-                print("  {} not readable ({}) -- is {} the right league ID "
-                      "for this season?".format(key, exc, league_id))
-            break
-        except Exception as exc:
-            print("  {} failed: {}".format(key, exc))
-            break
+        if first_meta is not None:
+            meta, first_meta = first_meta, None      # reuse the probe's read
+        else:
+            try:
+                meta = league_meta(key, headers)
+            except ApiError as exc:
+                print("  {} stopped the walk (HTTP {}) -- history reaches back "
+                      "{} season(s)".format(key, exc.status, len(rows)))
+                break
+            except Exception as exc:
+                print("  {} failed: {}".format(key, exc))
+                break
 
         rows.append({
             "season":     str(meta.get("season", "?")),
