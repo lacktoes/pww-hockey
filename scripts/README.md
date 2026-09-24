@@ -13,9 +13,22 @@ show any season the account has data for.
 | `docs/data.json` | `fetch_data.py` | copy of the current season, kept for backwards compatibility |
 | `docs/matchup_overrides.json` | hand-edited | manual matchup pairings, keyed `{season: {week: [[t1, t2], ...]}}` |
 
-Yahoo issues a **new game key every season**, so the league key
-(`{game_key}.l.{league_id}`) changes each year even though the league ID does
-not. That is why discovery exists rather than a hardcoded key.
+Yahoo issues a **new game key every season**, and renewed leagues also get a
+**new league ID**, so the whole league key (`{game_key}.l.{league_id}`) changes
+every year. That is why discovery exists rather than a hardcoded key.
+
+Discovery tries two routes:
+
+1. `/users;use_login=1/games;game_codes=nhl/leagues` — lists every league the
+   account has joined. Some apps get **HTTP 403** on this collection even with
+   working credentials, because it reads the user record rather than a league.
+2. **Renew chain** (automatic fallback, needs `--league`) — reads the current
+   game key from `/game/nhl`, builds this season's league key, then follows each
+   league's `renew` field back through history. Only league-scoped endpoints are
+   used, which is the access an ordinary fantasy app has.
+
+A 403 on route 1 is not a credentials problem. If the token refresh printed no
+error, auth is fine and the fallback will handle it.
 
 ## First-time setup
 

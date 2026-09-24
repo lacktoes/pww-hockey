@@ -40,18 +40,33 @@ DOCS_DIR     = Path(__file__).parent.parent / "docs"
 KEYS_FILE    = DOCS_DIR / "league_keys.json"
 
 
-def api_get(path, headers, retries=3):
+class ApiError(Exception):
+    def __init__(self, status, msg):
+        super().__init__(msg)
+        self.status = status
+
+
+def api_get(path, headers, retries=3, quiet=False):
+    """
+    GET a Yahoo endpoint. 4xx other than 429 are permanent answers, not blips,
+    so they are raised immediately rather than retried.
+    """
     url = "{}/{}".format(YAHOO_BASE, path)
     for attempt in range(retries):
         try:
             r = requests.get(url, params={"format": "json"}, headers=headers, timeout=20)
+            if 400 <= r.status_code < 500 and r.status_code != 429:
+                raise ApiError(r.status_code, "HTTP {} for {}".format(r.status_code, path))
             r.raise_for_status()
             return r.json()
+        except ApiError:
+            raise
         except Exception as exc:
             if attempt == retries - 1:
                 raise
             wait = 2 ** attempt
-            print("    (retry {} in {}s - {})".format(attempt + 1, wait, exc))
+            if not quiet:
+                print("    (retry {} in {}s - {})".format(attempt + 1, wait, exc))
             time.sleep(wait)
 
 
@@ -132,6 +147,78 @@ def discover(headers):
     return rows
 
 
+def current_game_key(headers):
+    """Current NHL game key via the game-scoped endpoint (no /users involved)."""
+    data = api_get("game/nhl", headers)
+    node = data["fantasy_content"]["game"]
+    meta = _flatten(node)
+    return meta.get("game_key"), meta.get("season")
+
+
+def _renew_to_key(renew):
+    """Yahoo writes the previous season as '427_1809'; we need '427.l.1809'."""
+    if not renew or "_" not in str(renew):
+        return None
+    gk, _, lid = str(renew).partition("_")
+    if not gk.isdigit() or not lid.isdigit():
+        return None
+    return "{}.l.{}".format(gk, lid)
+
+
+def league_meta(league_key, headers):
+    data = api_get("league/{}/".format(league_key), headers, quiet=True)
+    node = data["fantasy_content"]["league"]
+    return _flatten(node)
+
+
+def discover_by_renew_chain(league_id, headers, max_hops=25):
+    """
+    Walk league history backwards without the /users collection.
+
+    Each league carries `renew` (the previous season's league) and `renewed`
+    (the next). Starting from this season's league we follow `renew` back as
+    far as it goes. League IDs are NOT stable across seasons, so the chain is
+    the only reliable way to link them.
+    """
+    gk, season = current_game_key(headers)
+    if not gk:
+        print("  could not read the current NHL game key")
+        return []
+    print("  current NHL game key: {} (season {})".format(gk, season))
+
+    key = "{}.l.{}".format(gk, league_id)
+    rows, seen = [], set()
+
+    while key and key not in seen and len(rows) < max_hops:
+        seen.add(key)
+        try:
+            meta = league_meta(key, headers)
+        except ApiError as exc:
+            if not rows:
+                print("  {} not readable ({}) -- is {} the right league ID "
+                      "for this season?".format(key, exc, league_id))
+            break
+        except Exception as exc:
+            print("  {} failed: {}".format(key, exc))
+            break
+
+        rows.append({
+            "season":     str(meta.get("season", "?")),
+            "game_key":   key.split(".l.")[0],
+            "league_key": key,
+            "league_id":  key.split(".l.")[-1],
+            "name":       meta.get("name", ""),
+            "num_teams":  meta.get("num_teams", ""),
+        })
+        print("  found {:10s} {:16s} {:>2} teams  {}".format(
+            str(meta.get("season", "?")), key,
+            meta.get("num_teams", "?"), meta.get("name", "")))
+        key = _renew_to_key(meta.get("renew"))
+
+    rows.sort(key=lambda r: r["season"])
+    return rows
+
+
 def season_label(season):
     """Yahoo's season '2025' means the 2025-26 NHL season."""
     try:
@@ -151,13 +238,35 @@ def main():
     print("=" * 66)
 
     headers = {"Authorization": "Bearer {}".format(refresh_access_token())}
-    rows    = discover(headers)
+
+    rows, via_chain = [], False
+    try:
+        rows = discover(headers)
+    except ApiError as exc:
+        if exc.status in (401, 403):
+            print("  /users collection refused (HTTP {}).".format(exc.status))
+            print("  Falling back to walking league history via renew links.\n")
+        else:
+            raise
+    except Exception as exc:
+        print("  /users lookup failed: {}\n  Falling back to renew chain.\n".format(exc))
+
+    if not rows:
+        if not args.league:
+            print("\nCannot fall back without a league ID.")
+            print("Rerun with --league <id>, e.g. --league 1809 "
+                  "(the number in your league's Yahoo URL).")
+            return
+        rows = discover_by_renew_chain(args.league, headers)
+        via_chain = True
 
     if not rows:
         print("No NHL leagues found for this account.")
         return
 
-    if args.league:
+    # League IDs change season to season, so --league only filters a /users
+    # listing. The renew chain is already scoped to one league by construction.
+    if args.league and not via_chain:
         rows = [r for r in rows if r["league_id"] == str(args.league)]
         if not rows:
             print("No leagues matched league ID {}.".format(args.league))
@@ -176,10 +285,12 @@ def main():
         print("\n(--dry-run: league_keys.json not written)")
         return
 
-    # Group by league ID so a multi-league account still produces a clean map.
+    # A renew chain is one league across seasons, so keep it whole. Only a
+    # /users listing can legitimately contain several distinct leagues.
+    group_key = (lambda r: "chain") if via_chain else (lambda r: r["league_id"])
     by_league = {}
     for r in rows:
-        by_league.setdefault(r["league_id"], {})[season_label(r["season"])] = {
+        by_league.setdefault(group_key(r), {})[season_label(r["season"])] = {
             "league_key": r["league_key"],
             "game_key":   r["game_key"],
             "name":       r["name"],
@@ -193,17 +304,17 @@ def main():
 
     DOCS_DIR.mkdir(exist_ok=True)
     KEYS_FILE.write_text(json.dumps({
-        "league_id": primary,
+        "league_id": str(args.league) if via_chain else primary,
         "current":   current,
         "seasons":   seasons,
     }, indent=2))
 
     print()
     print("Wrote -> {}".format(KEYS_FILE))
-    print("  league_id : {}".format(primary))
+    print("  league_id : {}".format(str(args.league) if via_chain else primary))
     print("  seasons   : {}".format(len(seasons)))
     print("  current   : {}  ({})".format(current, seasons[current]["league_key"]))
-    if len(by_league) > 1:
+    if len(by_league) > 1 and not via_chain:
         others = ", ".join(l for l in by_league if l != primary)
         print("  note: other league IDs also found ({}) -- "
               "rerun with --league to pick a different one.".format(others))
