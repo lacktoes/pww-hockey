@@ -37,13 +37,9 @@ import objectpath
 import pandas as pd
 import requests
 
-try:
-    from dotenv import load_dotenv
-    load_dotenv(Path(__file__).parent.parent / ".env")
-except ImportError:
-    pass
+from yahoo_oauth import load_env, refresh_access_token
 
-from yahoo_oauth import refresh_access_token
+load_env()   # searches YAHOO_ENV, the repo root, then parent directories
 
 # --- constants -----------------------------------------------------------
 STAT_LABELS = ["G", "A", "PIM", "PPP", "SOG", "FW", "HIT", "BLK", "W", "SV", "SV%", "SHO"]

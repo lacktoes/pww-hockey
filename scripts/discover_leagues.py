@@ -30,14 +30,10 @@ from pathlib import Path
 
 import requests
 
-try:
-    from dotenv import load_dotenv
-    load_dotenv(Path(__file__).parent.parent / ".env")
-except ImportError:
-    pass
-
 sys.path.insert(0, str(Path(__file__).parent))
-from yahoo_oauth import refresh_access_token
+from yahoo_oauth import load_env, refresh_access_token
+
+load_env()   # searches YAHOO_ENV, the repo root, then parent directories
 
 YAHOO_BASE   = "https://fantasysports.yahooapis.com/fantasy/v2"
 DOCS_DIR     = Path(__file__).parent.parent / "docs"
