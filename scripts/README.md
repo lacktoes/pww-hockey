@@ -22,13 +22,25 @@ Discovery tries two routes:
 1. `/users;use_login=1/games;game_codes=nhl/leagues` — lists every league the
    account has joined. Some apps get **HTTP 403** on this collection even with
    working credentials, because it reads the user record rather than a league.
-2. **Renew chain** (automatic fallback, needs `--league`) — reads the current
-   game key from `/game/nhl`, builds this season's league key, then follows each
-   league's `renew` field back through history. Only league-scoped endpoints are
-   used, which is the access an ordinary fantasy app has.
+2. **Renew chain** (automatic fallback) — follows each league's `renew` field
+   back through history using only league-scoped reads.
 
-A 403 on route 1 is not a credentials problem. If the token refresh printed no
-error, auth is fine and the fallback will handle it.
+A 403 is not a credentials problem. If the token refresh printed no error, auth
+is fine — some apps are restricted to league-scoped endpoints and are refused on
+anything that reads a user or a game.
+
+The chain needs a league key to start from, resolved cheapest-first:
+
+1. `--start-key 449.l.1809`
+2. `$YAHOO_LEAGUE_KEY` — the key a working Yahoo tool already uses
+3. `/game/nhl` + `--league <id>`
+4. probing game keys against `--league <id>` (slow, last resort)
+
+If everything but league reads is refused, pass a key you know works:
+
+```bash
+python scripts/discover_leagues.py --start-key 449.l.1809
+```
 
 ## First-time setup
 

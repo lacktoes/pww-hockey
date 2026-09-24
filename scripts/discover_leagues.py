@@ -148,11 +148,67 @@ def discover(headers):
 
 
 def current_game_key(headers):
-    """Current NHL game key via the game-scoped endpoint (no /users involved)."""
+    """Current NHL game key via the game-scoped endpoint."""
     data = api_get("game/nhl", headers)
-    node = data["fantasy_content"]["game"]
-    meta = _flatten(node)
+    meta = _flatten(data["fantasy_content"]["game"])
     return meta.get("game_key"), meta.get("season")
+
+
+def probe_game_keys(league_id, headers, lo=380, hi=500):
+    """
+    Last resort: find this season's league key by trying {gk}.l.{league_id}
+    across a range of game keys.
+
+    Only needed when even /game/nhl is refused, which happens when an app is
+    restricted to league-scoped reads. The league ID in a Yahoo league URL
+    belongs to the CURRENT season, so exactly one game key should answer.
+    """
+    print("  probing game keys {}-{} for league {} "
+          "(this takes a minute)...".format(lo, hi, league_id))
+    for gk in range(hi, lo - 1, -1):          # newest first
+        key = "{}.l.{}".format(gk, league_id)
+        try:
+            meta = league_meta(key, headers)
+        except Exception:
+            continue
+        if meta.get("league_key") or meta.get("name"):
+            print("  hit: {}  season {}  {}".format(
+                key, meta.get("season", "?"), meta.get("name", "")))
+            return str(gk), meta.get("season")
+    return None, None
+
+
+def resolve_start_key(league_id, headers, explicit=None):
+    """
+    Work out which league key to start the renew walk from, cheapest first:
+
+      1. --start-key
+      2. $YAHOO_LEAGUE_KEY  -- the working key an existing tool already uses
+      3. /game/nhl + league_id
+      4. probing game keys against league_id
+    """
+    if explicit:
+        print("  start key from --start-key: {}".format(explicit))
+        return explicit
+
+    env_key = os.environ.get("YAHOO_LEAGUE_KEY")
+    if env_key and ".l." in env_key:
+        print("  start key from YAHOO_LEAGUE_KEY: {}".format(env_key))
+        return env_key
+
+    try:
+        gk, season = current_game_key(headers)
+        if gk:
+            print("  current NHL game key: {} (season {})".format(gk, season))
+            return "{}.l.{}".format(gk, league_id)
+    except ApiError as exc:
+        print("  /game/nhl refused ({}) -- this app is limited to "
+              "league-scoped reads.".format(exc))
+
+    if not league_id:
+        return None
+    gk, _ = probe_game_keys(league_id, headers)
+    return "{}.l.{}".format(gk, league_id) if gk else None
 
 
 def _renew_to_key(renew):
@@ -171,7 +227,7 @@ def league_meta(league_key, headers):
     return _flatten(node)
 
 
-def discover_by_renew_chain(league_id, headers, max_hops=25):
+def discover_by_renew_chain(league_id, headers, max_hops=25, start_key=None):
     """
     Walk league history backwards without the /users collection.
 
@@ -180,13 +236,13 @@ def discover_by_renew_chain(league_id, headers, max_hops=25):
     far as it goes. League IDs are NOT stable across seasons, so the chain is
     the only reliable way to link them.
     """
-    gk, season = current_game_key(headers)
-    if not gk:
-        print("  could not read the current NHL game key")
+    key = resolve_start_key(league_id, headers, start_key)
+    if not key:
+        print("\n  Could not determine a starting league key.")
+        print("  Find the key your working Yahoo script uses (it looks like")
+        print("  '449.l.1809') and pass it:  --start-key <key>")
         return []
-    print("  current NHL game key: {} (season {})".format(gk, season))
 
-    key = "{}.l.{}".format(gk, league_id)
     rows, seen = [], set()
 
     while key and key not in seen and len(rows) < max_hops:
@@ -232,6 +288,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--league", help="Only include this league ID (e.g. 1809)")
     ap.add_argument("--dry-run", action="store_true", help="Print only, do not write league_keys.json")
+    ap.add_argument("--start-key", help="League key to walk back from, e.g. 449.l.1809. "
+                                        "Use when Yahoo refuses the lookup endpoints.")
     args = ap.parse_args()
 
     print("Yahoo NHL League Discovery")
@@ -252,12 +310,12 @@ def main():
         print("  /users lookup failed: {}\n  Falling back to renew chain.\n".format(exc))
 
     if not rows:
-        if not args.league:
-            print("\nCannot fall back without a league ID.")
-            print("Rerun with --league <id>, e.g. --league 1809 "
-                  "(the number in your league's Yahoo URL).")
+        if not args.league and not args.start_key:
+            print("\nCannot fall back without a league ID or start key.")
+            print("Rerun with --league <id> (the number in your league's Yahoo")
+            print("URL), or --start-key <game_key>.l.<league_id> if you have one.")
             return
-        rows = discover_by_renew_chain(args.league, headers)
+        rows = discover_by_renew_chain(args.league, headers, start_key=args.start_key)
         via_chain = True
 
     if not rows:
