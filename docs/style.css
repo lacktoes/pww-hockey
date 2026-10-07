@@ -50,6 +50,25 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 .brand { display: flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 700; white-space: nowrap; }
 .brand-icon { font-size: 24px; }
 
+.season-picker { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.season-label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-2); }
+#season-select {
+  appearance: none;
+  padding: 7px 30px 7px 11px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface-2) url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%238b949e'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E") no-repeat right 9px center/12px;
+  color: var(--text-1);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+#season-select:hover { background-color: var(--border); }
+#season-select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+#season-select option { background: var(--surface-2); color: var(--text-1); }
+
 .week-nav { display: flex; align-items: center; gap: 8px; margin: 0 auto; }
 .nav-btn {
   width: 34px; height: 34px;

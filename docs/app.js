@@ -12,24 +12,136 @@ let availWeeks    = [];
 let radarSelected = new Set();
 let linesSelected = new Set();
 let activeTab     = "weekly";
+let manifest      = null;   // docs/seasons.json, or null on a single-season deploy
+let curSeason     = null;
+let applyingHash  = false;  // guards the hashchange listener against our own writes
 
 // ── Bootstrap ───────────────────────────────────────────────────────────────
 async function init() {
   try {
-    const res = await fetch("data.json");
-    if (!res.ok) throw new Error(res.statusText);
-    appData    = await res.json();
-    availWeeks = Object.keys(appData.weeks).map(Number).sort((a, b) => a - b);
+    manifest = await loadManifest();
     initTabs();
-    // Fall back to the most recent available week if current_week has no data yet
-    const startWeek = appData.weeks[String(appData.meta.current_week)]
-      ? appData.meta.current_week
-      : availWeeks[availWeeks.length - 1];
-    selectWeek(startWeek);
+    initSeasonPicker();
+    const want = parseHash();
+    const season = (manifest && manifest.seasons.some(s => s.season === want.season))
+      ? want.season
+      : (manifest ? manifest.current : null);
+    await loadSeason(season, want.week);
   } catch (e) {
     show("error");
   }
 }
+
+/**
+ * The season manifest is optional. Without it the dashboard falls back to the
+ * single data.json it has always read, so the page keeps working on a deploy
+ * where the multi-season fetch has not run yet.
+ */
+async function loadManifest() {
+  try {
+    const res = await fetch("seasons.json", { cache: "no-cache" });
+    if (!res.ok) return null;
+    const m = await res.json();
+    return (m && Array.isArray(m.seasons) && m.seasons.length) ? m : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+async function loadSeason(season, wantWeek) {
+  show("loading");
+
+  const entry = manifest && manifest.seasons.find(s => s.season === season);
+  const file  = entry ? entry.file : "data.json";
+
+  const res = await fetch(file, { cache: "no-cache" });
+  if (!res.ok) throw new Error(res.statusText);
+
+  appData    = await res.json();
+  curSeason  = season || (appData.meta && appData.meta.season) || null;
+  availWeeks = Object.keys(appData.weeks).map(Number).sort((a, b) => a - b);
+
+  // Highlight selections belong to the season being left behind.
+  radarSelected.clear();
+  linesSelected.clear();
+
+  syncSeasonPicker();
+
+  // Prefer the requested week, else the live week, else the last week with data.
+  const startWeek =
+    (wantWeek && appData.weeks[String(wantWeek)]) ? wantWeek
+    : appData.weeks[String(appData.meta.current_week)] ? appData.meta.current_week
+    : availWeeks[availWeeks.length - 1];
+
+  selectWeek(startWeek);
+  showTab(activeTab);   // re-assert panel visibility and re-render the season tab
+}
+
+// ── Season picker ───────────────────────────────────────────────────────────
+function initSeasonPicker() {
+  const wrap = document.getElementById("season-picker");
+  const sel  = document.getElementById("season-select");
+  if (!wrap || !sel || !manifest) return;
+
+  sel.innerHTML = manifest.seasons.map(s => {
+    const suffix = s.complete ? "" : " (live)";
+    return `<option value="${s.season}">${s.season}${suffix}</option>`;
+  }).join("");
+  wrap.hidden = false;
+
+  sel.addEventListener("change", async () => {
+    try {
+      await loadSeason(sel.value, null);
+      writeHash();
+    } catch (e) {
+      show("error");
+    }
+  });
+}
+
+function syncSeasonPicker() {
+  const sel = document.getElementById("season-select");
+  if (sel && curSeason) sel.value = curSeason;
+}
+
+// ── URL hash (shareable links: #season=2024-25&week=12) ─────────────────────
+function parseHash() {
+  const h = (location.hash || "").replace(/^#/, "");
+  const out = { season: null, week: null };
+  for (const part of h.split("&")) {
+    const [k, v] = part.split("=");
+    if (k === "season" && v) out.season = decodeURIComponent(v);
+    if (k === "week" && v && !isNaN(Number(v))) out.week = Number(v);
+  }
+  return out;
+}
+
+function writeHash() {
+  if (selectedWeek == null) return;
+  const parts = [];
+  if (curSeason) parts.push("season=" + encodeURIComponent(curSeason));
+  parts.push("week=" + selectedWeek);
+  const next = "#" + parts.join("&");
+  if (location.hash === next) return;
+  applyingHash = true;
+  history.replaceState(null, "", next);
+  applyingHash = false;
+}
+
+window.addEventListener("hashchange", async () => {
+  if (applyingHash) return;
+  const want = parseHash();
+  try {
+    if (want.season && want.season !== curSeason
+        && manifest && manifest.seasons.some(s => s.season === want.season)) {
+      await loadSeason(want.season, want.week);
+    } else if (want.week && want.week !== selectedWeek && appData.weeks[String(want.week)]) {
+      selectWeek(want.week);
+    }
+  } catch (e) {
+    show("error");
+  }
+});
 
 // ── Tabs ────────────────────────────────────────────────────────────────────
 function initTabs() {
@@ -52,6 +164,7 @@ function selectWeek(week) {
   radarSelected.clear();
   renderWeek(week);
   updateNav();
+  writeHash();
 }
 
 // ── Navigation ──────────────────────────────────────────────────────────────
@@ -77,6 +190,7 @@ function renderWeek(week) {
   const wk = appData.weeks[String(week)];
 
   document.getElementById("week-label").textContent    = "Week " + week;
+  document.title = (curSeason ? curSeason + " · " : "") + "Week " + week + " — PWW Hockey";
   document.getElementById("live-badge").hidden         = !wk.is_current;
   document.getElementById("last-updated").textContent  =
     "Updated " + fmtDate(appData.meta.last_updated);

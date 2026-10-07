@@ -1,0 +1,7 @@
+{
+  "current": "2026-27",
+  "note": "2026-27 is league 1809 (game 477). Read from the public pub-api host; see scripts/fetch_data.py. Earlier seasons are kept as static data-<season>.json files and are not refetched.",
+  "seasons": {
+    "2026-27": {"league_key": "477.l.1809", "num_teams": 12}
+  }
+}

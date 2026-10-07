@@ -28,14 +28,11 @@ jobs:
       - name: Install dependencies
         run: pip install -r scripts/requirements.txt
 
-      - name: Fetch Yahoo data and build data.json
+      - name: Fetch Yahoo data for the current season
+        # Reads the league's public feed (pub-api-ro.fantasysports.yahoo.com) -- no OAuth,
+        # no secrets. The league must stay publicly viewable. League key comes from
+        # docs/league_keys.json. The old YAHOO_* secrets are no longer used.
         env:
-          YAHOO_CLIENT_ID:     ${{ secrets.YAHOO_CLIENT_ID }}
-          YAHOO_CLIENT_SECRET: ${{ secrets.YAHOO_CLIENT_SECRET }}
-          YAHOO_REFRESH_TOKEN: ${{ secrets.YAHOO_REFRESH_TOKEN }}
-          YAHOO_LEAGUE_KEY:    ${{ secrets.YAHOO_LEAGUE_KEY }}
-          TOTAL_TEAMS:         ${{ secrets.TOTAL_TEAMS }}
-          GH_PAT:              ${{ secrets.GH_PAT }}
           GITHUB_REPOSITORY:   ${{ github.repository }}
         run: python scripts/fetch_data.py
 
@@ -43,7 +40,7 @@ jobs:
         run: |
           git config user.name  "PWW Bot"
           git config user.email "pww-bot@users.noreply.github.com"
-          git add docs/data.json
+          git add docs/data.json docs/data-*.json docs/seasons.json
           git diff --staged --quiet || git commit -m "Auto-update: $(date -u '+%Y-%m-%d %H:%M UTC')"
           git pull --rebase
           git push
