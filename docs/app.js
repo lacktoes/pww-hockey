@@ -21,6 +21,7 @@ async function init() {
   try {
     manifest = await loadManifest();
     initTabs();
+    initAllPlayControls();
     initSeasonPicker();
     const want = parseHash();
     const season = (manifest && manifest.seasons.some(s => s.season === want.season))
@@ -842,6 +843,7 @@ function renderSeasonPage() {
   document.getElementById("season-weekly-results").innerHTML   = wkTable;
 
   renderLeaguePtsChart();
+  renderAllPlay();
 }
 
 function teamBg(name) {
@@ -1023,6 +1025,222 @@ function renderLeaguePtsChart() {
       renderLeaguePtsChart();
     });
   });
+}
+
+// ── All-play standings ───────────────────────────────────────────────────────
+// Computation lives in allplay.js (shared with tests/allplay.test.js).
+let apView = "luck";     // "luck" | "schedule"
+let apLive = false;      // include the week in progress
+let apLast = null;
+
+function initAllPlayControls() {
+  document.querySelectorAll(".ap-seg-btn").forEach(btn => btn.addEventListener("click", () => {
+    apView = btn.dataset.view;
+    document.querySelectorAll(".ap-seg-btn").forEach(b => {
+      b.classList.toggle("ap-seg-active", b === btn);
+      b.setAttribute("aria-pressed", String(b === btn));
+    });
+    renderAllPlayChart(apLast);
+  }));
+  const live = document.getElementById("ap-live");
+  if (live) live.addEventListener("change", () => { apLive = live.checked; renderAllPlay(); });
+  let t = null;
+  window.addEventListener("resize", () => {
+    clearTimeout(t);
+    t = setTimeout(() => { if (activeTab === "season" && apLast) renderAllPlayChart(apLast); }, 150);
+  });
+}
+
+function renderAllPlay() {
+  if (typeof AllPlay === "undefined") return;
+  const hasLive = availWeeks.some(w => appData.weeks[String(w)].is_current);
+  document.getElementById("ap-live-wrap").hidden = !hasLive;
+  apLast = AllPlay.compute(appData.weeks, { includeCurrent: apLive && hasLive });
+  renderAllPlayChart(apLast);
+  renderAllPlayTable(apLast);
+}
+
+const apEsc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const apPct = v => v == null ? "–" : Math.round(v * 100) + "%";
+const apRec = r => `${r.W}-${r.L}-${r.T}`;
+const apDelta = d => d == null ? "–" : (d > 0 ? "+" : d < 0 ? "−" : "") + Math.abs(d * 100).toFixed(1);
+// short chart label: no emoji, at most `max` characters (14 on desktop, 11 on phones)
+const apLabel = (name, max = 14) => {
+  const s = String(name).replace(/[^\p{L}\p{N}'’ .&-]/gu, "").replace(/\s+/g, " ").trim() || String(name);
+  return s.length > max ? s.slice(0, max - 1) + "…" : s;
+};
+const apInitials = name => apLabel(name).split(" ").filter(Boolean).map(w => w[0]).slice(0, 2).join("").toUpperCase();
+
+function renderAllPlayChart(res) {
+  const box = document.getElementById("ap-chart");
+  const legend = document.getElementById("ap-legend");
+  if (!box) return;
+  if (!res || !res.rows.length) {
+    box.innerHTML = `<p class="ap-note" style="text-align:center;padding:24px 0">No finished weeks yet. Tick “Include this week so far” to see the week in progress.</p>`;
+    legend.innerHTML = "";
+    return;
+  }
+
+  const luck  = apView === "luck";
+  const phone = (box.clientWidth || 600) < 480;
+  // Square plot, same scale on both axes; padded past 0% and 100% so edge markers fit.
+  const P = phone ? 300 : 440, L = phone ? 40 : 50, R = 14, T = 12, B = phone ? 40 : 44;
+  const W = L + P + R, H = T + P + B;
+  const lo = -0.06, hi = 1.06;
+  const xs = v => L + (v - lo) / (hi - lo) * P;
+  const ys = v => T + P - (v - lo) / (hi - lo) * P;
+  const rad = phone ? 9 : 11;
+  const fs  = phone ? 9.5 : 10.5;
+  const step = phone ? 0.2 : 0.1;
+
+  // zones
+  const x0 = L, x1 = L + P, y0 = T, y1 = T + P;
+  const zone = (pts, col) => `<polygon points="${pts.map(p => p.join(",")).join(" ")}" style="fill:var(${col});fill-opacity:0.09"/>`;
+  let zones, ref;
+  if (luck) {
+    // y = x runs corner to corner because both axes share one scale
+    zones = zone([[x0, y1], [x0, y0], [x1, y0]], "--win") + zone([[x0, y1], [x1, y1], [x1, y0]], "--loss");
+    ref = `<line class="ap-ref" x1="${x0}" y1="${y1}" x2="${x1}" y2="${y0}"/>`;
+  } else {
+    const y50 = ys(0.5);
+    zones = zone([[x0, y0], [x1, y0], [x1, y50], [x0, y50]], "--loss") + zone([[x0, y50], [x1, y50], [x1, y1], [x0, y1]], "--win");
+    ref = `<line class="ap-ref" x1="${x0}" y1="${y50}" x2="${x1}" y2="${y50}"/>`;
+  }
+
+  // grid and ticks
+  let grid = "";
+  for (let v = 0; v <= 1.0001; v += step) {
+    const gx = xs(v).toFixed(1), gy = ys(v).toFixed(1), lab = Math.round(v * 100) + "%";
+    grid += `<line class="ap-grid" x1="${gx}" y1="${y0}" x2="${gx}" y2="${y1}"/>
+      <line class="ap-grid" x1="${x0}" y1="${gy}" x2="${x1}" y2="${gy}"/>
+      <text class="ap-tick" x="${gx}" y="${y1 + 14}" text-anchor="middle">${lab}</text>
+      <text class="ap-tick" x="${x0 - 5}" y="${gy}" text-anchor="end" dominant-baseline="central">${lab}</text>`;
+  }
+  const yTitle = luck ? "Actual win %" : "Opp all-play %";
+  const titles = `<text class="ap-axis-title" x="${L + P / 2}" y="${H - 6}" text-anchor="middle">All-play win %</text>
+    <text class="ap-axis-title" transform="translate(${phone ? 10 : 12},${T + P / 2}) rotate(-90)" text-anchor="middle">${yTitle}</text>`;
+
+  // points; fan out teams that land on (nearly) the same spot
+  const yv = r => luck ? r.actPct : r.oppAll;
+  const pts = res.rows.filter(r => yv(r) != null).map(r => ({ r, x: xs(r.allPct), y: ys(yv(r)) }));
+  const clusters = [];
+  for (const p of pts) {
+    const c = clusters.find(c => Math.hypot(c.x - p.x, c.y - p.y) < rad * 1.3);
+    if (c) c.items.push(p); else clusters.push({ x: p.x, y: p.y, items: [p] });
+  }
+  for (const c of clusters) {
+    const k = c.items.length;
+    if (k < 2) continue;
+    const d = rad * (k === 2 ? 1.05 : k <= 4 ? 1.35 : 1.7);
+    c.items.forEach((p, i) => {
+      const a = -Math.PI / 2 + (2 * Math.PI * i) / k;
+      p.x = Math.min(x1 + rad, Math.max(x0 - rad, c.x + Math.cos(a) * d));
+      p.y = Math.min(y1 + rad, Math.max(y0 - rad, c.y + Math.sin(a) * d));
+    });
+  }
+
+  // labels: right, left, above, below - first spot that is clear; else no label
+  const boxes = pts.map(p => [p.x - rad, p.y - rad, p.x + rad, p.y + rad]);
+  const hit = (a, b) => a[0] < b[2] && b[0] < a[2] && a[1] < b[3] && b[1] < a[3];
+  const placed = [];
+  const labels = pts.map((p, i) => {
+    const text = apLabel(p.r.team, phone ? 11 : 14), w = text.length * fs * 0.56, h = fs + 2;
+    const opts = [
+      [p.x + rad + 3, p.y - h / 2, "start"],
+      [p.x - rad - 3 - w, p.y - h / 2, "start"],
+      [p.x - w / 2, p.y - rad - 3 - h, "start"],
+      [p.x - w / 2, p.y + rad + 3, "start"],
+    ];
+    for (const [lx, ly] of opts) {
+      const bx = [lx, ly, lx + w, ly + h];
+      if (bx[0] < x0 || bx[2] > x1 + R || bx[1] < y0 - 4 || bx[3] > y1) continue;
+      if (placed.some(b => hit(b, bx))) continue;
+      if (boxes.some((b, j) => j !== i && hit(b, bx))) continue;
+      placed.push(bx);
+      return `<text class="ap-label" x="${lx.toFixed(1)}" y="${(ly + h / 2).toFixed(1)}" dominant-baseline="central">${apEsc(text)}</text>`;
+    }
+    return "";
+  }).join("");
+
+  const defs = pts.map((p, i) => `<clipPath id="apc-${i}"><circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${rad}"/></clipPath>`).join("");
+  const marks = pts.map((p, i) => {
+    const r = p.r, logo = appData.teams?.[r.team]?.logo;
+    const face = logo
+      ? `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${rad}" style="fill:var(--surface-2)"/>
+         <image href="${apEsc(logo)}" x="${(p.x - rad).toFixed(1)}" y="${(p.y - rad).toFixed(1)}" width="${rad * 2}" height="${rad * 2}" clip-path="url(#apc-${i})" preserveAspectRatio="xMidYMid slice"/>`
+      : `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${rad}" fill="hsl(${teamHue(r.team)},60%,60%)"/>
+         <text class="ap-ini" x="${p.x.toFixed(1)}" y="${p.y.toFixed(1)}" text-anchor="middle" dominant-baseline="central">${apEsc(apInitials(r.team))}</text>`;
+    const tip = `${r.team}: actual ${apRec(r.actual)} (${apPct(r.actPct)}), all-play ${apRec(r.all)} (${apPct(r.allPct)}), Δ ${apDelta(r.delta)}, opp all-play ${apPct(r.oppAll)}`;
+    return `<g class="ap-pt" tabindex="0" data-i="${i}"><title>${apEsc(tip)}</title>${face}<circle class="ap-ring" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${rad}"/></g>`;
+  }).join("");
+
+  box.innerHTML = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img"
+      aria-label="${luck ? "All-play win % against actual win %" : "All-play win % against opponents' all-play %"}">
+    <defs>${defs}</defs>${zones}${grid}${ref}${labels}${marks}${titles}</svg>
+    <div class="ap-tip" id="ap-tip" hidden></div>`;
+
+  // hover / tap / keyboard: exact numbers
+  const tipEl = document.getElementById("ap-tip");
+  const show = g => {
+    const p = pts[Number(g.dataset.i)], r = p.r, sc = box.clientWidth / W;
+    tipEl.innerHTML = `<b>${apEsc(r.team)}</b>
+      Actual <span>${apRec(r.actual)} · ${apPct(r.actPct)}</span><br>
+      All-play <span>${apRec(r.all)} · ${apPct(r.allPct)}</span><br>
+      Δ Win% <span>${apDelta(r.delta)}</span> · Opp all-play <span>${apPct(r.oppAll)}</span>`;
+    tipEl.hidden = false;
+    const tw = tipEl.offsetWidth, th = tipEl.offsetHeight;
+    let left = p.x * sc + rad * sc + 8, top = p.y * sc - th / 2;
+    if (left + tw > box.clientWidth) left = p.x * sc - rad * sc - 8 - tw;
+    tipEl.style.left = Math.max(0, left) + "px";
+    tipEl.style.top = Math.max(0, Math.min(box.clientHeight - th, top)) + "px";
+  };
+  const hide = () => { tipEl.hidden = true; };
+  box.querySelectorAll(".ap-pt").forEach(g => {
+    g.addEventListener("mouseenter", () => show(g));
+    g.addEventListener("focus", () => show(g));
+    g.addEventListener("click", () => show(g));
+    g.addEventListener("mouseleave", hide);
+    g.addEventListener("blur", hide);
+  });
+
+  legend.innerHTML = luck
+    ? `<span><i class="ap-sw" style="background:color-mix(in srgb, var(--win) 22%, transparent)"></i>Lucky: record beats play</span>
+       <span><i class="ap-sw" style="background:color-mix(in srgb, var(--loss) 22%, transparent)"></i>Unlucky: record trails play</span>
+       <span><i class="ap-sw-line"></i>Record matches play</span>`
+    : `<span><i class="ap-sw" style="background:color-mix(in srgb, var(--loss) 22%, transparent)"></i>Tough schedule</span>
+       <span><i class="ap-sw" style="background:color-mix(in srgb, var(--win) 22%, transparent)"></i>Soft schedule</span>
+       <span><i class="ap-sw-line"></i>50% = average opponent</span>`;
+}
+
+function renderAllPlayTable(res) {
+  const el = document.getElementById("ap-table");
+  if (!el) return;
+  if (!res || !res.rows.length) { el.innerHTML = ""; return; }
+  // subtle tint: green = lucky / soft schedule, red = unlucky / tough
+  const tint = (v, full) => {
+    if (v == null || Math.abs(v) < 0.005) return "";
+    const a = Math.round(Math.min(1, Math.abs(v) / full) * 30);
+    return `background:color-mix(in srgb, var(${v > 0 ? "--loss" : "--win"}) ${a}%, transparent)`;
+  };
+  const rows = res.rows.map(r => `<tr>
+      <td class="ap-rank">${r.rank}</td>
+      <td class="td-team"><div class="td-team-inner">${smLogoImg(r.team)}<span title="${apEsc(r.team)}">${apEsc(r.team)}</span></div></td>
+      <td class="ap-num">${r.actPct == null ? "–" : apRec(r.actual)}<small>${apPct(r.actPct)}</small></td>
+      <td class="ap-num">${apRec(r.all)}<small>${apPct(r.allPct)}</small></td>
+      <td class="ap-num" style="${tint(r.delta, 0.35)}" title="All-play % minus actual %: positive = unlucky">${apDelta(r.delta)}</td>
+      <td class="ap-num" style="${tint(r.oppAll == null ? null : r.oppAll - 0.5, 0.25)}" title="Average all-play % of your opponents in the weeks they played you">${apPct(r.oppAll)}</td>
+    </tr>`).join("");
+  const ws = res.weeks, cur = ws.filter(w => appData.weeks[String(w)]?.is_current);
+  const span = ws.length ? (ws.length > 1 ? `Weeks ${ws[0]}–${ws[ws.length - 1]}` : `Week ${ws[0]}`) : "";
+  el.innerHTML = `<table class="stats-table ap-table">
+      <thead><tr>
+        <th class="th-rank">#</th><th class="th-team">Team</th>
+        <th title="Real weekly matchup results">Actual</th>
+        <th title="Every week against all 11 other teams">All-play</th>
+        <th title="All-play % minus actual %, in percentage points. Positive = unlucky">Δ Win%</th>
+        <th title="Strength of schedule: average all-play % of your opponents the week they played you. Above 50% = tough">Opp all-play</th>
+      </tr></thead><tbody>${rows}</tbody></table>
+    <p class="ap-note">${span}${cur.length ? ` (week ${cur[0]} so far)` : ""}. Ranked by all-play %. A matchup is won by winning more categories; ties count as half.</p>`;
 }
 
 // ── Logo helpers ─────────────────────────────────────────────────────────────

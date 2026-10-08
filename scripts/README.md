@@ -112,3 +112,13 @@ YAHOO_CALL_DELAY=0.3 python scripts/fetch_data.py --backfill --skip-complete
   unaffected.
 - **League size can change between seasons.** `num_teams` from the manifest wins
   over the `TOTAL_TEAMS` environment variable.
+
+## All-play standings (Season tab)
+
+`docs/allplay.js` computes all-play records, luck (Δ win %) and strength of schedule from the
+weekly stats and matchups already in each season file; `docs/app.js` draws the scatter and
+table. The calculation has a small hand-made test:
+
+```bash
+node tests/allplay.test.js
+```

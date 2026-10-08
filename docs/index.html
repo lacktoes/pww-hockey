@@ -97,6 +97,23 @@
           <div id="season-summary"></div>
         </section>
 
+        <section class="card allplay-card" id="allplay-card">
+          <h2 class="section-title">All-Play Standings</h2>
+          <p class="section-hint">Each week, every team against all 11 others: how teams would rank if everyone played everyone. Δ = all-play % minus actual %, so positive is unlucky. Opp all-play = how good your opponents were in the weeks they played you.</p>
+          <div class="ap-controls">
+            <div class="ap-seg" role="group" aria-label="Chart view">
+              <button class="ap-seg-btn ap-seg-active" id="ap-view-luck" data-view="luck" aria-pressed="true">Luck</button>
+              <button class="ap-seg-btn" id="ap-view-schedule" data-view="schedule" aria-pressed="false">Schedule</button>
+            </div>
+            <label class="ap-live" id="ap-live-wrap" hidden>
+              <input type="checkbox" id="ap-live"> Include this week so far
+            </label>
+          </div>
+          <div class="ap-chart" id="ap-chart"></div>
+          <div class="ap-legend" id="ap-legend"></div>
+          <div class="table-wrap" id="ap-table"></div>
+        </section>
+
         <section class="card">
           <h2 class="section-title">Head-to-Head Records</h2>
           <div id="season-h2h"></div>
@@ -131,6 +148,7 @@
     </div>
   </main>
 
+  <script src="allplay.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
