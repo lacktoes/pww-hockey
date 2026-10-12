@@ -1252,7 +1252,7 @@ function renderAllPlayTable(res) {
 // ── The week's race, day by day (Weekly tab) ────────────────────────────────
 // Who led the week's PWW score after each day. Computation lives in daily.js (shared with
 // tests/daily.test.js); the last day is the published score, so lines end on the podium.
-let raceView     = "rank";      // "rank" | "score"
+let raceView     = "score";     // "score" | "rank"
 let raceSelected = new Set();
 let raceLast     = null;
 
