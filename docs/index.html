@@ -55,19 +55,6 @@
           <div id="podium-container" class="podium"></div>
         </section>
 
-        <!-- The week's race, day by day -->
-        <section class="card race-card" id="race-card" hidden>
-          <h2 class="section-title">The Week, Day by Day</h2>
-          <p class="section-hint">Who led the week after each day's games: the PWW score rebuilt on the totals up to that day. Click a logo or line to highlight, hover or tap a day for that day's leaderboard.</p>
-          <div class="ap-controls">
-            <div class="ap-seg" role="group" aria-label="Chart view">
-              <button class="race-seg-btn ap-seg-active" id="race-view-rank" data-view="rank" aria-pressed="true">Position</button>
-              <button class="race-seg-btn" id="race-view-score" data-view="score" aria-pressed="false">PWW score</button>
-            </div>
-          </div>
-          <div class="race-chart" id="race-chart"></div>
-        </section>
-
         <!-- Bars (left col, row 1) + Matchups (right col, spans rows 1-2) + Radar (left col, row 2) -->
         <div class="weekly-main-grid">
           <section class="card bars-card">
@@ -85,6 +72,19 @@
             <div id="radar-container"></div>
           </section>
         </div>
+
+        <!-- The week's race, day by day -->
+        <section class="card race-card" id="race-card" hidden>
+          <h2 class="section-title">The Week, Day by Day</h2>
+          <p class="section-hint">Who led the week after each day's games: the PWW score rebuilt on the totals up to that day. Click a logo or line to highlight, hover or tap a day for that day's leaderboard.</p>
+          <div class="ap-controls">
+            <div class="ap-seg" role="group" aria-label="Chart view">
+              <button class="race-seg-btn ap-seg-active" id="race-view-rank" data-view="rank" aria-pressed="true">Position</button>
+              <button class="race-seg-btn" id="race-view-score" data-view="score" aria-pressed="false">PWW score</button>
+            </div>
+          </div>
+          <div class="race-chart" id="race-chart"></div>
+        </section>
 
         <!-- Stats heatmap table -->
         <section class="card">
