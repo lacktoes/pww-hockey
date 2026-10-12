@@ -97,6 +97,18 @@
           <div id="season-summary"></div>
         </section>
 
+        <section class="card race-card" id="race-card">
+          <h2 class="section-title">Standings Race, Day by Day</h2>
+          <p class="section-hint">Where every team sat after each day's games. League points are 2 per category won and 1 per tie; the week in progress is scored on the totals so far. Click a logo or line to highlight, hover or tap a day for the table.</p>
+          <div class="ap-controls">
+            <div class="ap-seg" role="group" aria-label="Chart view">
+              <button class="race-seg-btn ap-seg-active" id="race-view-rank" data-view="rank" aria-pressed="true">Position</button>
+              <button class="race-seg-btn" id="race-view-points" data-view="points" aria-pressed="false">Points vs average</button>
+            </div>
+          </div>
+          <div class="race-chart" id="race-chart"></div>
+        </section>
+
         <section class="card allplay-card" id="allplay-card">
           <h2 class="section-title">All-Play Standings</h2>
           <p class="section-hint">Each week, every team against all 11 others: how teams would rank if everyone played everyone. Δ = all-play % minus actual %, so positive is unlucky. Opp all-play = how good your opponents were in the weeks they played you.</p>
@@ -149,6 +161,7 @@
   </main>
 
   <script src="allplay.js"></script>
+  <script src="daily.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

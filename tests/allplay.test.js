@@ -59,4 +59,20 @@ assert.deepEqual(live.B.actual, { W: 1, L: 2, T: 0 }, "live week counted when as
 // SV% is compared as the rate it is stored as (a higher rate wins the category).
 assert.equal(AP.pairing({ "SV%": 0.912 }, { "SV%": 0.905 }, ["SV%"]), "1");
 
+// Goalie minimum: a team short of the minimum forfeits W/SV/SV%/SHO to anyone who met it.
+// Two identical teams, X short (2 GP) and Y fine (3 GP): Y takes all 4 goalie categories
+// and the pairing (4-0 with 8 tied); without the rule they would tie 0-0-12.
+const same = line(25);
+const gw = { "1": { is_current: false, stats: { X: same, Y: same }, goalie_gp: { X: 2, Y: 3 },
+                    matchups: [{ t1: "X", t2: "Y", cats: C.map(c => (["W", "SV", "SV%", "SHO"].includes(c) ? "2" : "T")) }] } };
+const g = byTeam(AP.compute(gw, { goalieMin: 3 }));
+assert.deepEqual(g.Y.all, { W: 1, L: 0, T: 0 }, "Y wins the all-play pairing on goalie forfeits");
+assert.deepEqual(g.X.all, { W: 0, L: 1, T: 0 });
+assert.deepEqual(g.X.actual, { W: 0, L: 1, T: 0 }, "actual record follows Yahoo's stored result");
+const noRule = byTeam(AP.compute(gw));
+assert.deepEqual(noRule.Y.all, { W: 0, L: 0, T: 1 }, "without a minimum the identical teams tie");
+const gwLive = JSON.parse(JSON.stringify(gw)); gwLive["1"].is_current = true;
+assert.deepEqual(byTeam(AP.compute(gwLive, { goalieMin: 3, includeCurrent: true })).Y.all,
+                 { W: 0, L: 0, T: 1 }, "the minimum is not applied to a week in progress");
+
 console.log("allplay tests passed");

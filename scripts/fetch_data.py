@@ -38,7 +38,7 @@ import json
 import re
 import os
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import objectpath
@@ -66,6 +66,13 @@ def request_headers():
 # --- constants -----------------------------------------------------------
 STAT_LABELS = ["G", "A", "PIM", "PPP", "SOG", "FW", "HIT", "BLK", "W", "SV", "SV%", "SHO"]
 CAT_SCORES  = [100, 100, 100,   100,   100,   100,  100,   100,   100, 100, 100,   50]
+STAT_IDS    = {"1": "G", "2": "A", "5": "PIM", "8": "PPP", "14": "SOG", "16": "FW",
+               "31": "HIT", "32": "BLK", "19": "W", "25": "SV", "26": "SV%", "27": "SHO"}
+GOALIE_CATS = ("W", "SV", "SV%", "SHO")
+# League rule: a team with fewer goalie appearances than this in a week forfeits every
+# goalie category to its opponent. Yahoo's API doesn't expose the setting; 3 is this
+# league's value (confirmed: week 1 2026-27, Beezus Christs, 2 GP, forfeited W/SV/SV%/SHO).
+GOALIE_MIN  = int(os.environ.get("GOALIE_MIN_GP") or 3)
 
 DOCS_DIR       = Path(__file__).parent.parent / "docs"
 DOCS_DIR.mkdir(exist_ok=True)
@@ -251,6 +258,101 @@ def ext_manager_guid_direct(data):
     return None
 
 
+def _flat(items):
+    out = {}
+    for x in items or []:
+        if isinstance(x, list):
+            out.update(_flat(x))
+        elif isinstance(x, dict):
+            out.update(x)
+    return out
+
+
+def ext_matchup(data):
+    """(week_start, week_end, {team_key: slot}, Yahoo's per-category result or None) from a
+    /team/.../matchups response. Yahoo's stat_winners are the official result: they
+    include rules the raw totals can't show, such as the goalie-minimum forfeit."""
+    m = data["fantasy_content"]["team"][1]["matchups"]["0"]["matchup"]
+    keys = {}
+    for slot in ("0", "1"):
+        info = _flat(m["0"]["teams"][slot]["team"][0])
+        keys[info.get("team_key")] = slot
+    cats = None
+    winners = m.get("stat_winners") or []
+    if winners:
+        by_label = {}
+        for w in winners:
+            sw = w.get("stat_winner", {})
+            label = STAT_IDS.get(str(sw.get("stat_id")))
+            if not label:
+                continue
+            if str(sw.get("is_tied", "0")) == "1":
+                by_label[label] = "T"
+            else:
+                slot = keys.get(sw.get("winner_team_key"))
+                by_label[label] = {"0": "1", "1": "2"}.get(slot)
+        if all(by_label.get(lab) for lab in STAT_LABELS):
+            cats = [by_label[lab] for lab in STAT_LABELS]
+    return m.get("week_start"), m.get("week_end"), keys, cats
+
+
+# Per-day team totals, in this column order. SV% is left out: a rate can't be summed, the
+# page derives it from SV / SA. GP = goalie appearances that day.
+DAILY_COLS = ["G", "A", "PIM", "PPP", "SOG", "FW", "HIT", "BLK", "W", "SV", "SA", "SHO", "GP"]
+DAILY_IDS  = ["1", "2", "5", "8", "14", "16", "31", "32", "19", "25", "24", "27"]
+BENCH      = ("BN", "IR", "IR+", "NA")
+
+
+def fetch_team_day(team_key, day, headers):
+    """One team's totals for one date: the sum of its active-slot players' stats that day,
+    plus goalie appearances (a goalie in a G slot who faced a shot or made a save). Summed
+    over a week these reproduce Yahoo's weekly team totals exactly, which the fetch checks."""
+    url = ("https://fantasysports.yahooapis.com/fantasy/v2/team/{k}/roster;date={d}"
+           "/players/stats;type=date;date={d}".format(k=team_key, d=day))
+    data = api_get(url, headers)
+    players = data["fantasy_content"]["team"][1]["roster"]["0"]["players"]
+    tot, gp = [0.0] * len(DAILY_IDS), 0
+    for k in players:
+        if not k.isdigit():
+            continue
+        extra = {}
+        for x in players[k]["player"][1:]:
+            if isinstance(x, dict):
+                extra.update(x)
+        slot = _flat(extra.get("selected_position", [])).get("position")
+        if slot in BENCH:
+            continue
+        stats = {st["stat"]["stat_id"]: st["stat"]["value"]
+                 for st in extra.get("player_stats", {}).get("stats", [])}
+        for i, sid in enumerate(DAILY_IDS):
+            tot[i] += _num(stats.get(sid))
+        if slot == "G" and (_num(stats.get("24")) > 0 or _num(stats.get("25")) > 0):
+            gp += 1
+    return [int(v) if float(v).is_integer() else v for v in tot] + [gp]
+
+
+def week_days(week_start, week_end):
+    from datetime import date as _d, timedelta as _td
+    d, end = _d.fromisoformat(week_start), _d.fromisoformat(week_end)
+    out = []
+    while d <= end:
+        out.append(d.isoformat())
+        d += _td(days=1)
+    return out
+
+
+def rule_cats(s1, s2, gp1=None, gp2=None, apply_min=True):
+    """Category results recomputed from totals, applying the goalie-minimum forfeit."""
+    cats = compare_cats(s1, s2)
+    if apply_min and gp1 is not None and gp2 is not None:
+        f1, f2 = gp1 < GOALIE_MIN, gp2 < GOALIE_MIN
+        if f1 != f2:
+            for i, lab in enumerate(STAT_LABELS):
+                if lab in GOALIE_CATS:
+                    cats[i] = "2" if f1 else "1"
+    return cats
+
+
 # --- PWW scoring ---------------------------------------------------------
 def compute_pww(all_stats):
     """Normalised PWW scores (0-1150) across all teams for one week."""
@@ -275,12 +377,14 @@ def compare_cats(s1, s2):
 
 
 # --- per-week fetch ------------------------------------------------------
-def fetch_week(league_key, week, live_week, total_teams, headers, prev_pww=None):
+def fetch_week(league_key, week, live_week, total_teams, headers, prev_pww=None, prev_week=None):
     print("  Week {:2d}:".format(week), end=" ", flush=True)
 
     all_stats = {}   # team_name -> [12 floats]
     all_meta  = {}   # team_name -> {logo, manager, guid, team_key}
     opp_map   = {}   # team_name -> opponent_name
+    yahoo_cats = {}  # (t_name, o_name) -> Yahoo's official per-category result
+    week_dates = (None, None)
 
     # Step 1: stats for every team directly (works for bye teams too)
     for i in range(1, total_teams + 1):
@@ -312,6 +416,13 @@ def fetch_week(league_key, week, live_week, total_teams, headers, prev_pww=None)
             o_name = ext_team_name(data, "1")
             if t_name and o_name and t_name not in opp_map:
                 opp_map[t_name] = o_name
+            try:
+                ws, we, _keys, ycats = ext_matchup(data)
+                week_dates = (ws or week_dates[0], we or week_dates[1])
+                if t_name and o_name and ycats:
+                    yahoo_cats[(t_name, o_name)] = ycats
+            except Exception:
+                pass
             if o_name:
                 logo = ext_team_logo(data, "1")
                 mgr  = ext_manager(data, "1")
@@ -337,6 +448,71 @@ def fetch_week(league_key, week, live_week, total_teams, headers, prev_pww=None)
 
     pww = compute_pww(all_stats)
 
+    # Day-by-day team totals (and goalie appearances, for the goalie-minimum rule).
+    # A day is re-read only while it can still change: the last two UTC days, to catch
+    # late games and stat corrections. Older days are reused from the stored week.
+    is_live = (week == live_week)
+    audit   = []
+    stored  = dict(((prev_week or {}).get("daily") or {}).get("days") or {})
+    days    = {}
+    if week_dates[0] and week_dates[1]:
+        today  = datetime.now(timezone.utc).date().isoformat()
+        recent = (datetime.now(timezone.utc).date() - timedelta(days=2)).isoformat()
+        wanted = [d for d in week_days(week_dates[0], week_dates[1]) if d <= today]
+
+        def read_day(d, names):
+            row = dict(days.get(d) or {})
+            for name in names:
+                key = all_meta.get(name, {}).get("team_key")
+                if key:
+                    row[name] = fetch_team_day(key, d, headers)
+            days[d] = row
+
+        try:
+            for d in wanted:
+                have = stored.get(d) or {}
+                if d >= recent or any(n not in have for n in all_stats):
+                    read_day(d, all_stats)
+                else:
+                    days[d] = have
+            # Check: the days must add up to Yahoo's weekly totals. If a team is off (a stat
+            # correction on an older day), re-read its whole week once.
+            sv_i, sa_i = DAILY_COLS.index("SV"), DAILY_COLS.index("SA")
+            off = []
+            # (Finished weeks only: while games are on, the weekly total moves between reads.)
+            for attempt in ((1, 2) if not is_live else ()):
+                off = []
+                for name, wk_vals in all_stats.items():
+                    tot = [sum(_num((days[d].get(name) or [0] * len(DAILY_COLS))[i]) for d in wanted)
+                           for i in range(len(DAILY_COLS))]
+                    for lab, val in zip(STAT_LABELS, wk_vals):
+                        if lab == "SV%":
+                            mine = (tot[sv_i] / tot[sa_i]) if tot[sa_i] else 0.0
+                            bad = abs(mine - val) > 0.0015
+                        else:
+                            bad = abs(tot[DAILY_COLS.index(lab)] - val) > 1e-6
+                        if bad:
+                            off.append((name, lab))
+                if not off or attempt == 2:
+                    break
+                for name in sorted({n for n, _ in off}):
+                    for d in wanted:
+                        read_day(d, [name])
+            for name in sorted({n for n, _ in off} if not is_live else ()):
+                labs = [lab for n, lab in off if n == name]
+                audit.append({"team": name, "daily_vs_week": labs})
+                print("\n  ! week {} {}: daily totals don't add up to the weekly total on {}".format(
+                    week, name, ", ".join(labs)), end="")
+        except Exception as exc:
+            print("  [daily totals failed: {}]".format(exc))
+            days = dict(stored)
+    gp_i = DAILY_COLS.index("GP")
+    goalie_gp = {}
+    for name in all_stats:
+        rows = [days[d][name] for d in days if name in (days[d] or {})]
+        if rows:
+            goalie_gp[name] = int(sum(r[gp_i] for r in rows))
+
     seen     = set()
     matchups = []
     for t, o in opp_map.items():
@@ -344,7 +520,18 @@ def fetch_week(league_key, week, live_week, total_teams, headers, prev_pww=None)
         if pair in seen or t not in all_stats or o not in all_stats:
             continue
         seen.add(pair)
-        matchups.append({"t1": t, "t2": o, "cats": compare_cats(all_stats[t], all_stats[o])})
+        official = yahoo_cats.get((t, o))
+        # Recompute from totals as a check. In a live week the minimum can't be judged yet.
+        recomputed = rule_cats(all_stats[t], all_stats[o], goalie_gp.get(t), goalie_gp.get(o),
+                               apply_min=not is_live)
+        cats = official or recomputed
+        if official and official != recomputed and not is_live:
+            diff = [STAT_LABELS[i] for i in range(len(STAT_LABELS)) if official[i] != recomputed[i]]
+            audit.append({"t1": t, "t2": o, "categories": diff})
+            print("\n  ! week {} {} v {}: Yahoo differs from the recomputed result on {}".format(
+                week, t, o, ", ".join(diff)), end="")
+        matchups.append({"t1": t, "t2": o, "cats": cats,
+                         "source": "yahoo" if official else "computed"})
 
     leaders = {}
     for idx, stat in enumerate(STAT_LABELS):
@@ -362,6 +549,11 @@ def fetch_week(league_key, week, live_week, total_teams, headers, prev_pww=None)
         },
         "leaders":     leaders,
         "leaderboard": list(pww.sort_values(ascending=False).index),
+        "goalie_gp":   goalie_gp,
+        "daily":       {"cols": DAILY_COLS, "days": {d: days[d] for d in sorted(days)}},
+        "week_start":  week_dates[0],
+        "week_end":    week_dates[1],
+        "audit":       audit,
         "_meta":       all_meta,
     }
 
@@ -451,12 +643,14 @@ def fetch_season(season, league_key, total_teams, headers, refetch_all=False):
         # Completed weeks never change. Only the live week and the one before it
         # (Yahoo backdates stat corrections) are worth refetching.
         if (not refetch_all and wk in weeks_data
-                and live_week and week < live_week - 1):
+                and live_week and week < live_week - 1
+                and (weeks_data[wk].get("daily") or {}).get("days")):
             print("  Week {:2d}: cached -- skipping".format(week))
             continue
 
         prev = weeks_data.get(str(week - 1), {}).get("pww", {})
-        week_data = fetch_week(league_key, week, live_week, total_teams, headers, prev)
+        week_data = fetch_week(league_key, week, live_week, total_teams, headers, prev,
+                               prev_week=weeks_data.get(wk))
         if not week_data:
             continue
 
@@ -489,11 +683,20 @@ def fetch_season(season, league_key, total_teams, headers, refetch_all=False):
             "last_updated": datetime.now(timezone.utc).isoformat(),
             "current_week": reported,
             "complete":     is_complete,
+            "goalie_min":   GOALIE_MIN,
         },
         "teams":     teams_meta,
         "weeks":     weeks_data,
         "standings": build_standings(weeks_data),
     }
+
+
+def dump_json(obj):
+    """Indented JSON, with arrays of numbers kept on one line (the daily totals would
+    otherwise print one number per line and triple the file)."""
+    text = json.dumps(obj, indent=2)
+    return re.sub(r"\[\s+((?:-?[\d.]+,\s+)*-?[\d.]+)\s+\]",
+                  lambda m: "[" + re.sub(r"\s+", " ", m.group(1)) + "]", text)
 
 
 # --- manifest ------------------------------------------------------------
@@ -628,14 +831,14 @@ def main():
             failed.append(season)
             continue
 
-        path.write_text(json.dumps(obj, indent=2))
+        path.write_text(dump_json(obj))
         print("  Saved -> {}  ({} weeks)".format(path, len(obj["weeks"])))
         done.append(season)
 
         # Mirror the current season to the legacy path so an un-updated
         # front end keeps working.
         if season == current:
-            DATA_FILE.write_text(json.dumps(obj, indent=2))
+            DATA_FILE.write_text(dump_json(obj))
             print("  Mirrored -> {}".format(DATA_FILE))
 
     write_manifest(current)

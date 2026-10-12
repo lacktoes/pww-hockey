@@ -122,3 +122,33 @@ table. The calculation has a small hand-made test:
 ```bash
 node tests/allplay.test.js
 ```
+
+## Matchup results come from Yahoo, with an audit
+
+Each matchup's per-category result (`cats`) is Yahoo's official `stat_winners`, not a
+recomputation from the totals. The two differ when a rule the totals can't show applies.
+This league's is the **goalie minimum**: a team with fewer than 3 goalie appearances in a
+week forfeits W, SV, SV% and SHO to its opponent. That's why slap and tickle beat the Beezus
+Christs 7-4 in week 1 of 2026-27, not 5-4-3. Yahoo's API doesn't publish the minimum, so it's
+set in `fetch_data.py` (`GOALIE_MIN`, or the `GOALIE_MIN_GP` environment variable).
+
+- `goalie_gp` per week: each team's goalie appearances, counted day by day from active G slots
+  (summed shots against match Yahoo's weekly SA exactly). All-play standings use it to apply
+  the same forfeit.
+- `audit` per week: every finished matchup is also recomputed from the totals with the
+  goalie rule. Anything that still disagrees with Yahoo is printed during the fetch and
+  stored here, so a new rule or a data error shows up instead of passing silently.
+- Seasons before 2026-27 were scored by recomputation and aren't public on Yahoo, so they
+  can't be re-checked. Weeks where a team missed the goalie minimum may be wrong there.
+
+## Standings race, day by day (Season tab)
+
+`fetch_data.py` stores each team's totals for every day (`daily` in each week: active-slot
+player stats summed per date, plus goalie appearances). A day is re-read only while it can
+still change (the last two days); older days are reused, and a finished week's days are
+checked against Yahoo's weekly totals. `docs/daily.js` turns them into league points and
+position after each day; `docs/app.js` draws the chart.
+
+```bash
+node tests/daily.test.js
+```

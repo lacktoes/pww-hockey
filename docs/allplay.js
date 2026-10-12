@@ -12,6 +12,10 @@
  *   delta          all-play % minus actual %. Positive = unlucky (record worse than play).
  *   opp all-play   average of each opponent's all-play % in the week they played you.
  *                  Above 50% = tough schedule.
+ *   goalie minimum a team with fewer than `goalieMin` goalie appearances in a finished week
+ *                  forfeits W, SV, SV% and SHO to any opponent that met it, as Yahoo scores
+ *                  it (week.goalie_gp, written by fetch_data.py). If both teams fall short,
+ *                  those categories are treated as tied. Not applied to a week in progress.
  */
 (function (root, factory) {
   if (typeof module === "object" && module.exports) module.exports = factory();
@@ -20,16 +24,23 @@
   "use strict";
 
   const CATS = ["G", "A", "PIM", "PPP", "SOG", "FW", "HIT", "BLK", "W", "SV", "SV%", "SHO"];
+  const GOALIE = new Set(["W", "SV", "SV%", "SHO"]);
 
   const pct = r => {
     const n = r.W + r.L + r.T;
     return n ? (r.W + 0.5 * r.T) / n : null;
   };
 
-  /** "1" if a wins the pairing on categories, "2" if b does, "T" if level. */
-  function pairing(statsA, statsB, cats) {
+  /** "1" if a wins the pairing on categories, "2" if b does, "T" if level.
+   *  forfeitA / forfeitB: that team missed the goalie minimum this week. */
+  function pairing(statsA, statsB, cats, forfeitA, forfeitB) {
     let a = 0, b = 0;
     for (const c of cats) {
+      if (GOALIE.has(c) && (forfeitA || forfeitB)) {
+        if (forfeitA && !forfeitB) b++;
+        else if (forfeitB && !forfeitA) a++;
+        continue;                      // both short: tied
+      }
       const va = Number(statsA[c]) || 0, vb = Number(statsB[c]) || 0;
       if (va > vb) a++;
       else if (vb > va) b++;
@@ -49,7 +60,7 @@
    * opts.includeCurrent: count the in-progress week too (default false: finished weeks only).
    */
   function compute(weeks, opts) {
-    const o = Object.assign({ includeCurrent: false, cats: CATS }, opts || {});
+    const o = Object.assign({ includeCurrent: false, cats: CATS, goalieMin: null }, opts || {});
     const rec = {};
     const get = t => rec[t] || (rec[t] = {
       actual: { W: 0, L: 0, T: 0 }, all: { W: 0, L: 0, T: 0 }, oppSum: 0, oppN: 0,
@@ -65,13 +76,17 @@
       if (teams.length < 2) continue;
       used.push(w);
 
+      // goalie-minimum forfeits (finished weeks with goalie appearances recorded)
+      const gp = (!wk.is_current && o.goalieMin && wk.goalie_gp) ? wk.goalie_gp : null;
+      const short = t => !!gp && gp[t] != null && gp[t] < o.goalieMin;
+
       // all-play: every pair once
       const weekRec = {};
       teams.forEach(t => { weekRec[t] = { W: 0, L: 0, T: 0 }; get(t); });
       for (let i = 0; i < teams.length; i++) {
         for (let j = i + 1; j < teams.length; j++) {
           const a = teams[i], b = teams[j];
-          const r = pairing(wk.stats[a], wk.stats[b], o.cats);
+          const r = pairing(wk.stats[a], wk.stats[b], o.cats, short(a), short(b));
           if (r === "1") { weekRec[a].W++; weekRec[b].L++; }
           else if (r === "2") { weekRec[a].L++; weekRec[b].W++; }
           else { weekRec[a].T++; weekRec[b].T++; }

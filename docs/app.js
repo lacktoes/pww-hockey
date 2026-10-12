@@ -22,6 +22,7 @@ async function init() {
     manifest = await loadManifest();
     initTabs();
     initAllPlayControls();
+    initRaceControls();
     initSeasonPicker();
     const want = parseHash();
     const season = (manifest && manifest.seasons.some(s => s.season === want.season))
@@ -65,6 +66,7 @@ async function loadSeason(season, wantWeek) {
   // Highlight selections belong to the season being left behind.
   radarSelected.clear();
   linesSelected.clear();
+  raceSelected.clear();
 
   syncSeasonPicker();
 
@@ -844,6 +846,7 @@ function renderSeasonPage() {
 
   renderLeaguePtsChart();
   renderAllPlay();
+  renderRace();
 }
 
 function teamBg(name) {
@@ -1055,7 +1058,10 @@ function renderAllPlay() {
   if (typeof AllPlay === "undefined") return;
   const hasLive = availWeeks.some(w => appData.weeks[String(w)].is_current);
   document.getElementById("ap-live-wrap").hidden = !hasLive;
-  apLast = AllPlay.compute(appData.weeks, { includeCurrent: apLive && hasLive });
+  apLast = AllPlay.compute(appData.weeks, {
+    includeCurrent: apLive && hasLive,
+    goalieMin: appData.meta && appData.meta.goalie_min,
+  });
   renderAllPlayChart(apLast);
   renderAllPlayTable(apLast);
 }
@@ -1240,7 +1246,184 @@ function renderAllPlayTable(res) {
         <th title="All-play % minus actual %, in percentage points. Positive = unlucky">Δ Win%</th>
         <th title="Strength of schedule: average all-play % of your opponents the week they played you. Above 50% = tough">Opp all-play</th>
       </tr></thead><tbody>${rows}</tbody></table>
-    <p class="ap-note">${span}${cur.length ? ` (week ${cur[0]} so far)` : ""}. Ranked by all-play %. A matchup is won by winning more categories; ties count as half.</p>`;
+    <p class="ap-note">${span}${cur.length ? ` (week ${cur[0]} so far)` : ""}. Ranked by all-play %. A matchup is won by winning more categories; ties count as half.${appData.meta && appData.meta.goalie_min ? ` A team with fewer than ${appData.meta.goalie_min} goalie appearances in a week forfeits the goalie categories, as on Yahoo.` : ""}</p>`;
+}
+
+// ── Standings race, day by day ───────────────────────────────────────────────
+// Computation lives in daily.js (shared with tests/daily.test.js).
+let raceView     = "rank";      // "rank" | "points"
+let raceSelected = new Set();
+let raceLast     = null;
+
+function initRaceControls() {
+  document.querySelectorAll(".race-seg-btn").forEach(btn => btn.addEventListener("click", () => {
+    raceView = btn.dataset.view;
+    document.querySelectorAll(".race-seg-btn").forEach(b => {
+      b.classList.toggle("ap-seg-active", b === btn);
+      b.setAttribute("aria-pressed", String(b === btn));
+    });
+    renderRaceChart();
+  }));
+  let t = null;
+  window.addEventListener("resize", () => {
+    clearTimeout(t);
+    t = setTimeout(() => { if (activeTab === "season" && raceLast) renderRaceChart(); }, 150);
+  });
+}
+
+function renderRace() {
+  if (typeof DailyRace === "undefined") return;
+  raceLast = DailyRace.compute(appData.weeks);
+  renderRaceChart();
+}
+
+function renderRaceChart() {
+  const box = document.getElementById("race-chart");
+  const res = raceLast;
+  if (!box) return;
+  if (!res || !res.days.length) {
+    box.innerHTML = `<p class="ap-note" style="text-align:center;padding:24px 0">No games played yet.</p>`;
+    return;
+  }
+  const days = res.days, teams = res.teams, n = days.length;
+  const rankMode = raceView === "rank";
+  const phone = (box.clientWidth || 800) < 560;
+
+  // layout
+  const W = phone ? 420 : 1000, H = phone ? 400 : 460;
+  const L = rankMode ? 26 : 34, R = phone ? 34 : 176, T = 30, B = 30;
+  const x0 = L, x1 = W - R, y0 = T, y1 = H - B;
+  const xs = i => n === 1 ? (x0 + x1) / 2 : x0 + (i / (n - 1)) * (x1 - x0);
+  const val = (d, t) => rankMode ? d.rank[t] : d.rel[t];
+
+  let yMin, yMax, ys;
+  if (rankMode) {
+    yMin = 1; yMax = Math.max(2, teams.length);
+    ys = v => y0 + ((v - 1) / (yMax - 1)) * (y1 - y0);        // 1st at the top
+  } else {
+    const all = days.flatMap(d => teams.map(t => d.rel[t]));
+    const m = Math.max(4, Math.ceil(Math.max(...all.map(Math.abs)) / 2) * 2);
+    yMin = -m; yMax = m;
+    ys = v => y1 - ((v - yMin) / (yMax - yMin)) * (y1 - y0);
+  }
+
+  // week bands and labels
+  const half = n > 1 ? (x1 - x0) / (n - 1) / 2 : 20;
+  let bands = "", wkLabels = "";
+  const weeksSeen = [...new Set(days.map(d => d.week))];
+  weeksSeen.forEach((w, k) => {
+    const idx = days.map((d, i) => d.week === w ? i : -1).filter(i => i >= 0);
+    const a = Math.max(x0, xs(idx[0]) - half), b = Math.min(x1, xs(idx[idx.length - 1]) + half);
+    if (k % 2 === 1) bands += `<rect class="race-band" x="${a.toFixed(1)}" y="${y0}" width="${(b - a).toFixed(1)}" height="${y1 - y0}"/>`;
+    const live = days[idx[0]].live;
+    if (b - a > 26) wkLabels += `<text class="race-wk" x="${((a + b) / 2).toFixed(1)}" y="${y0 - 10}" text-anchor="middle">Wk ${w}${live && b - a > 60 ? " · live" : ""}</text>`;
+  });
+
+  // grid
+  let grid = "";
+  if (rankMode) {
+    for (let r = 1; r <= yMax; r++) {
+      const y = ys(r).toFixed(1);
+      grid += `<line class="race-grid" x1="${x0}" y1="${y}" x2="${x1}" y2="${y}"/>
+        <text class="race-tick" x="${x0 - 8}" y="${y}" text-anchor="end" dominant-baseline="central">${r}</text>`;
+    }
+  } else {
+    const step = yMax <= 10 ? 2 : yMax <= 30 ? 5 : 10;
+    for (let v = Math.ceil(yMin / step) * step; v <= yMax; v += step) {
+      const y = ys(v).toFixed(1);
+      grid += `<line class="${v === 0 ? "race-zero" : "race-grid"}" x1="${x0}" y1="${y}" x2="${x1}" y2="${y}"/>
+        <text class="race-tick" x="${x0 - 6}" y="${y}" text-anchor="end" dominant-baseline="central">${v > 0 ? "+" : ""}${v}</text>`;
+    }
+  }
+  // day ticks: every day while they fit, else the first day of each week
+  const dayNum = d => d.date ? Number(d.date.slice(8)) : "";
+  const every = (x1 - x0) / Math.max(1, n - 1) >= 16;
+  let xLabels = "";
+  days.forEach((d, i) => {
+    const first = i === 0 || days[i - 1].week !== d.week;
+    if (every || first) xLabels += `<text class="race-tick" x="${xs(i).toFixed(1)}" y="${y1 + 14}" text-anchor="middle">${dayNum(d)}</text>`;
+  });
+
+  // lines
+  const some = raceSelected.size > 0;
+  const order = [...teams].sort((a, b) => days[n - 1].rank[a] - days[n - 1].rank[b]);
+  const dots = n <= 35;
+  const lines = order.map(name => {
+    const hue = teamHue(name), on = raceSelected.has(name);
+    const op = !some ? 0.85 : on ? 1 : 0.1, sw = !some ? 2 : on ? 3.2 : 1.2;
+    const pts = days.map((d, i) => [xs(i), ys(val(d, name))]);
+    const path = pts.map((p, i) => `${i ? "L" : "M"}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(" ");
+    const marks = dots ? pts.map(p => `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="${on ? 3 : 2.2}" fill="hsl(${hue},70%,60%)"/>`).join("") : "";
+    return `<g class="race-line" data-team="${apEsc(name)}" style="opacity:${op}">
+      <title>${apEsc(name)}</title>
+      <path d="${path}" fill="none" stroke="hsl(${hue},70%,60%)" stroke-width="${sw}" stroke-linejoin="round" stroke-linecap="round"/>
+      ${marks}</g>`;
+  }).join("");
+
+  // end labels: logo (+ name on wide screens), spread so they never overlap
+  const lastD = days[n - 1];
+  const want = order.map(name => ({ name, y: ys(val(lastD, name)) }));
+  const placed = spreadLabels(want, phone ? 19 : 22, y0, y1 + 8);
+  const rr = phone ? 9 : 10;
+  const defs = placed.map(({ name, y }, i) => `<clipPath id="rcp-${i}"><circle cx="${x1 + 8 + rr}" cy="${y.toFixed(1)}" r="${rr}"/></clipPath>`).join("");
+  const ends = placed.map(({ name, y }, i) => {
+    const hue = teamHue(name), on = raceSelected.has(name);
+    const op = !some || on ? 1 : 0.25;
+    const logo = appData.teams?.[name]?.logo;
+    const cx = x1 + 8 + rr;
+    const face = logo
+      ? `<circle cx="${cx}" cy="${y.toFixed(1)}" r="${rr}" style="fill:var(--surface-2)"/>
+         <image href="${apEsc(logo)}" x="${cx - rr}" y="${(y - rr).toFixed(1)}" width="${rr * 2}" height="${rr * 2}" clip-path="url(#rcp-${i})" preserveAspectRatio="xMidYMid slice"/>`
+      : `<circle cx="${cx}" cy="${y.toFixed(1)}" r="${rr}" fill="hsl(${hue},60%,60%)"/>`;
+    const txt = phone ? "" : `<text class="race-name" x="${cx + rr + 6}" y="${y.toFixed(1)}" dominant-baseline="central" fill="hsl(${hue},75%,72%)">${apEsc(shortName(name))}</text>`;
+    return `<g class="race-end" data-team="${apEsc(name)}" style="opacity:${op}">
+      <line x1="${x1.toFixed(1)}" y1="${ys(val(lastD, name)).toFixed(1)}" x2="${cx - rr}" y2="${y.toFixed(1)}" stroke="hsl(${hue},70%,60%)" stroke-width="0.8" stroke-opacity="0.4" stroke-dasharray="3 2"/>
+      ${face}${txt}</g>`;
+  }).join("");
+
+  // one invisible column per day for hover / tap
+  const hits = days.map((d, i) => `<rect class="race-hit" data-i="${i}" x="${(xs(i) - half).toFixed(1)}" y="${y0}" width="${(half * 2).toFixed(1)}" height="${y1 - y0}"/>`).join("");
+
+  box.innerHTML = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img"
+      aria-label="${rankMode ? "League position by day" : "League points relative to the league average, by day"}">
+    <defs>${defs}</defs>${bands}${wkLabels}${grid}${xLabels}
+    <line class="race-guide" id="race-guide" x1="0" y1="${y0}" x2="0" y2="${y1}" visibility="hidden"/>
+    ${hits}${lines}${ends}</svg>
+    <div class="race-tip" id="race-tip" hidden></div>`;
+
+  // highlight on click
+  box.querySelectorAll(".race-line, .race-end").forEach(el => el.addEventListener("click", () => {
+    const name = el.dataset.team;
+    if (raceSelected.has(name)) raceSelected.delete(name); else raceSelected.add(name);
+    renderRaceChart();
+  }));
+
+  // the day's table on hover / tap
+  const tip = document.getElementById("race-tip"), guide = document.getElementById("race-guide");
+  const fmtDay = d => d.date
+    ? new Date(d.date + "T12:00:00Z").toLocaleDateString("en-AU", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" })
+    : "Week " + d.week;
+  const showDay = i => {
+    const d = days[i], sc = box.clientWidth / W;
+    const rows = [...teams].sort((a, b) => d.rank[a] - d.rank[b]).map(t => {
+      const rel = d.rel[t];
+      return `<div class="race-row${raceSelected.has(t) ? " race-on" : ""}"><span>${d.rank[t]}</span>${apEsc(shortName(t))}<span>${d.pts[t]}</span><span>${rel > 0 ? "+" : rel < 0 ? "−" : ""}${Math.abs(rel).toFixed(1)}</span></div>`;
+    }).join("");
+    tip.innerHTML = `<b>${fmtDay(d)} · Wk ${d.week}${d.live ? " (in progress)" : d.final ? " (final)" : ""}</b>${rows}`;
+    tip.hidden = false;
+    guide.setAttribute("x1", xs(i)); guide.setAttribute("x2", xs(i)); guide.setAttribute("visibility", "visible");
+    const tw = tip.offsetWidth;
+    let left = xs(i) * sc + 12;
+    if (left + tw > box.clientWidth) left = xs(i) * sc - 12 - tw;
+    tip.style.left = Math.max(0, left) + "px";
+    tip.style.top = (y0 * sc) + "px";
+  };
+  const hideDay = () => { tip.hidden = true; guide.setAttribute("visibility", "hidden"); };
+  box.querySelectorAll(".race-hit").forEach(r => {
+    r.addEventListener("mouseenter", () => showDay(Number(r.dataset.i)));
+    r.addEventListener("click", () => showDay(Number(r.dataset.i)));
+  });
+  box.querySelector("svg").addEventListener("mouseleave", hideDay);
 }
 
 // ── Logo helpers ─────────────────────────────────────────────────────────────
