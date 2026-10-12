@@ -495,7 +495,7 @@ main { max-width: var(--max-w); margin: 0 auto; padding: 20px; display: flex; fl
   .ap-table td.ap-num small { display: block; margin-left: 0; }
 }
 
-/* ── Standings race, day by day ─────────────────────────────────────── */
+/* ── The week's race, day by day (Weekly tab) ───────────────────────── */
 .race-seg-btn { padding: 6px 14px; font-size: 12px; font-weight: 600; color: var(--text-2); }
 .race-seg-btn:hover { color: var(--text-1); }
 .race-seg-btn.ap-seg-active { background: var(--surface-2); color: var(--text-1); }
@@ -503,10 +503,7 @@ main { max-width: var(--max-w); margin: 0 auto; padding: 20px; display: flex; fl
 .race-chart { position: relative; }
 .race-chart svg { width: 100%; height: auto; display: block; overflow: visible; }
 .race-chart .race-tick { font-size: 10px; fill: var(--text-2); }
-.race-chart .race-wk { font-size: 10.5px; font-weight: 600; fill: var(--text-2); }
 .race-chart .race-grid { stroke: var(--border); stroke-width: 1; }
-.race-chart .race-zero { stroke: var(--text-2); stroke-width: 1.2; stroke-dasharray: 4 4; }
-.race-chart .race-band { fill: var(--surface-2); fill-opacity: 0.45; }
 .race-chart .race-guide { stroke: var(--text-2); stroke-width: 1; stroke-dasharray: 2 3; }
 .race-chart .race-line, .race-chart .race-end { cursor: pointer; transition: stroke-opacity 0.2s, opacity 0.2s; }
 .race-chart .race-name { font-size: 10.5px; font-weight: 600; }
@@ -518,3 +515,6 @@ main { max-width: var(--max-w); margin: 0 auto; padding: 20px; display: flex; fl
 .race-tip .race-row { display: grid; grid-template-columns: 18px 1fr auto auto; gap: 0 8px; align-items: baseline; }
 .race-tip .race-row span { color: var(--text-2); font-variant-numeric: tabular-nums; }
 .race-tip .race-row.race-on { color: var(--accent); }
+.race-chart .race-score { fill: var(--text-2); font-weight: 500; }
+.race-tip .race-up { color: var(--win) !important; }
+.race-tip .race-down { color: var(--loss) !important; }

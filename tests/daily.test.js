@@ -1,78 +1,71 @@
 // Run: node tests/daily.test.js
-// Hand-made 4-team league. Week 1 is finished (3 days), week 2 is in progress (1 day).
+// One hand-made week, three teams, three days: who leads the weekly PWW score each day.
 const assert = require("node:assert/strict");
 const DR = require("../docs/daily.js");
 
 const cols = ["G", "A", "PIM", "PPP", "SOG", "FW", "HIT", "BLK", "W", "SV", "SA", "SHO", "GP"];
 const row = o => cols.map(c => o[c] || 0);
-const C = DR.CATS;
-const T = C.map(() => "T");
+const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs ${b}`);
 
-// Week 1, A v B and C v D.
-//  day 1: A scores a goal, nobody else does anything      -> A 13, B 11, C 12, D 12
-//  day 2: B scores twice (G now 1-2) and wins a faceoff   -> A 11, B 13
-//  day 3: final. Yahoo's official result has A winning 7-4-1 (say, a goalie forfeit the
-//         totals can't show), so the last day must use it, not the running totals.
-const officialAB = ["2", "T", "1", "1", "1", "1", "1", "1", "2", "2", "2", "1"];   // A 7, B 4, 1 tie
-const week1 = {
-  is_current: false, week_start: "2026-10-05", week_end: "2026-10-07",
-  stats: { A: {}, B: {}, C: {}, D: {} },
-  matchups: [{ t1: "A", t2: "B", cats: officialAB }, { t1: "C", t2: "D", cats: T }],
+// day 1: A scores 2, B scores 1, C nothing        -> G: A 100, B 50, C 0. A leads.
+// day 2: C scores 4 and has 10 hits               -> G: C 100 (4), A 50 (2), B 0 (1)... HIT: C 100
+// day 3: last day - the published weekly scores are used as they are.
+const week = {
+  is_current: false,
+  stats: { A: {}, B: {}, C: {} },
+  pww: { A: 300.5, B: 120.25, C: 410.75 },
   daily: { cols, days: {
-    "2026-10-05": { A: row({ G: 1 }), B: row({}), C: row({}), D: row({}) },
-    "2026-10-06": { A: row({}), B: row({ G: 2, FW: 1 }), C: row({}), D: row({}) },
-    "2026-10-07": { A: row({}), B: row({}), C: row({}), D: row({}) },
+    "2026-10-05": { A: row({ G: 2 }), B: row({ G: 1 }), C: row({}) },
+    "2026-10-06": { A: row({}), B: row({}), C: row({ G: 4, HIT: 10 }) },
+    "2026-10-07": { A: row({ A: 3 }), B: row({}), C: row({}) },
   } },
 };
-// Week 2 (live), A v C and B v D. SV% must come from summed SV / SA, not an average of rates:
-//  C: 9/10 then 1/10 = .500 overall. D: 6/10 = .600. D leads SV% though C's first day was .900.
-const week2 = {
-  is_current: true, week_start: "2026-10-12", week_end: "2026-10-18",
-  stats: { A: {}, B: {}, C: {}, D: {} },
-  matchups: [{ t1: "A", t2: "C", cats: T }, { t1: "B", t2: "D", cats: T }],
-  daily: { cols, days: { "2026-10-12": { A: row({ G: 3 }), B: row({}), C: row({}), D: row({}) } } },
-};
 
-const res = DR.compute({ "1": week1, "2": week2 });
-const [d1, d2, d3, d4] = res.days;
-assert.equal(res.days.length, 4);
-assert.deepEqual(res.days.map(d => d.date), ["2026-10-05", "2026-10-06", "2026-10-07", "2026-10-12"]);
+const res = DR.compute(week);
+assert.deepEqual(res.teams, ["A", "B", "C"]);
+assert.deepEqual(res.days.map(d => d.date), ["2026-10-05", "2026-10-06", "2026-10-07"]);
+const [d1, d2, d3] = res.days;
 
-// day 1: one category decided (G to A), 11 level
-assert.deepEqual([d1.pts.A, d1.pts.B, d1.pts.C, d1.pts.D], [13, 11, 12, 12]);
-assert.equal(d1.rank.A, 1);
-assert.equal(d1.rank.B, 4);
+// day 1: only goals separate the teams; each category is scaled lowest = 0, highest = full weight
+close(d1.score.A, 100, "day 1 A");
+close(d1.score.B, 50, "day 1 B");
+close(d1.score.C, 0, "day 1 C");
+assert.deepEqual([d1.rank.A, d1.rank.B, d1.rank.C], [1, 2, 3]);
 
-// day 2: running totals flip it - B leads G (2-1) and FW (1-0)
-assert.deepEqual([d2.pts.A, d2.pts.B], [10, 14]);
-assert.equal(d2.rank.B, 1);
-assert.equal(d2.rank.A, 4);
+// day 2: totals are cumulative - G is now A 2, B 1, C 4; HIT C 10, others 0
+close(d2.score.C, 100 + 100, "day 2 C leads on G and HIT");
+close(d2.score.A, (2 - 1) / (4 - 1) * 100, "day 2 A");
+close(d2.score.B, 0, "day 2 B");
+assert.deepEqual([d2.rank.C, d2.rank.A, d2.rank.B], [1, 2, 3]);
 
-// day 3: the finished week's last day uses Yahoo's official categories (A 7-4-1)
+// day 3: the last day ends exactly on the published weekly scores
+assert.deepEqual(d3.score, week.pww);
 assert.equal(d3.final, true);
-assert.deepEqual([d3.pts.A, d3.pts.B], [15, 9]);
-assert.equal(d3.rank.A, 1);
-// every matchup hands out 24 points, so the league average is 12 a week
-assert.equal(d3.pts.A + d3.pts.B + d3.pts.C + d3.pts.D, 48);
-assert.ok(Math.abs(d3.rel.A - 3) < 1e-9);
+assert.deepEqual([d3.rank.C, d3.rank.A, d3.rank.B], [1, 2, 3]);
 
-// day 4 (live week): banked week-1 points + today's running score. A leads C on G only.
-assert.equal(d4.live, true);
-assert.equal(d4.final, false);
-assert.deepEqual([d4.pts.A, d4.pts.C], [15 + 13, 12 + 11]);
-// level teams keep yesterday's order: B (9+12) and D (12+12) are not level, D is ahead
-assert.ok(d4.rank.D < d4.rank.B);
+// a week in progress is not final, and still ends on the published (live) scores
+const live = DR.compute(Object.assign({}, week, { is_current: true }));
+assert.equal(live.days[2].final, false);
+assert.deepEqual(live.days[2].score, week.pww);
 
-// SV% from summed saves and shots
-const c = { SV: 10, SA: 20 }, d = { SV: 6, SA: 10 };
-assert.equal(DR.catsOn(c, d)[C.indexOf("SV%")], "2", "SV% compares SV/SA totals (.500 v .600)");
-assert.equal(DR.catsOn({ SV: 0, SA: 0 }, d)[C.indexOf("SV%")], "2", "no shots faced loses SV%");
-assert.equal(DR.catsOn({}, {})[C.indexOf("SV%")], "T", "neither team has faced a shot: level");
+// SV% comes from summed saves and shots: X 9/10 then 1/10 = .500 overall, Y 6/10 = .600,
+// so Y takes SV% even though X's first day was .900.
+const sv = { X: { SV: 10, SA: 20 }, Y: { SV: 6, SA: 10 } };
+const s = DR.pww(sv, ["SV%"], [100]);
+close(s.Y, 100, "Y leads SV% on totals");
+close(s.X, 0, "X trails SV% on totals");
+// SHO carries half weight
+const sho = DR.pww({ X: { SHO: 1 }, Y: { SHO: 0 } }, DR.CATS, DR.WEIGHTS);
+close(sho.X, 50, "a shutout is worth 50");
 
-// a week with no day-by-day totals still contributes one point at its end
-const flat = DR.compute({ "1": Object.assign({}, week1, { daily: undefined }) });
-assert.equal(flat.days.length, 1);
-assert.equal(flat.days[0].date, "2026-10-07");
-assert.deepEqual([flat.days[0].pts.A, flat.days[0].pts.B], [15, 9]);
+// level teams keep yesterday's order instead of swapping
+const tie = DR.compute({ stats: { A: {}, B: {} }, daily: { cols, days: {
+  "d1": { A: row({}), B: row({ G: 1 }) },          // B ahead
+  "d2": { A: row({ G: 1 }), B: row({}) },          // level on everything now
+} } });
+assert.equal(tie.days[1].rank.B, 1, "level teams keep the previous day's order");
+
+// no day-by-day totals (older seasons): nothing to draw
+assert.equal(DR.compute({ stats: { A: {} } }), null);
 
 console.log("daily tests passed");

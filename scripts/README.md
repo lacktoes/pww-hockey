@@ -141,13 +141,17 @@ set in `fetch_data.py` (`GOALIE_MIN`, or the `GOALIE_MIN_GP` environment variabl
 - Seasons before 2026-27 were scored by recomputation and aren't public on Yahoo, so they
   can't be re-checked. Weeks where a team missed the goalie minimum may be wrong there.
 
-## Standings race, day by day (Season tab)
+## The week, day by day (Weekly tab)
 
 `fetch_data.py` stores each team's totals for every day (`daily` in each week: active-slot
 player stats summed per date, plus goalie appearances). A day is re-read only while it can
 still change (the last two days); older days are reused, and a finished week's days are
-checked against Yahoo's weekly totals. `docs/daily.js` turns them into league points and
-position after each day; `docs/app.js` draws the chart.
+checked against Yahoo's weekly totals.
+
+`docs/daily.js` rebuilds the week's PWW score on the totals up to each day, so the Weekly
+tab can show who led the week after each day's games (position or score). The last day is
+the published score, so the lines end on the podium. `docs/app.js` draws the chart; the card
+hides for weeks without daily totals (seasons before 2026-27).
 
 ```bash
 node tests/daily.test.js
