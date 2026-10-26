@@ -2,9 +2,9 @@
   "meta": {
     "season": "2026-27",
     "league_key": "477.l.1809",
-    "last_updated": "2026-10-26T03:50:38.511017+00:00",
+    "last_updated": "2026-10-26T09:53:43.401886+00:00",
     "current_week": 4,
-    "complete": false,
+    "complete": true,
     "goalie_min": 3
   },
   "teams": {
@@ -1514,7 +1514,7 @@
       "audit": []
     },
     "4": {
-      "is_current": true,
+      "is_current": false,
       "matchups": [
         {
           "t1": "MacHawks",
@@ -1547,7 +1547,7 @@
             "2",
             "2",
             "1",
-            "T",
+            "1",
             "1",
             "1",
             "T"
@@ -1633,14 +1633,14 @@
       ],
       "stats": {
         "MacHawks": {
-          "G": 10.0,
-          "A": 24.0,
-          "PIM": 14.0,
+          "G": 11.0,
+          "A": 25.0,
+          "PIM": 16.0,
           "PPP": 9.0,
-          "SOG": 97.0,
+          "SOG": 100.0,
           "FW": 81.0,
-          "HIT": 49.0,
-          "BLK": 26.0,
+          "HIT": 50.0,
+          "BLK": 28.0,
           "W": 2.0,
           "SV": 133.0,
           "SV%": 0.917,
@@ -1651,13 +1651,13 @@
           "A": 23.0,
           "PIM": 26.0,
           "PPP": 17.0,
-          "SOG": 96.0,
-          "FW": 95.0,
-          "HIT": 54.0,
+          "SOG": 99.0,
+          "FW": 103.0,
+          "HIT": 55.0,
           "BLK": 39.0,
-          "W": 3.0,
-          "SV": 148.0,
-          "SV%": 0.943,
+          "W": 4.0,
+          "SV": 149.0,
+          "SV%": 0.931,
           "SHO": 0.0
         },
         "Ball Bag's Bandits": {
@@ -1665,10 +1665,10 @@
           "A": 22.0,
           "PIM": 28.0,
           "PPP": 7.0,
-          "SOG": 81.0,
+          "SOG": 82.0,
           "FW": 114.0,
           "HIT": 64.0,
-          "BLK": 38.0,
+          "BLK": 37.0,
           "W": 2.0,
           "SV": 90.0,
           "SV%": 0.874,
@@ -1681,7 +1681,7 @@
           "PPP": 8.0,
           "SOG": 95.0,
           "FW": 30.0,
-          "HIT": 26.0,
+          "HIT": 23.0,
           "BLK": 29.0,
           "W": 1.0,
           "SV": 110.0,
@@ -1693,9 +1693,9 @@
           "A": 26.0,
           "PIM": 19.0,
           "PPP": 11.0,
-          "SOG": 99.0,
+          "SOG": 101.0,
           "FW": 54.0,
-          "HIT": 45.0,
+          "HIT": 46.0,
           "BLK": 24.0,
           "W": 3.0,
           "SV": 96.0,
@@ -1707,9 +1707,9 @@
           "A": 20.0,
           "PIM": 26.0,
           "PPP": 9.0,
-          "SOG": 97.0,
+          "SOG": 98.0,
           "FW": 127.0,
-          "HIT": 55.0,
+          "HIT": 56.0,
           "BLK": 34.0,
           "W": 2.0,
           "SV": 112.0,
@@ -1722,8 +1722,8 @@
           "PIM": 23.0,
           "PPP": 15.0,
           "SOG": 121.0,
-          "FW": 159.0,
-          "HIT": 57.0,
+          "FW": 160.0,
+          "HIT": 59.0,
           "BLK": 34.0,
           "W": 0.0,
           "SV": 54.0,
@@ -1732,7 +1732,7 @@
         },
         "The Beezus Christs": {
           "G": 15.0,
-          "A": 22.0,
+          "A": 23.0,
           "PIM": 19.0,
           "PPP": 15.0,
           "SOG": 104.0,
@@ -1746,24 +1746,24 @@
         },
         "The Jackson 5 Holes": {
           "G": 19.0,
-          "A": 25.0,
+          "A": 26.0,
           "PIM": 38.0,
           "PPP": 17.0,
-          "SOG": 119.0,
+          "SOG": 121.0,
           "FW": 111.0,
-          "HIT": 41.0,
-          "BLK": 38.0,
+          "HIT": 42.0,
+          "BLK": 39.0,
           "W": 4.0,
           "SV": 77.0,
           "SV%": 0.865,
           "SHO": 0.0
         },
         "Thumpers \ud83c\udfd2": {
-          "G": 16.0,
+          "G": 17.0,
           "A": 19.0,
           "PIM": 12.0,
           "PPP": 11.0,
-          "SOG": 130.0,
+          "SOG": 132.0,
           "FW": 173.0,
           "HIT": 68.0,
           "BLK": 28.0,
@@ -1774,16 +1774,16 @@
         },
         "The Cougars": {
           "G": 7.0,
-          "A": 14.0,
+          "A": 15.0,
           "PIM": 12.0,
           "PPP": 6.0,
-          "SOG": 62.0,
-          "FW": 163.0,
+          "SOG": 63.0,
+          "FW": 168.0,
           "HIT": 48.0,
-          "BLK": 33.0,
+          "BLK": 35.0,
           "W": 4.0,
-          "SV": 144.0,
-          "SV%": 0.889,
+          "SV": 147.0,
+          "SV%": 0.891,
           "SHO": 1.0
         },
         "Hotdog\u2019s Hitters": {
@@ -1791,9 +1791,9 @@
           "A": 30.0,
           "PIM": 16.0,
           "PPP": 15.0,
-          "SOG": 120.0,
+          "SOG": 121.0,
           "FW": 160.0,
-          "HIT": 63.0,
+          "HIT": 62.0,
           "BLK": 40.0,
           "W": 2.0,
           "SV": 135.0,
@@ -1802,32 +1802,32 @@
         }
       },
       "pww": {
-        "MacHawks": 490.1,
-        "Adam's Assassins": 790.97,
-        "Ball Bag's Bandits": 526.72,
-        "Don Cherry Lemons": 392.07,
-        "Jts blacktastics": 490.29,
-        "Moore Misconduct": 545.57,
-        "slap and tickle": 558.24,
-        "The Beezus Christs": 686.64,
-        "The Jackson 5 Holes": 794.5,
-        "Thumpers \ud83c\udfd2": 673.13,
-        "The Cougars": 504.18,
-        "Hotdog\u2019s Hitters": 828.2
+        "MacHawks": 536.19,
+        "Adam's Assassins": 823.52,
+        "Ball Bag's Bandits": 520.86,
+        "Don Cherry Lemons": 391.1,
+        "Jts blacktastics": 499.63,
+        "Moore Misconduct": 545.55,
+        "slap and tickle": 558.26,
+        "The Beezus Christs": 696.72,
+        "The Jackson 5 Holes": 815.09,
+        "Thumpers \ud83c\udfd2": 680.9,
+        "The Cougars": 532.18,
+        "Hotdog\u2019s Hitters": 828.74
       },
       "deltas": {
-        "MacHawks": 77.07,
-        "Adam's Assassins": 313.87,
-        "Ball Bag's Bandits": -73.51,
-        "Don Cherry Lemons": 34.22,
-        "Jts blacktastics": -108.17,
-        "Moore Misconduct": 46.25,
-        "slap and tickle": 5.91,
-        "The Beezus Christs": 264.47,
-        "The Jackson 5 Holes": 77.12,
-        "Thumpers \ud83c\udfd2": 19.18,
-        "The Cougars": -120.94,
-        "Hotdog\u2019s Hitters": 281.4
+        "MacHawks": 123.16,
+        "Adam's Assassins": 346.42,
+        "Ball Bag's Bandits": -79.37,
+        "Don Cherry Lemons": 33.25,
+        "Jts blacktastics": -98.83,
+        "Moore Misconduct": 46.23,
+        "slap and tickle": 5.93,
+        "The Beezus Christs": 274.55,
+        "The Jackson 5 Holes": 97.71,
+        "Thumpers \ud83c\udfd2": 26.95,
+        "The Cougars": -92.94,
+        "Hotdog\u2019s Hitters": 281.94
       },
       "leaders": {
         "G": "The Jackson 5 Holes",
@@ -1838,23 +1838,23 @@
         "FW": "Thumpers \ud83c\udfd2",
         "HIT": "Thumpers \ud83c\udfd2",
         "BLK": "Hotdog\u2019s Hitters",
-        "W": "The Jackson 5 Holes",
+        "W": "Adam's Assassins",
         "SV": "Adam's Assassins",
-        "SV%": "Adam's Assassins",
+        "SV%": "The Beezus Christs",
         "SHO": "The Cougars"
       },
       "leaderboard": [
         "Hotdog\u2019s Hitters",
-        "The Jackson 5 Holes",
         "Adam's Assassins",
+        "The Jackson 5 Holes",
         "The Beezus Christs",
         "Thumpers \ud83c\udfd2",
         "slap and tickle",
         "Moore Misconduct",
-        "Ball Bag's Bandits",
-        "The Cougars",
-        "Jts blacktastics",
         "MacHawks",
+        "The Cougars",
+        "Ball Bag's Bandits",
+        "Jts blacktastics",
         "Don Cherry Lemons"
       ],
       "goalie_gp": {
@@ -1890,59 +1890,59 @@
         "days": {
           "2026-10-19": {
             "MacHawks": [0, 2, 0, 1, 4, 2, 0, 1, 0, 0, 0, 0, 0],
-            "Adam's Assassins": [1, 2, 2, 2, 7, 0, 2, 0, 0, 0, 0, 0, 0],
-            "Ball Bag's Bandits": [0, 4, 0, 2, 14, 22, 7, 8, 0, 0, 0, 0, 0],
+            "Adam's Assassins": [1, 2, 2, 2, 7, 0, 3, 0, 0, 0, 0, 0, 0],
+            "Ball Bag's Bandits": [0, 4, 0, 2, 14, 22, 7, 7, 0, 0, 0, 0, 0],
             "Don Cherry Lemons": [1, 1, 0, 2, 1, 0, 0, 4, 1, 29, 31, 0, 1],
             "Jts blacktastics": [2, 1, 0, 2, 7, 6, 7, 0, 1, 30, 31, 0, 1],
             "Moore Misconduct": [0, 0, 4, 0, 10, 25, 4, 4, 0, 21, 24, 0, 1],
-            "slap and tickle": [0, 1, 2, 0, 5, 0, 1, 3, 0, 0, 0, 0, 0],
+            "slap and tickle": [0, 1, 2, 0, 5, 0, 0, 3, 0, 0, 0, 0, 0],
             "The Beezus Christs": [3, 2, 0, 3, 9, 9, 2, 2, 0, 29, 31, 0, 1],
             "The Jackson 5 Holes": [0, 5, 0, 2, 12, 15, 5, 2, 0, 0, 0, 0, 0],
             "Thumpers \ud83c\udfd2": [1, 5, 2, 4, 9, 0, 5, 3, 0, 0, 0, 0, 0],
-            "The Cougars": [1, 1, 0, 1, 5, 25, 2, 1, 0, 0, 0, 0, 0],
+            "The Cougars": [1, 1, 0, 1, 6, 25, 2, 1, 0, 0, 0, 0, 0],
             "Hotdog\u2019s Hitters": [1, 0, 4, 0, 14, 24, 6, 1, 0, 24, 29, 0, 1]
           },
           "2026-10-20": {
             "MacHawks": [4, 4, 4, 2, 23, 13, 17, 4, 0, 26, 30, 0, 1],
-            "Adam's Assassins": [3, 5, 8, 4, 37, 31, 13, 14, 1, 32, 33, 0, 1],
+            "Adam's Assassins": [3, 5, 8, 4, 37, 36, 13, 14, 1, 32, 33, 0, 1],
             "Ball Bag's Bandits": [3, 2, 4, 0, 15, 16, 7, 6, 1, 39, 44, 0, 2],
-            "Don Cherry Lemons": [5, 7, 2, 1, 28, 15, 6, 7, 0, 0, 0, 0, 0],
-            "Jts blacktastics": [1, 6, 2, 4, 22, 6, 7, 4, 0, 22, 25, 0, 1],
+            "Don Cherry Lemons": [5, 7, 2, 1, 28, 15, 5, 7, 0, 0, 0, 0, 0],
+            "Jts blacktastics": [1, 6, 2, 4, 23, 6, 7, 4, 0, 22, 25, 0, 1],
             "Moore Misconduct": [5, 7, 4, 3, 21, 21, 13, 7, 0, 14, 19, 0, 1],
             "slap and tickle": [3, 2, 4, 5, 29, 48, 19, 12, 0, 36, 46, 0, 2],
-            "The Beezus Christs": [3, 6, 2, 2, 25, 13, 12, 16, 0, 37, 40, 0, 1],
+            "The Beezus Christs": [3, 7, 2, 2, 25, 13, 12, 16, 0, 37, 40, 0, 1],
             "The Jackson 5 Holes": [4, 4, 10, 2, 29, 27, 6, 14, 1, 18, 20, 0, 1],
             "Thumpers \ud83c\udfd2": [3, 6, 2, 3, 38, 53, 10, 4, 1, 54, 59, 0, 2],
-            "The Cougars": [0, 5, 2, 1, 18, 27, 8, 9, 2, 49, 54, 0, 2],
-            "Hotdog\u2019s Hitters": [5, 9, 0, 5, 31, 45, 13, 5, 0, 28, 32, 0, 1]
+            "The Cougars": [0, 5, 2, 1, 18, 27, 8, 10, 2, 50, 55, 0, 2],
+            "Hotdog\u2019s Hitters": [5, 9, 0, 5, 32, 45, 13, 5, 0, 28, 32, 0, 1]
           },
           "2026-10-21": {
             "MacHawks": [1, 2, 0, 1, 10, 4, 5, 1, 0, 0, 0, 0, 0],
             "Adam's Assassins": [0, 0, 4, 0, 1, 0, 2, 1, 0, 0, 0, 0, 0],
-            "Ball Bag's Bandits": [2, 0, 10, 1, 6, 10, 8, 1, 0, 0, 0, 0, 0],
+            "Ball Bag's Bandits": [2, 0, 10, 1, 7, 10, 8, 1, 0, 0, 0, 0, 0],
             "Don Cherry Lemons": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             "Jts blacktastics": [0, 1, 2, 0, 4, 7, 3, 0, 0, 0, 0, 0, 0],
             "Moore Misconduct": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             "slap and tickle": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             "The Beezus Christs": [0, 1, 9, 1, 5, 4, 4, 0, 0, 0, 0, 0, 0],
-            "The Jackson 5 Holes": [1, 1, 8, 2, 8, 2, 5, 1, 0, 0, 0, 0, 0],
+            "The Jackson 5 Holes": [1, 1, 8, 2, 9, 2, 5, 1, 0, 0, 0, 0, 0],
             "Thumpers \ud83c\udfd2": [1, 1, 0, 1, 2, 16, 3, 1, 1, 17, 18, 0, 1],
             "The Cougars": [0, 0, 0, 0, 5, 8, 1, 0, 0, 25, 30, 0, 1],
             "Hotdog\u2019s Hitters": [0, 2, 2, 1, 5, 0, 6, 6, 0, 0, 0, 0, 0]
           },
           "2026-10-22": {
             "MacHawks": [0, 5, 2, 2, 18, 25, 8, 4, 0, 0, 0, 0, 0],
-            "Adam's Assassins": [5, 6, 6, 3, 20, 36, 21, 12, 2, 68, 72, 0, 2],
+            "Adam's Assassins": [5, 6, 6, 3, 21, 36, 21, 12, 2, 67, 71, 0, 2],
             "Ball Bag's Bandits": [1, 6, 0, 1, 22, 37, 13, 7, 0, 0, 0, 0, 0],
-            "Don Cherry Lemons": [4, 6, 10, 1, 33, 10, 13, 5, 0, 30, 35, 0, 1],
+            "Don Cherry Lemons": [4, 6, 10, 1, 33, 10, 11, 5, 0, 30, 35, 0, 1],
             "Jts blacktastics": [7, 9, 7, 4, 32, 17, 12, 4, 1, 21, 25, 0, 1],
-            "Moore Misconduct": [3, 6, 2, 2, 17, 44, 14, 12, 1, 22, 27, 0, 1],
-            "slap and tickle": [9, 10, 2, 7, 32, 36, 15, 10, 0, 0, 0, 0, 0],
+            "Moore Misconduct": [3, 6, 2, 2, 17, 43, 15, 12, 1, 22, 27, 0, 1],
+            "slap and tickle": [9, 10, 2, 7, 31, 36, 15, 10, 0, 0, 0, 0, 0],
             "The Beezus Christs": [0, 5, 4, 1, 22, 32, 16, 2, 1, 41, 43, 0, 1],
-            "The Jackson 5 Holes": [4, 2, 6, 3, 23, 19, 6, 5, 2, 21, 24, 0, 2],
+            "The Jackson 5 Holes": [4, 2, 6, 3, 24, 19, 7, 6, 2, 21, 24, 0, 2],
             "Thumpers \ud83c\udfd2": [4, 2, 6, 1, 45, 56, 18, 11, 0, 0, 0, 0, 0],
-            "The Cougars": [3, 6, 4, 3, 12, 45, 17, 15, 0, 18, 22, 0, 1],
-            "Hotdog\u2019s Hitters": [3, 5, 2, 4, 28, 30, 13, 10, 0, 36, 43, 0, 2]
+            "The Cougars": [3, 6, 4, 3, 12, 45, 17, 15, 0, 20, 24, 0, 1],
+            "Hotdog\u2019s Hitters": [3, 5, 2, 4, 28, 30, 12, 10, 0, 36, 43, 0, 2]
           },
           "2026-10-23": {
             "MacHawks": [1, 0, 2, 0, 2, 7, 1, 0, 1, 44, 48, 0, 2],
@@ -1973,17 +1973,17 @@
             "Hotdog\u2019s Hitters": [7, 7, 2, 3, 31, 36, 18, 12, 2, 47, 50, 0, 2]
           },
           "2026-10-25": {
-            "MacHawks": [0, 2, 2, 1, 10, 15, 8, 6, 1, 63, 67, 0, 2],
-            "Adam's Assassins": [3, 4, 0, 5, 9, 10, 9, 5, 0, 13, 13, 0, 1],
+            "MacHawks": [1, 3, 4, 1, 13, 15, 9, 8, 1, 63, 67, 0, 2],
+            "Adam's Assassins": [3, 4, 0, 5, 11, 13, 9, 5, 1, 15, 17, 0, 1],
             "Ball Bag's Bandits": [0, 3, 2, 1, 5, 2, 12, 5, 1, 51, 59, 0, 2],
             "Don Cherry Lemons": [2, 5, 4, 3, 18, 5, 1, 4, 0, 0, 0, 0, 0],
-            "Jts blacktastics": [0, 3, 4, 0, 10, 6, 4, 5, 0, 0, 0, 0, 0],
-            "Moore Misconduct": [1, 0, 0, 0, 9, 8, 6, 3, 0, 0, 0, 0, 0],
-            "slap and tickle": [1, 1, 2, 0, 14, 15, 12, 1, 0, 0, 0, 0, 0],
+            "Jts blacktastics": [0, 3, 4, 0, 11, 6, 5, 5, 0, 0, 0, 0, 0],
+            "Moore Misconduct": [1, 0, 0, 0, 10, 9, 6, 3, 0, 0, 0, 0, 0],
+            "slap and tickle": [1, 1, 2, 0, 15, 16, 15, 1, 0, 0, 0, 0, 0],
             "The Beezus Christs": [5, 5, 2, 5, 15, 30, 7, 4, 0, 19, 21, 0, 1],
-            "The Jackson 5 Holes": [3, 2, 2, 3, 16, 6, 5, 7, 1, 17, 20, 0, 1],
-            "Thumpers \ud83c\udfd2": [1, 3, 0, 1, 7, 16, 7, 3, 0, 0, 0, 0, 0],
-            "The Cougars": [0, 0, 2, 0, 4, 10, 2, 1, 0, 0, 0, 0, 0],
+            "The Jackson 5 Holes": [3, 3, 2, 3, 16, 6, 5, 7, 1, 17, 20, 0, 1],
+            "Thumpers \ud83c\udfd2": [2, 3, 0, 1, 9, 16, 7, 3, 0, 0, 0, 0, 0],
+            "The Cougars": [0, 1, 2, 0, 4, 15, 2, 2, 0, 0, 0, 0, 0],
             "Hotdog\u2019s Hitters": [0, 3, 6, 1, 7, 15, 7, 2, 0, 0, 0, 0, 0]
           }
         }
@@ -1996,61 +1996,61 @@
   "standings": {
     "MacHawks": {
       "W": 1,
-      "L": 2,
+      "L": 3,
       "T": 0
     },
     "Don Cherry Lemons": {
       "W": 0,
-      "L": 3,
+      "L": 4,
       "T": 0
     },
     "Adam's Assassins": {
-      "W": 2,
+      "W": 3,
       "L": 1,
       "T": 0
     },
     "Jts blacktastics": {
       "W": 2,
-      "L": 1,
+      "L": 2,
       "T": 0
     },
     "Ball Bag's Bandits": {
-      "W": 1,
+      "W": 2,
       "L": 2,
       "T": 0
     },
     "Thumpers \ud83c\udfd2": {
       "W": 2,
-      "L": 1,
+      "L": 2,
       "T": 0
     },
     "Moore Misconduct": {
       "W": 1,
-      "L": 2,
+      "L": 3,
       "T": 0
     },
     "The Jackson 5 Holes": {
-      "W": 2,
+      "W": 3,
       "L": 1,
       "T": 0
     },
     "slap and tickle": {
-      "W": 2,
+      "W": 3,
       "L": 1,
       "T": 0
     },
     "The Beezus Christs": {
-      "W": 1,
+      "W": 2,
       "L": 2,
       "T": 0
     },
     "The Cougars": {
       "W": 3,
-      "L": 0,
+      "L": 1,
       "T": 0
     },
     "Hotdog\u2019s Hitters": {
-      "W": 1,
+      "W": 2,
       "L": 2,
       "T": 0
     }
