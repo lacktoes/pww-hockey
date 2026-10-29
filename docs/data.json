@@ -2,7 +2,7 @@
   "meta": {
     "season": "2026-27",
     "league_key": "477.l.1809",
-    "last_updated": "2026-10-29T04:54:22.126341+00:00",
+    "last_updated": "2026-10-29T11:21:24.584742+00:00",
     "current_week": 5,
     "complete": false,
     "goalie_min": 3
@@ -2029,7 +2029,7 @@
             "1",
             "1",
             "1",
-            "T"
+            "1"
           ],
           "source": "yahoo"
         },
@@ -2064,10 +2064,10 @@
             "2",
             "2",
             "2",
-            "T",
             "1",
             "1",
-            "T"
+            "1",
+            "1"
           ],
           "source": "yahoo"
         },
@@ -2145,7 +2145,7 @@
           "PIM": 7.0,
           "PPP": 7.0,
           "SOG": 48.0,
-          "FW": 60.0,
+          "FW": 59.0,
           "HIT": 26.0,
           "BLK": 16.0,
           "W": 0.0,
@@ -2283,7 +2283,7 @@
       "pww": {
         "MacHawks": 789.92,
         "Adam's Assassins": 600.06,
-        "Ball Bag's Bandits": 493.19,
+        "Ball Bag's Bandits": 492.05,
         "Don Cherry Lemons": 193.77,
         "Jts blacktastics": 453.88,
         "Moore Misconduct": 408.71,
@@ -2297,7 +2297,7 @@
       "deltas": {
         "MacHawks": 253.73,
         "Adam's Assassins": -223.46,
-        "Ball Bag's Bandits": -27.67,
+        "Ball Bag's Bandits": -28.81,
         "Don Cherry Lemons": -197.33,
         "Jts blacktastics": -45.75,
         "Moore Misconduct": -136.84,
@@ -2398,7 +2398,7 @@
           "2026-10-28": {
             "MacHawks": [0, 3, 4, 1, 12, 4, 7, 7, 0, 0, 0, 0, 0],
             "Adam's Assassins": [1, 0, 0, 0, 6, 18, 8, 0, 0, 0, 0, 0, 0],
-            "Ball Bag's Bandits": [0, 2, 2, 1, 5, 7, 9, 0, 0, 0, 0, 0, 0],
+            "Ball Bag's Bandits": [0, 2, 2, 1, 5, 6, 9, 0, 0, 0, 0, 0, 0],
             "Don Cherry Lemons": [1, 1, 0, 1, 3, 0, 2, 0, 0, 0, 0, 0, 0],
             "Jts blacktastics": [2, 3, 2, 3, 6, 3, 1, 0, 0, 12, 17, 0, 1],
             "Moore Misconduct": [0, 1, 0, 1, 4, 9, 0, 2, 1, 20, 22, 0, 1],
