@@ -2,7 +2,7 @@
   "meta": {
     "season": "2026-27",
     "league_key": "477.l.1809",
-    "last_updated": "2026-10-31T04:40:10.750512+00:00",
+    "last_updated": "2026-10-31T10:46:11.165806+00:00",
     "current_week": 5,
     "complete": false,
     "goalie_min": 3
@@ -2136,7 +2136,7 @@
           "BLK": 34.0,
           "W": 3.0,
           "SV": 71.0,
-          "SV%": 0.887,
+          "SV%": 0.888,
           "SHO": 0.0
         },
         "Ball Bag's Bandits": {
@@ -2282,7 +2282,7 @@
       },
       "pww": {
         "MacHawks": 693.72,
-        "Adam's Assassins": 602.96,
+        "Adam's Assassins": 603.91,
         "Ball Bag's Bandits": 476.87,
         "Don Cherry Lemons": 134.22,
         "Jts blacktastics": 382.73,
@@ -2296,7 +2296,7 @@
       },
       "deltas": {
         "MacHawks": 157.53,
-        "Adam's Assassins": -220.56,
+        "Adam's Assassins": -219.61,
         "Ball Bag's Bandits": -43.99,
         "Don Cherry Lemons": -256.88,
         "Jts blacktastics": -116.9,
