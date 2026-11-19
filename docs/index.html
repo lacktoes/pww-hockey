@@ -112,11 +112,17 @@
 
         <section class="card allplay-card" id="allplay-card">
           <h2 class="section-title">All-Play Standings</h2>
-          <p class="section-hint">Each week, every team against all 11 others: how teams would rank if everyone played everyone. Δ = all-play % minus actual %, so positive is unlucky. Opp all-play = how good your opponents were in the weeks they played you.</p>
+          <p class="section-hint">Each week, every team against all 11 others: how teams would rank if everyone played everyone. <b>Matchups</b> counts matchups won (ties half). <b>Categories</b> counts the share of the 24 points on offer in each matchup (2 per category won, 1 per tie), so a 12-0 win counts more than a 5-4. Δ = all-play minus actual, so positive is unlucky. Opp all-play = how good your opponents were in the weeks they played you.</p>
           <div class="ap-controls">
-            <div class="ap-seg" role="group" aria-label="Chart view">
-              <button class="ap-seg-btn ap-seg-active" id="ap-view-luck" data-view="luck" aria-pressed="true">Luck</button>
-              <button class="ap-seg-btn" id="ap-view-schedule" data-view="schedule" aria-pressed="false">Schedule</button>
+            <div class="ap-toggles">
+              <div class="ap-seg" role="group" aria-label="Measure">
+                <button class="ap-meas-btn ap-seg-active" id="ap-meas-match" data-view="match" aria-pressed="true">Matchups</button>
+                <button class="ap-meas-btn" id="ap-meas-cat" data-view="cat" aria-pressed="false">Categories</button>
+              </div>
+              <div class="ap-seg" role="group" aria-label="Chart view">
+                <button class="ap-seg-btn ap-seg-active" id="ap-view-luck" data-view="luck" aria-pressed="true">Luck</button>
+                <button class="ap-seg-btn" id="ap-view-schedule" data-view="schedule" aria-pressed="false">Schedule</button>
+              </div>
             </div>
             <label class="ap-live" id="ap-live-wrap" hidden>
               <input type="checkbox" id="ap-live"> Include this week so far

@@ -1031,20 +1031,43 @@ function renderLeaguePtsChart() {
 }
 
 // ── All-play standings ───────────────────────────────────────────────────────
-// Computation lives in allplay.js (shared with tests/allplay.test.js).
-let apView = "luck";     // "luck" | "schedule"
-let apLive = false;      // include the week in progress
-let apLast = null;
+// Computation lives in allplay.js (shared with tests/allplay.test.js). One card, two measures
+// from the same result: matchup level (W-L-T of matchups) and category level (share of the 24
+// points per matchup), switched by the Matchups / Categories toggle.
+let apView    = "luck";   // "luck" | "schedule"
+let apMeasure = "match";  // "match" | "cat"
+let apLive    = false;    // include the week in progress
+let apLast    = null;
+
+const AP_IDS = { chart: "ap-chart", legend: "ap-legend", table: "ap-table", tip: "ap-tip", clip: "apc" };
+const AP_MEASURES = {
+  match: {
+    all: "allPct", act: "actPct", delta: "delta", opp: "oppAll", recAll: "all", recAct: "actual",
+    decimals: 0, zoom: false, deltaFull: 0.35, oppFull: 0.25, deltaHead: "Δ Win%",
+    xTitle: "All-play win %", yLuck: "Actual win %", yOpp: "Opp all-play %",
+    actualTip: "Real weekly matchup results", allTip: "Every week against all 11 other teams",
+    note: "Ranked by all-play %. A matchup is won by winning more categories; ties count as half.",
+  },
+  cat: {
+    all: "allCatPct", act: "actCatPct", delta: "deltaCat", opp: "oppAllCat", recAll: "allCat", recAct: "actCat",
+    decimals: 1, zoom: true, deltaFull: 0.10, oppFull: 0.08, deltaHead: "Δ Cat%",
+    xTitle: "All-play category share", yLuck: "Actual category share", yOpp: "Opp all-play category share",
+    actualTip: "Categories won-lost-tied in your real matchups", allTip: "Categories won-lost-tied against all 11 other teams, every week",
+    note: "Ranked by all-play category share: the share of the 24 points on offer in each matchup (2 per category won, 1 per tie), against every team, every week. A 12-0 win counts as 100%, a 5-4 win with 3 ties as 54%.",
+  },
+};
 
 function initAllPlayControls() {
-  document.querySelectorAll(".ap-seg-btn").forEach(btn => btn.addEventListener("click", () => {
-    apView = btn.dataset.view;
-    document.querySelectorAll(".ap-seg-btn").forEach(b => {
+  const seg = (sel, set) => document.querySelectorAll(sel).forEach(btn => btn.addEventListener("click", () => {
+    set(btn.dataset.view);
+    document.querySelectorAll(sel).forEach(b => {
       b.classList.toggle("ap-seg-active", b === btn);
       b.setAttribute("aria-pressed", String(b === btn));
     });
-    renderAllPlayChart(apLast);
+    renderAllPlayViews();
   }));
+  seg(".ap-seg-btn", v => { apView = v; });
+  seg(".ap-meas-btn", v => { apMeasure = v; });
   const live = document.getElementById("ap-live");
   if (live) live.addEventListener("change", () => { apLive = live.checked; renderAllPlay(); });
   let t = null;
@@ -1062,12 +1085,16 @@ function renderAllPlay() {
     includeCurrent: apLive && hasLive,
     goalieMin: appData.meta && appData.meta.goalie_min,
   });
+  renderAllPlayViews();
+}
+
+function renderAllPlayViews() {
   renderAllPlayChart(apLast);
   renderAllPlayTable(apLast);
 }
 
 const apEsc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const apPct = v => v == null ? "–" : Math.round(v * 100) + "%";
+const apPct = (v, d = 0) => v == null ? "–" : (v * 100).toFixed(d) + "%";
 const apRec = r => `${r.W}-${r.L}-${r.T}`;
 const apDelta = d => d == null ? "–" : (d > 0 ? "+" : d < 0 ? "−" : "") + Math.abs(d * 100).toFixed(1);
 // short chart label: no emoji, at most `max` characters (14 on desktop, 11 on phones)
@@ -1076,12 +1103,19 @@ const apLabel = (name, max = 14) => {
   return s.length > max ? s.slice(0, max - 1) + "…" : s;
 };
 const apInitials = name => apLabel(name).split(" ").filter(Boolean).map(w => w[0]).slice(0, 2).join("").toUpperCase();
+// rows ranked by this card's all-play measure
+const apRows = (res, cfg) => [...res.rows]
+  .filter(r => r[cfg.all] != null)
+  .sort((a, b) => (b[cfg.all] - a[cfg.all]) || ((b[cfg.act] ?? 0) - (a[cfg.act] ?? 0)) || a.team.localeCompare(b.team))
+  .map((r, i) => Object.assign({}, r, { cardRank: i + 1 }));
 
 function renderAllPlayChart(res) {
-  const box = document.getElementById("ap-chart");
-  const legend = document.getElementById("ap-legend");
+  const cfg = Object.assign({}, AP_IDS, AP_MEASURES[apMeasure]);
+  const box = document.getElementById(cfg.chart);
+  const legend = document.getElementById(cfg.legend);
   if (!box) return;
-  if (!res || !res.rows.length) {
+  const rowsAll = res ? apRows(res, cfg) : [];
+  if (!rowsAll.length) {
     box.innerHTML = `<p class="ap-note" style="text-align:center;padding:24px 0">No finished weeks yet. Tick “Include this week so far” to see the week in progress.</p>`;
     legend.innerHTML = "";
     return;
@@ -1089,15 +1123,24 @@ function renderAllPlayChart(res) {
 
   const luck  = apView === "luck";
   const phone = (box.clientWidth || 600) < 480;
-  // Square plot, same scale on both axes; padded past 0% and 100% so edge markers fit.
-  const P = phone ? 300 : 440, L = phone ? 40 : 50, R = 14, T = 12, B = phone ? 40 : 44;
+  const yv = r => luck ? r[cfg.act] : r[cfg.opp];
+  const rows = rowsAll.filter(r => yv(r) != null);
+
+  // Square plot, same scale on both axes. Matchup level shows 0-100%. Category shares sit
+  // close to 50%, so that card zooms to the widest spread from 50% on either axis.
+  let half = 0.5;
+  if (cfg.zoom) {
+    const spread = Math.max(0.05, ...rows.flatMap(r => [Math.abs(r[cfg.all] - 0.5), Math.abs(yv(r) - 0.5)]));
+    half = Math.min(0.5, Math.ceil((spread + 0.005) / 0.05) * 0.05);
+  }
+  const lo = 0.5 - half * 1.12, hi = 0.5 + half * 1.12;
+  const P = phone ? 300 : 440, L = phone ? 44 : 54, R = 14, T = 12, B = phone ? 40 : 44;
   const W = L + P + R, H = T + P + B;
-  const lo = -0.06, hi = 1.06;
   const xs = v => L + (v - lo) / (hi - lo) * P;
   const ys = v => T + P - (v - lo) / (hi - lo) * P;
   const rad = phone ? 9 : 11;
   const fs  = phone ? 9.5 : 10.5;
-  const step = phone ? 0.2 : 0.1;
+  const step = half >= 0.4 ? (phone ? 0.2 : 0.1) : half >= 0.2 ? (phone ? 0.1 : 0.05) : (phone ? 0.05 : 0.025);
 
   // zones
   const x0 = L, x1 = L + P, y0 = T, y1 = T + P;
@@ -1113,22 +1156,23 @@ function renderAllPlayChart(res) {
     ref = `<line class="ap-ref" x1="${x0}" y1="${y50}" x2="${x1}" y2="${y50}"/>`;
   }
 
-  // grid and ticks
+  // grid and ticks, at multiples of the step inside the range
   let grid = "";
-  for (let v = 0; v <= 1.0001; v += step) {
-    const gx = xs(v).toFixed(1), gy = ys(v).toFixed(1), lab = Math.round(v * 100) + "%";
+  const tickDec = step < 0.05 ? 1 : 0;
+  for (let k = Math.ceil((0.5 - half) / step - 1e-9); k * step <= 0.5 + half + 1e-9; k++) {
+    const v = k * step;
+    const gx = xs(v).toFixed(1), gy = ys(v).toFixed(1), lab = (v * 100).toFixed(tickDec) + "%";
     grid += `<line class="ap-grid" x1="${gx}" y1="${y0}" x2="${gx}" y2="${y1}"/>
       <line class="ap-grid" x1="${x0}" y1="${gy}" x2="${x1}" y2="${gy}"/>
       <text class="ap-tick" x="${gx}" y="${y1 + 14}" text-anchor="middle">${lab}</text>
       <text class="ap-tick" x="${x0 - 5}" y="${gy}" text-anchor="end" dominant-baseline="central">${lab}</text>`;
   }
-  const yTitle = luck ? "Actual win %" : "Opp all-play %";
-  const titles = `<text class="ap-axis-title" x="${L + P / 2}" y="${H - 6}" text-anchor="middle">All-play win %</text>
+  const yTitle = luck ? cfg.yLuck : cfg.yOpp;
+  const titles = `<text class="ap-axis-title" x="${L + P / 2}" y="${H - 6}" text-anchor="middle">${cfg.xTitle}</text>
     <text class="ap-axis-title" transform="translate(${phone ? 10 : 12},${T + P / 2}) rotate(-90)" text-anchor="middle">${yTitle}</text>`;
 
   // points; fan out teams that land on (nearly) the same spot
-  const yv = r => luck ? r.actPct : r.oppAll;
-  const pts = res.rows.filter(r => yv(r) != null).map(r => ({ r, x: xs(r.allPct), y: ys(yv(r)) }));
+  const pts = rows.map(r => ({ r, x: xs(r[cfg.all]), y: ys(yv(r)) }));
   const clusters = [];
   for (const p of pts) {
     const c = clusters.find(c => Math.hypot(c.x - p.x, c.y - p.y) < rad * 1.3);
@@ -1152,10 +1196,10 @@ function renderAllPlayChart(res) {
   const labels = pts.map((p, i) => {
     const text = apLabel(p.r.team, phone ? 11 : 14), w = text.length * fs * 0.56, h = fs + 2;
     const opts = [
-      [p.x + rad + 3, p.y - h / 2, "start"],
-      [p.x - rad - 3 - w, p.y - h / 2, "start"],
-      [p.x - w / 2, p.y - rad - 3 - h, "start"],
-      [p.x - w / 2, p.y + rad + 3, "start"],
+      [p.x + rad + 3, p.y - h / 2],
+      [p.x - rad - 3 - w, p.y - h / 2],
+      [p.x - w / 2, p.y - rad - 3 - h],
+      [p.x - w / 2, p.y + rad + 3],
     ];
     for (const [lx, ly] of opts) {
       const bx = [lx, ly, lx + w, ly + h];
@@ -1168,31 +1212,32 @@ function renderAllPlayChart(res) {
     return "";
   }).join("");
 
-  const defs = pts.map((p, i) => `<clipPath id="apc-${i}"><circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${rad}"/></clipPath>`).join("");
+  const dec = cfg.decimals;
+  const defs = pts.map((p, i) => `<clipPath id="${cfg.clip}-${i}"><circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${rad}"/></clipPath>`).join("");
   const marks = pts.map((p, i) => {
     const r = p.r, logo = appData.teams?.[r.team]?.logo;
     const face = logo
       ? `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${rad}" style="fill:var(--surface-2)"/>
-         <image href="${apEsc(logo)}" x="${(p.x - rad).toFixed(1)}" y="${(p.y - rad).toFixed(1)}" width="${rad * 2}" height="${rad * 2}" clip-path="url(#apc-${i})" preserveAspectRatio="xMidYMid slice"/>`
+         <image href="${apEsc(logo)}" x="${(p.x - rad).toFixed(1)}" y="${(p.y - rad).toFixed(1)}" width="${rad * 2}" height="${rad * 2}" clip-path="url(#${cfg.clip}-${i})" preserveAspectRatio="xMidYMid slice"/>`
       : `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${rad}" fill="hsl(${teamHue(r.team)},60%,60%)"/>
          <text class="ap-ini" x="${p.x.toFixed(1)}" y="${p.y.toFixed(1)}" text-anchor="middle" dominant-baseline="central">${apEsc(apInitials(r.team))}</text>`;
-    const tip = `${r.team}: actual ${apRec(r.actual)} (${apPct(r.actPct)}), all-play ${apRec(r.all)} (${apPct(r.allPct)}), Δ ${apDelta(r.delta)}, opp all-play ${apPct(r.oppAll)}`;
+    const tip = `${r.team}: actual ${apRec(r[cfg.recAct])} (${apPct(r[cfg.act], dec)}), all-play ${apRec(r[cfg.recAll])} (${apPct(r[cfg.all], dec)}), Δ ${apDelta(r[cfg.delta])}, opp all-play ${apPct(r[cfg.opp], dec)}`;
     return `<g class="ap-pt" tabindex="0" data-i="${i}"><title>${apEsc(tip)}</title>${face}<circle class="ap-ring" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${rad}"/></g>`;
   }).join("");
 
   box.innerHTML = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img"
-      aria-label="${luck ? "All-play win % against actual win %" : "All-play win % against opponents' all-play %"}">
+      aria-label="${apEsc(cfg.xTitle)} against ${apEsc(yTitle)}">
     <defs>${defs}</defs>${zones}${grid}${ref}${labels}${marks}${titles}</svg>
-    <div class="ap-tip" id="ap-tip" hidden></div>`;
+    <div class="ap-tip" id="${cfg.tip}" hidden></div>`;
 
   // hover / tap / keyboard: exact numbers
-  const tipEl = document.getElementById("ap-tip");
+  const tipEl = document.getElementById(cfg.tip);
   const show = g => {
     const p = pts[Number(g.dataset.i)], r = p.r, sc = box.clientWidth / W;
     tipEl.innerHTML = `<b>${apEsc(r.team)}</b>
-      Actual <span>${apRec(r.actual)} · ${apPct(r.actPct)}</span><br>
-      All-play <span>${apRec(r.all)} · ${apPct(r.allPct)}</span><br>
-      Δ Win% <span>${apDelta(r.delta)}</span> · Opp all-play <span>${apPct(r.oppAll)}</span>`;
+      Actual <span>${apRec(r[cfg.recAct])} · ${apPct(r[cfg.act], dec)}</span><br>
+      All-play <span>${apRec(r[cfg.recAll])} · ${apPct(r[cfg.all], dec)}</span><br>
+      ${cfg.deltaHead} <span>${apDelta(r[cfg.delta])}</span> · Opp all-play <span>${apPct(r[cfg.opp], dec)}</span>`;
     tipEl.hidden = false;
     const tw = tipEl.offsetWidth, th = tipEl.offsetHeight;
     let left = p.x * sc + rad * sc + 8, top = p.y * sc - th / 2;
@@ -1219,34 +1264,37 @@ function renderAllPlayChart(res) {
 }
 
 function renderAllPlayTable(res) {
-  const el = document.getElementById("ap-table");
+  const cfg = Object.assign({}, AP_IDS, AP_MEASURES[apMeasure]);
+  const el = document.getElementById(cfg.table);
   if (!el) return;
-  if (!res || !res.rows.length) { el.innerHTML = ""; return; }
+  const rowsAll = res ? apRows(res, cfg) : [];
+  if (!rowsAll.length) { el.innerHTML = ""; return; }
+  const dec = cfg.decimals;
   // subtle tint: green = lucky / soft schedule, red = unlucky / tough
   const tint = (v, full) => {
     if (v == null || Math.abs(v) < 0.005) return "";
     const a = Math.round(Math.min(1, Math.abs(v) / full) * 30);
     return `background:color-mix(in srgb, var(${v > 0 ? "--loss" : "--win"}) ${a}%, transparent)`;
   };
-  const rows = res.rows.map(r => `<tr>
-      <td class="ap-rank">${r.rank}</td>
+  const rows = rowsAll.map(r => `<tr>
+      <td class="ap-rank">${r.cardRank}</td>
       <td class="td-team"><div class="td-team-inner">${smLogoImg(r.team)}<span title="${apEsc(r.team)}">${apEsc(r.team)}</span></div></td>
-      <td class="ap-num">${r.actPct == null ? "–" : apRec(r.actual)}<small>${apPct(r.actPct)}</small></td>
-      <td class="ap-num">${apRec(r.all)}<small>${apPct(r.allPct)}</small></td>
-      <td class="ap-num" style="${tint(r.delta, 0.35)}" title="All-play % minus actual %: positive = unlucky">${apDelta(r.delta)}</td>
-      <td class="ap-num" style="${tint(r.oppAll == null ? null : r.oppAll - 0.5, 0.25)}" title="Average all-play % of your opponents in the weeks they played you">${apPct(r.oppAll)}</td>
+      <td class="ap-num">${r[cfg.act] == null ? "–" : apRec(r[cfg.recAct])}<small>${apPct(r[cfg.act], dec)}</small></td>
+      <td class="ap-num">${apRec(r[cfg.recAll])}<small>${apPct(r[cfg.all], dec)}</small></td>
+      <td class="ap-num" style="${tint(r[cfg.delta], cfg.deltaFull)}" title="All-play minus actual, in percentage points: positive = unlucky">${apDelta(r[cfg.delta])}</td>
+      <td class="ap-num" style="${tint(r[cfg.opp] == null ? null : r[cfg.opp] - 0.5, cfg.oppFull)}" title="Average all-play share of your opponents in the weeks they played you">${apPct(r[cfg.opp], dec)}</td>
     </tr>`).join("");
   const ws = res.weeks, cur = ws.filter(w => appData.weeks[String(w)]?.is_current);
   const span = ws.length ? (ws.length > 1 ? `Weeks ${ws[0]}–${ws[ws.length - 1]}` : `Week ${ws[0]}`) : "";
   el.innerHTML = `<table class="stats-table ap-table">
       <thead><tr>
         <th class="th-rank">#</th><th class="th-team">Team</th>
-        <th title="Real weekly matchup results">Actual</th>
-        <th title="Every week against all 11 other teams">All-play</th>
-        <th title="All-play % minus actual %, in percentage points. Positive = unlucky">Δ Win%</th>
-        <th title="Strength of schedule: average all-play % of your opponents the week they played you. Above 50% = tough">Opp all-play</th>
+        <th title="${apEsc(cfg.actualTip)}">Actual</th>
+        <th title="${apEsc(cfg.allTip)}">All-play</th>
+        <th title="All-play minus actual, in percentage points. Positive = unlucky">${cfg.deltaHead}</th>
+        <th title="Strength of schedule: average all-play share of your opponents the week they played you. Above 50% = tough">Opp all-play</th>
       </tr></thead><tbody>${rows}</tbody></table>
-    <p class="ap-note">${span}${cur.length ? ` (week ${cur[0]} so far)` : ""}. Ranked by all-play %. A matchup is won by winning more categories; ties count as half.${appData.meta && appData.meta.goalie_min ? ` A team with fewer than ${appData.meta.goalie_min} goalie appearances in a week forfeits the goalie categories, as on Yahoo.` : ""}</p>`;
+    <p class="ap-note">${span}${cur.length ? ` (week ${cur[0]} so far)` : ""}. ${cfg.note}${appData.meta && appData.meta.goalie_min ? ` A team with fewer than ${appData.meta.goalie_min} goalie appearances in a week forfeits the goalie categories, as on Yahoo.` : ""}</p>`;
 }
 
 // ── The week's race, day by day (Weekly tab) ────────────────────────────────

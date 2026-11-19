@@ -12,6 +12,13 @@
  *   delta          all-play % minus actual %. Positive = unlucky (record worse than play).
  *   opp all-play   average of each opponent's all-play % in the week they played you.
  *                  Above 50% = tough schedule.
+ *   category level the same comparisons counted per category instead of per matchup:
+ *                  category share = (categories won + 0.5 * tied) / categories played, i.e.
+ *                  the share of the 24 points (2 per category won, 1 per tie) available in
+ *                  each matchup. A 12-0 win is 100%, a 5-4-3 win 54.2%. Fields: actCat,
+ *                  allCat (W-L-T in categories), actCatPct, allCatPct, deltaCat, oppAllCat.
+ *                  The actual side counts Yahoo's stored category results (week.matchups),
+ *                  which is what the league's standings are scored on.
  *   goalie minimum a team with fewer than `goalieMin` goalie appearances in a finished week
  *                  forfeits W, SV, SV% and SHO to any opponent that met it, as Yahoo scores
  *                  it (week.goalie_gp, written by fetch_data.py). If both teams fall short,
@@ -31,20 +38,28 @@
     return n ? (r.W + 0.5 * r.T) / n : null;
   };
 
-  /** "1" if a wins the pairing on categories, "2" if b does, "T" if level.
+  /** Categories won by a, won by b, and tied.
    *  forfeitA / forfeitB: that team missed the goalie minimum this week. */
-  function pairing(statsA, statsB, cats, forfeitA, forfeitB) {
-    let a = 0, b = 0;
+  function catCounts(statsA, statsB, cats, forfeitA, forfeitB) {
+    let a = 0, b = 0, t = 0;
     for (const c of cats) {
       if (GOALIE.has(c) && (forfeitA || forfeitB)) {
         if (forfeitA && !forfeitB) b++;
         else if (forfeitB && !forfeitA) a++;
-        continue;                      // both short: tied
+        else t++;                      // both short: tied
+        continue;
       }
       const va = Number(statsA[c]) || 0, vb = Number(statsB[c]) || 0;
       if (va > vb) a++;
       else if (vb > va) b++;
+      else t++;
     }
+    return { a, b, t };
+  }
+
+  /** "1" if a wins the pairing on categories, "2" if b does, "T" if level. */
+  function pairing(statsA, statsB, cats, forfeitA, forfeitB) {
+    const { a, b } = catCounts(statsA, statsB, cats, forfeitA, forfeitB);
     return a > b ? "1" : b > a ? "2" : "T";
   }
 
@@ -64,6 +79,7 @@
     const rec = {};
     const get = t => rec[t] || (rec[t] = {
       actual: { W: 0, L: 0, T: 0 }, all: { W: 0, L: 0, T: 0 }, oppSum: 0, oppN: 0,
+      actCat: { W: 0, L: 0, T: 0 }, allCat: { W: 0, L: 0, T: 0 }, oppCatSum: 0, oppCatN: 0,
     });
     const used = [];
 
@@ -81,22 +97,28 @@
       const short = t => !!gp && gp[t] != null && gp[t] < o.goalieMin;
 
       // all-play: every pair once
-      const weekRec = {};
-      teams.forEach(t => { weekRec[t] = { W: 0, L: 0, T: 0 }; get(t); });
+      const weekRec = {}, weekCat = {};
+      teams.forEach(t => { weekRec[t] = { W: 0, L: 0, T: 0 }; weekCat[t] = { W: 0, L: 0, T: 0 }; get(t); });
       for (let i = 0; i < teams.length; i++) {
         for (let j = i + 1; j < teams.length; j++) {
           const a = teams[i], b = teams[j];
-          const r = pairing(wk.stats[a], wk.stats[b], o.cats, short(a), short(b));
+          const k = catCounts(wk.stats[a], wk.stats[b], o.cats, short(a), short(b));
+          const r = k.a > k.b ? "1" : k.b > k.a ? "2" : "T";
           if (r === "1") { weekRec[a].W++; weekRec[b].L++; }
           else if (r === "2") { weekRec[a].L++; weekRec[b].W++; }
           else { weekRec[a].T++; weekRec[b].T++; }
+          weekCat[a].W += k.a; weekCat[a].L += k.b; weekCat[a].T += k.t;
+          weekCat[b].W += k.b; weekCat[b].L += k.a; weekCat[b].T += k.t;
         }
       }
-      const weekPct = {};
+      const weekPct = {}, weekCatPct = {};
       for (const t of teams) {
         const r = weekRec[t], all = rec[t].all;
         all.W += r.W; all.L += r.L; all.T += r.T;
         weekPct[t] = pct(r);
+        const c = weekCat[t], ac = rec[t].allCat;
+        ac.W += c.W; ac.L += c.L; ac.T += c.T;
+        weekCatPct[t] = pct(c);
       }
 
       // actual matchups and strength of schedule
@@ -109,18 +131,32 @@
         else { a.T++; b.T++; }
         if (weekPct[m.t2] != null) { rec[m.t1].oppSum += weekPct[m.t2]; rec[m.t1].oppN++; }
         if (weekPct[m.t1] != null) { rec[m.t2].oppSum += weekPct[m.t1]; rec[m.t2].oppN++; }
+        // category level: Yahoo's stored per-category results
+        const c1 = rec[m.t1].actCat, c2 = rec[m.t2].actCat;
+        for (const c of m.cats) {
+          if (c === "1") { c1.W++; c2.L++; }
+          else if (c === "2") { c1.L++; c2.W++; }
+          else { c1.T++; c2.T++; }
+        }
+        if (weekCatPct[m.t2] != null) { rec[m.t1].oppCatSum += weekCatPct[m.t2]; rec[m.t1].oppCatN++; }
+        if (weekCatPct[m.t1] != null) { rec[m.t2].oppCatSum += weekCatPct[m.t1]; rec[m.t2].oppCatN++; }
       }
     }
 
     const rows = Object.keys(rec).map(team => {
       const r = rec[team];
       const actPct = pct(r.actual), allPct = pct(r.all);
+      const actCatPct = pct(r.actCat), allCatPct = pct(r.allCat);
       return {
         team,
         actual: r.actual, all: r.all,
         actPct, allPct,
         delta: (actPct != null && allPct != null) ? allPct - actPct : null,
         oppAll: r.oppN ? r.oppSum / r.oppN : null,
+        actCat: r.actCat, allCat: r.allCat,
+        actCatPct, allCatPct,
+        deltaCat: (actCatPct != null && allCatPct != null) ? allCatPct - actCatPct : null,
+        oppAllCat: r.oppCatN ? r.oppCatSum / r.oppCatN : null,
       };
     }).filter(r => r.allPct != null);
 
@@ -129,5 +165,5 @@
     return { rows, weeks: used };
   }
 
-  return { compute, pairing, matchupResult, pct, CATS };
+  return { compute, pairing, catCounts, matchupResult, pct, CATS };
 }));

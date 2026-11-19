@@ -518,3 +518,10 @@ main { max-width: var(--max-w); margin: 0 auto; padding: 20px; display: flex; fl
 .race-chart .race-score { fill: var(--text-2); font-weight: 500; }
 .race-tip .race-up { color: var(--win) !important; }
 .race-tip .race-down { color: var(--loss) !important; }
+
+/* all-play: Matchups / Categories toggle beside Luck / Schedule */
+.ap-toggles { display: flex; flex-wrap: wrap; gap: 8px; }
+.ap-meas-btn { padding: 6px 14px; font-size: 12px; font-weight: 600; color: var(--text-2); }
+.ap-meas-btn:hover { color: var(--text-1); }
+.ap-meas-btn.ap-seg-active { background: var(--surface-2); color: var(--text-1); }
+.ap-meas-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }

@@ -117,7 +117,10 @@ YAHOO_CALL_DELAY=0.3 python scripts/fetch_data.py --backfill --skip-complete
 
 `docs/allplay.js` computes all-play records, luck (Δ win %) and strength of schedule from the
 weekly stats and matchups already in each season file; `docs/app.js` draws the scatter and
-table. The calculation has a small hand-made test:
+table. A **Matchups / Categories** toggle switches the measure: matchups won (ties half), or
+the share of the 24 points on offer per matchup (2 per category won, 1 per tie), so a 12-0
+win counts for more than a 5-4. The categories view zooms in around 50%, where those shares
+sit; the actual side counts Yahoo's official category results, the basis of the standings. The calculation has a small hand-made test:
 
 ```bash
 node tests/allplay.test.js
