@@ -2,7 +2,7 @@
   "meta": {
     "season": "2026-27",
     "league_key": "477.l.1809",
-    "last_updated": "2026-11-20T06:18:39.288564+00:00",
+    "last_updated": "2026-11-21T03:37:54.543742+00:00",
     "current_week": 8,
     "complete": false,
     "goalie_min": 3
@@ -3573,7 +3573,7 @@
           "BLK": 24.0,
           "W": 1.0,
           "SV": 71.0,
-          "SV%": 0.887,
+          "SV%": 0.888,
           "SHO": 0.0
         },
         "Ball Bag's Bandits": {
@@ -3719,7 +3719,7 @@
       },
       "pww": {
         "MacHawks": 663.22,
-        "Adam's Assassins": 673.24,
+        "Adam's Assassins": 673.75,
         "Ball Bag's Bandits": 563.83,
         "Don Cherry Lemons": 386.72,
         "Jts blacktastics": 326.34,
@@ -3733,7 +3733,7 @@
       },
       "deltas": {
         "MacHawks": 125.4,
-        "Adam's Assassins": -61.03,
+        "Adam's Assassins": -60.52,
         "Ball Bag's Bandits": -96.37,
         "Don Cherry Lemons": -283.08,
         "Jts blacktastics": 39.72,
@@ -3861,6 +3861,20 @@
             "Hotdog\u2019s Hitters": [2, 8, 4, 1, 20, 27, 9, 7, 1, 50, 55, 0, 2]
           },
           "2026-11-20": {
+            "MacHawks": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "Adam's Assassins": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "Ball Bag's Bandits": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "Don Cherry Lemons": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "Jts blacktastics": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "Moore Misconduct": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "slap and tickle": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "The Beezus Christs": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "The Jackson 5 Holes": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "Thumpers \ud83c\udfd2": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "The Cougars": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "Hotdog\u2019s Hitters": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+          },
+          "2026-11-21": {
             "MacHawks": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             "Adam's Assassins": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             "Ball Bag's Bandits": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
