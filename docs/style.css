@@ -224,15 +224,18 @@ main { max-width: var(--max-w); margin: 0 auto; padding: 20px; display: flex; fl
 @media (max-width: 600px) {
   .bar-label { width: 32px; }
   .bar-label span { display: none; }
-  .bar-track { max-width: calc(var(--bar-pct) - 80px); } /* 32px logo + 42px score + gaps */
 }
 .bar-sm-logo    { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
 .bar-sm-logo-ph { width: 22px; height: 22px; border-radius: 50%; background: var(--surface-2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
 
-.bar-track {
-  flex: 1;
+/* The track is the space after the label. Each bar is a true share of it: the leader's bar
+   fills the track minus room for its score, everyone else's is in proportion, at any width
+   (subtracting a fixed amount instead squashed the lower scores to nothing on phones). */
+.bar-track { flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px; }
+.bar-fill {
+  width: calc((100% - 50px) * var(--bar-frac, 1));
   height: 20px;
-  max-width: calc(var(--bar-pct) - 200px); /* desktop: 150px label + score + gaps */
+  flex-shrink: 0;
   background: var(--surface-2);
   border-radius: 4px;
   overflow: hidden;
@@ -240,7 +243,7 @@ main { max-width: var(--max-w); margin: 0 auto; padding: 20px; display: flex; fl
 }
 .bar-seg { height: 100%; transition: flex 0.4s ease; }
 
-.bar-score { width: 42px; text-align: right; font-size: 12px; font-weight: 700; color: var(--text-2); flex-shrink: 0; }
+.bar-score { width: 42px; font-size: 12px; font-weight: 700; color: var(--text-2); flex-shrink: 0; }
 
 /* Legend */
 .cat-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }

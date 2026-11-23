@@ -332,7 +332,7 @@ function renderStackedBars(wk, catContribs) {
 
   const barsHtml = board.map(name => {
     const total  = wk.pww[name] || 0;
-    const widPct = (total / maxScore * 100).toFixed(1);
+    const frac   = Math.max(0, total / maxScore).toFixed(4);   // bar length as a share of the leader's
     const segs   = STAT_LABELS.map(stat => {
       const contrib = catContribs[name]?.[stat] || 0;
       const pct     = total > 0 ? (contrib / total * 100).toFixed(2) : 0;
@@ -346,10 +346,10 @@ function renderStackedBars(wk, catContribs) {
         ${smLogoImg(name)}
         <span title="${name}">${shortName(name)}</span>
       </div>
-      <div class="bar-track" style="--bar-pct:${widPct}%">
-        ${segs}
+      <div class="bar-track">
+        <div class="bar-fill" style="--bar-frac:${frac}">${segs}</div>
+        <span class="bar-score">${total.toFixed(0)}</span>
       </div>
-      <span class="bar-score">${total.toFixed(0)}</span>
     </div>`;
   }).join("");
 
