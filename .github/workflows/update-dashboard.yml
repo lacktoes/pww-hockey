@@ -7,7 +7,17 @@ on:
     # No later runs -- Yahoo rolls over ~07 UTC (midnight US Pacific) causing bad data
     - cron: "0 23 * 1-4,10-12 *"
     - cron: "0 0,1,2,3,4,5 * 1-4,10-12 *"
+    # Monday (Brisbane) is when the week's results are finalised: Sunday night's NHL games
+    # finish around 1-4pm Brisbane (03-06 UTC). Every 15 minutes then, on top of the hourly
+    # runs, ending 06:45 UTC to stay clear of Yahoo's rollover.
+    - cron: "15,30,45 3,4,5 * 1-4,10-12 1"
+    - cron: "0,15,30,45 6 * 1-4,10-12 1"
   workflow_dispatch:   # allow manual trigger from GitHub Actions tab
+
+# One run at a time: a 15-minute run that overruns waits instead of racing the next push.
+concurrency:
+  group: update-dashboard
+  cancel-in-progress: false
 
 permissions:
   contents: write    # needed to commit data.json back to the repo
