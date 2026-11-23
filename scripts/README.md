@@ -159,3 +159,15 @@ hides for weeks without daily totals (seasons before 2026-27).
 ```bash
 node tests/daily.test.js
 ```
+
+## After changing the page's CSS or JS
+
+```bash
+python scripts/stamp_assets.py
+```
+
+It versions the `<link>` / `<script>` addresses in `docs/index.html` from each file's
+contents (`app.js?v=<hash>`). GitHub Pages lets browsers keep files for 10 minutes and phones
+often keep them longer, so without it a phone can pair a new page with an old stylesheet or
+script (unstyled, dead buttons). Run it before committing any change to `docs/*.js` or
+`docs/*.css`.
