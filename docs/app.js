@@ -1091,6 +1091,50 @@ function renderAllPlay() {
 function renderAllPlayViews() {
   renderAllPlayChart(apLast);
   renderAllPlayTable(apLast);
+  renderAllPlaySides(apLast);
+}
+
+// Luckiest / unluckiest boards either side of the chart. CSS shows them only on screens wide
+// enough to fit both beside the chart; phones get the table's Δ column instead.
+const AP_SIDE_N = 3;
+function renderAllPlaySides(res) {
+  const cfg = Object.assign({}, AP_IDS, AP_MEASURES[apMeasure]);
+  const lucky = document.getElementById("ap-lucky"), unlucky = document.getElementById("ap-unlucky");
+  if (!lucky || !unlucky) return;
+  const rows = (res ? apRows(res, cfg) : []).filter(r => r[cfg.delta] != null && r[cfg.act] != null);
+  const cats = cfg.recAct === "actCat";
+  // Δ as something you can count: wins (matchups) or points of the 24 (categories) above or
+  // below the all-play pace, over the weeks played
+  const swing = r => {
+    const rec = r[cfg.recAct], n = rec.W + rec.L + rec.T;
+    return -r[cfg.delta] * (cats ? 2 * n : n);
+  };
+  const unit = cats ? "pts" : "wins";
+  const fmt = v => (v > 0 ? "+" : "−") + Math.abs(v).toFixed(1);
+  const entry = (r, i, kind) => {
+    const s = swing(r);
+    return `<li class="ap-luck-row">
+        <span class="ap-luck-rank">${kind === "lucky" ? (i === 0 ? "🍀" : "☘️") : (i === 0 ? "🐈‍⬛" : "🌧️")}</span>
+        ${smLogoImg(r.team)}
+        <span class="ap-luck-team">
+          <span class="ap-luck-name" title="${apEsc(r.team)}">${apEsc(r.team)}</span>
+          <small>Actual ${apPct(r[cfg.act], cfg.decimals)} · All-play ${apPct(r[cfg.all], cfg.decimals)}</small>
+        </span>
+        <span class="ap-luck-swing" title="${kind === "lucky" ? "More" : "Fewer"} ${unit} than the all-play pace">${fmt(s)}<small>${unit}</small></span>
+      </li>`;
+  };
+  const board = (kind, list) => {
+    const lk = kind === "lucky";
+    const body = list.length
+      ? `<ol class="ap-luck-list">${list.map((r, i) => entry(r, i, kind)).join("")}</ol>`
+      : `<p class="ap-note">${lk ? "Nobody's riding their luck yet." : "Nobody's been hard done by yet."}</p>`;
+    return `<h3 class="ap-luck-title">${lk ? "🍀 Luckiest" : "🐈‍⬛ Unluckiest"}</h3>
+      <p class="ap-luck-sub">${lk ? "Winning more than their all-play says they should" : "Doing the work and not getting paid"}</p>
+      ${body}`;
+  };
+  const byDelta = [...rows].sort((a, b) => a[cfg.delta] - b[cfg.delta] || a.team.localeCompare(b.team));
+  lucky.innerHTML   = rows.length ? board("lucky",   byDelta.filter(r => r[cfg.delta] < -0.0005).slice(0, AP_SIDE_N)) : "";
+  unlucky.innerHTML = rows.length ? board("unlucky", byDelta.reverse().filter(r => r[cfg.delta] > 0.0005).slice(0, AP_SIDE_N)) : "";
 }
 
 const apEsc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));

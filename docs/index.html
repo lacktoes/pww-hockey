@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>PWW Hockey</title>
-  <link rel="stylesheet" href="style.css?v=85e81dde0c">
+  <link rel="stylesheet" href="style.css?v=d6ab923a43">
 </head>
 <body>
 
@@ -128,7 +128,11 @@
               <input type="checkbox" id="ap-live"> Include this week so far
             </label>
           </div>
-          <div class="ap-chart" id="ap-chart"></div>
+          <div class="ap-stage">
+            <aside class="ap-side ap-side-lucky" id="ap-lucky" aria-label="Luckiest teams"></aside>
+            <div class="ap-chart" id="ap-chart"></div>
+            <aside class="ap-side ap-side-unlucky" id="ap-unlucky" aria-label="Unluckiest teams"></aside>
+          </div>
           <div class="ap-legend" id="ap-legend"></div>
           <div class="table-wrap" id="ap-table"></div>
         </section>
@@ -169,6 +173,6 @@
 
   <script src="allplay.js?v=ead60f6046"></script>
   <script src="daily.js?v=0ac3fb9284"></script>
-  <script src="app.js?v=8d94bfb357"></script>
+  <script src="app.js?v=f153b65912"></script>
 </body>
 </html>

@@ -493,6 +493,32 @@ main { max-width: var(--max-w); margin: 0 auto; padding: 20px; display: flex; fl
 .ap-table td.ap-num small { color: var(--text-2); margin-left: 4px; }
 .ap-table td.ap-rank { color: var(--text-2); width: 30px; }
 .ap-note { font-size: 11px; color: var(--text-2); margin-top: 8px; }
+
+/* Luckiest / unluckiest boards beside the all-play chart: wide screens only */
+.ap-side { display: none; }
+@media (min-width: 1300px) {
+  .ap-stage { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 600px) minmax(0, 1fr); gap: 24px; align-items: center; }
+  .ap-stage .ap-chart { width: 100%; }
+  .ap-side { display: block; align-self: center; padding: 14px; border-radius: var(--radius); border: 1px solid var(--border); }
+}
+.ap-side-lucky   { background: linear-gradient(160deg, color-mix(in srgb, var(--win) 16%, transparent), transparent 70%); border-color: color-mix(in srgb, var(--win) 40%, var(--border)) !important; }
+.ap-side-unlucky { background: linear-gradient(200deg, color-mix(in srgb, var(--loss) 14%, transparent), transparent 70%); border-color: color-mix(in srgb, var(--loss) 40%, var(--border)) !important; }
+.ap-luck-title { font-size: 15px; font-weight: 700; margin: 0; }
+.ap-side-lucky .ap-luck-title   { color: var(--win); }
+.ap-side-unlucky .ap-luck-title { color: var(--loss); }
+.ap-luck-sub  { font-size: 11px; color: var(--text-2); margin: 2px 0 12px; }
+.ap-luck-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.ap-luck-row  { display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 8px; background: color-mix(in srgb, var(--surface-2) 70%, transparent); }
+.ap-luck-row:first-child { padding: 11px 8px; }
+.ap-luck-rank { font-size: 15px; width: 20px; text-align: center; flex-shrink: 0; }
+.ap-luck-row:first-child .ap-luck-rank { font-size: 19px; }
+.ap-luck-team { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.ap-luck-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ap-luck-team small { font-size: 10.5px; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ap-luck-swing { font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+.ap-luck-swing small { display: block; font-size: 10px; font-weight: 500; color: var(--text-2); }
+.ap-side-lucky .ap-luck-swing   { color: var(--win); }
+.ap-side-unlucky .ap-luck-swing { color: var(--loss); }
 @media (max-width: 600px) {
   .ap-chart .ap-label { font-size: 9.5px; }
   .ap-table td.ap-num small { display: block; margin-left: 0; }
